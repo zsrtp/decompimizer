@@ -10,6 +10,7 @@
 #include "SSystem/SComponent/c_math.h"
 #include "Z2AudioLib/Z2EnvSeMgr.h"
 #include "d/actor/d_a_player.h"
+#include "d/actor/d_a_alink.h"
 #include "d/d_com_inf_game.h"
 #include "d/d_kankyo_rain.h"
 #include "f_op/f_op_camera_mng.h"
@@ -132,6 +133,19 @@ static dPath* get_Extent_pos_end_get(kytag03_class* i_this, dPath* i_path, cXyz*
     return i_path;
 }
 
+static u8 get_collect_smell()
+{
+    // If we are in snowpeak and have smelled the reekfish, We want to show the path, even if we don't have the scent equipped.
+    if(daAlink_c::checkStageName("F_SP114") && dComIfGs_isEventBit(0x6120)) 
+    {
+        return fpcNm_ITEM_SMELL_FISH;
+    }
+    else
+    {
+        return dComIfGs_getCollectSmell();
+    }
+}
+
 static void odour_move(kytag03_class* i_this) {
     fopAc_ac_c* a_this = (fopAc_ac_c*)i_this;
     camera_class* camera = (camera_class*)dComIfGp_getCamera(0);
@@ -149,7 +163,7 @@ static void odour_move(kytag03_class* i_this) {
     cXyz spA0;
     cXyz spAC;
 
-    if (i_this->field_0x585 == dComIfGs_getCollectSmell()) {
+    if (i_this->field_0x585 == get_collect_smell()) {
         if (i_this->field_0x58e != 0xFF) {
             s32 room_no = dComIfGp_roomControl_getStayNo();
             if (dComIfGs_isSwitch(i_this->field_0x58e, room_no)) {
