@@ -206,7 +206,7 @@ static void e_hzelda_wait(e_hzelda_class* i_this) {
     case 0:
         anm_init(i_this, ANM_FWAIT, 10.0f, J3DFrameCtrl::EMode_LOOP, 1.0f);
         i_this->mMode = 1;
-        i_this->mTimers[TIMER_ATTACK_WAIT] = cM_rndF(150.0f) + 100.0f;
+        i_this->mTimers[TIMER_ATTACK_WAIT] = 100.0f; // Timer between attacks is always 100
         i_this->mMoveStep = 0.0f;
         i_this->field_0x5d0 = i_this->mAngleToPlayer + 0x8000;
         break;
@@ -243,14 +243,8 @@ static void e_hzelda_wait(e_hzelda_class* i_this) {
                     i_this->mAction = ACTION_ATTACK_B;
                 }
             } else {
-                // 70% chance of ball attack. if failed, 50-50% chance of sword or triangle attack
-                if (cM_rndF(1.0f) < 0.7f) {
-                    i_this->mAction = ACTION_ATTACK_C;
-                } else if (cM_rndF(1.0f) < 0.5f) {
-                    i_this->mAction = ACTION_ATTACK_A;
-                } else {
-                    i_this->mAction = ACTION_ATTACK_B;
-                }
+                // 100% chance of ball attack.
+                i_this->mAction = ACTION_ATTACK_C;
             }
 
             i_this->mMode = 0;
