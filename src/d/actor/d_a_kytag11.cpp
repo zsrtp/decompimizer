@@ -7,6 +7,7 @@
 
 #include "d/actor/d_a_kytag11.h"
 #include "d/d_procname.h"
+#include "d/actor/d_a_alink.h"
 #include "d/d_kankyo_static.h"
 
 static int daKytag11_Draw(kytag11_class* i_this) {
@@ -55,7 +56,12 @@ static int daKytag11_Execute(kytag11_class* i_this) {
         i_this->mInitTimeChange = true;
     }
 
-    env_light->using_time_control_tag = 1;
+    // We don't want to do time calculations in an area with no time flow. 
+    // Hyrule Field is an exception to this.
+    if (!daAlink_c::checkStageName("F_SP121"))
+    {
+        env_light->using_time_control_tag = 1;
+    }
 
     if (i_this->mStopTime != 0x1F && i_this->mStopTime == (u8)dKy_getdaytime_hour()) {
         return 1;
