@@ -2899,7 +2899,7 @@ static void lure_heart(dmg_rod_class* i_this) {
             if (obj_life != NULL) {
                 fopAcM_delete(obj_life);
                 fopAcM_onItem(obj_life, 0x80);
-                execItemGet(fpcNm_ITEM_KAKERA_HEART);
+                execItemGet(fpcNm_ITEM_KAKERA_HEART); // Fishing Hole Heart Piece Check
                 u8 eventReg = dComIfGs_getEventReg(0xECFF);
                 eventReg |= (u8)0x40;
                 dComIfGs_setEventReg(0xECFF, eventReg);
@@ -4028,7 +4028,7 @@ static void uki_catch(dmg_rod_class* i_this) {
             } else if (mgfish->mCaughtType == MG_CATCH_BIN) {
                 i_this->msgflow.init(actor, 0x139A, 0, NULL);
                 dComIfGs_onEventBit(dSv_event_flag_c::saveBitLabels[468]);
-                dComIfGs_setEmptyBottle();
+                execItemGet(fpcNm_ITEM_EMPTY_BOTTLE); // Fishing Hole Bottle Check
             } else if (mgfish->mCaughtType == MG_CATCH_KN) {
                 i_this->msgflow.init(actor, 0x139C, 0, NULL);
             } else if (mgfish->mCaughtType == MG_CATCH_ED) {
@@ -4292,15 +4292,13 @@ static void uki_main(dmg_rod_class* i_this) {
                 }
 
                 if (!dComIfGs_isEventBit(dSv_event_flag_c::saveBitLabels[468])) {
-                    if (cM_rndF(1.0f) <= 0.5f) {
-                        cXyz bin_pos(6800.0f, 30.0f, -270.0f);
-                        bin_pos -= player->current.pos;
+                    cXyz bin_pos(6800.0f, 30.0f, -270.0f);
+                    bin_pos -= player->current.pos;
 
-                        if (bin_pos.abs() < 2500.0f) {
-                            s16 spE = (player->shape_angle.y - cM_atan2s(bin_pos.x, bin_pos.z));
-                            if (spE < 0x4000 && spE > -0x4000) {
-                                mgfish->mCaughtType = MG_CATCH_BIN;
-                            }
+                    if (bin_pos.abs() < 2500.0f) {
+                        s16 spE = (player->shape_angle.y - cM_atan2s(bin_pos.x, bin_pos.z));
+                        if (spE < 0x4000 && spE > -0x4000) {
+                            mgfish->mCaughtType = MG_CATCH_BIN;
                         }
                     }
                 }
