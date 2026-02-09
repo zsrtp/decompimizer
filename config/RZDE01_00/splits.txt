@@ -417,14 +417,16 @@ d/d_bomb.cpp:
 
 d/d_lib.cpp:
 	.text       start:0x800368B8 end:0x80037188
-	.data       start:0x803FE3C8 end:0x803FE490
-	.sdata      start:0x80537B18 end:0x80537B38
-	.sbss       start:0x8053AA20 end:0x8053AA40
+	.data       start:0x803FE3C8 end:0x803FE420
+	.sdata      start:0x80537B18 end:0x80537B28
+	.sbss       start:0x8053AA20 end:0x8053AA38
 	.sdata2     start:0x8053BE18 end:0x8053BE20
 
 d/d_save.cpp:
 	.text       start:0x80037188 end:0x8003A14C
 	.rodata     start:0x803CFD10 end:0x803D04F0
+	.data       start:0x803FE420 end:0x803FE490
+	.sdata      start:0x80537B28 end:0x80537B38
 	.sdata2     start:0x8053BE20 end:0x8053BE28
 
 d/d_save_init.cpp:
@@ -440,6 +442,7 @@ d/d_a_obj.cpp:
 	.text       start:0x8003AF5C end:0x8003B800
 	.rodata     start:0x803D04F0 end:0x803D0500
 	.bss        start:0x804B0D60 end:0x804B0DC0
+	.sbss       start:0x8053AA38 end:0x8053AA40
 	.sdata2     start:0x8053BE48 end:0x8053BE60
 
 d/d_a_itembase_static.cpp:
@@ -1623,7 +1626,7 @@ JSystem/JParticle/JPAResource.cpp:
 JSystem/JParticle/JPABaseShape.cpp:
 	.text       start:0x8025F598 end:0x802629A4
 	.data       start:0x8041D360 end:0x8041D508
-	.sdata      start:0x80539AC0 end:0x80539AD0
+	.sdata      start:0x80539AC0 end:0x80539AC8
 	.sdata2     start:0x8053F0D8 end:0x8053F110
 
 JSystem/JParticle/JPAExtraShape.cpp:
@@ -1870,6 +1873,7 @@ JSystem/JAudio2/JASSeqParser.cpp:
 	.text       start:0x80279E94 end:0x8027BB90
 	.ctors      start:0x803CE324 end:0x803CE328
 	.data       start:0x8041E890 end:0x804201C0
+	.sdata      start:0x80539AC8 end:0x80539AD0
 	.sbss       start:0x8053AF18 end:0x8053AF28
 	.sdata2     start:0x8053F3E8 end:0x8053F420
 
