@@ -18,6 +18,7 @@
 #include "d/actor/d_a_e_mk_bo.h"
 #include "d/d_camera.h"
 #include "f_op/f_op_camera_mng.h"
+#include "rando/tools.h"
 #include "Z2AudioLib/Z2Instances.h"
 
 class daE_MK_HIO_c : public JORReflexible {
@@ -1707,6 +1708,7 @@ static void demo_camera_end(e_mk_class* i_this) {
                     work.z = AREG_F(2) + -20.0f;
                     MtxPosition(&work, &pos);
                     pos += i_this->crownPos;
+                    checkTransformFromWolf(); // If the player is wolf, they will void and lose the boomerang check.
                     fopAcM_createDisappear(actor, &pos, 5, 0, 0xff);
                 }
 

@@ -24,3 +24,12 @@ bool playerIsInRoomStage(s32 room, const char* stage)
 
     return daAlink_c::checkStageName(stage);
 }
+
+void checkTransformFromWolf()
+{
+    if (g_dComIfG_gameInfo.info.getSavedata().getPlayer().getPlayerStatusA().getTransformStatus())
+    {
+        daAlink_getAlinkActorClass()->procCoMetamorphoseInit();
+    }
+    return;
+}
