@@ -39,3 +39,18 @@ compile_commands.json
 
 # ISOs
 *.iso
+
+# intermediary images
+*.png
+*.jpg
+
+# LLM Agent folders
+.grok/
+.cursor/
+.aider/
+.windsurf/
+.copilot/
+CLAUDE.md
+
+# Local test scripts
+test*.py

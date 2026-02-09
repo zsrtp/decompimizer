@@ -17,6 +17,7 @@
 #include "m_Do/m_Do_controller_pad.h"
 #include "m_Do/m_Do_graphic.h"
 #include "m_Do/m_Do_machine.h"
+#include "rando/rando.h"
 
 #if PLATFORM_WII
 #include "d/d_cursor_mng.h"
@@ -870,6 +871,7 @@ static int dScnLogo_Draw(dScnLogo_c* i_this) {
 
 static int dScnLogo_Delete(dScnLogo_c* i_this) {
     i_this->~dScnLogo_c();
+    g_randoInfo._create();
     return 1;
 }
 

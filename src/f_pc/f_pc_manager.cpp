@@ -20,6 +20,7 @@
 #include "f_pc/f_pc_pause.h"
 #include "f_pc/f_pc_priority.h"
 #include "m_Do/m_Do_controller_pad.h"
+#include "rando/rando.h"
 
 void fpcM_Draw(void* i_proc) {
     fpcDw_Execute((base_process_class*)i_proc);
@@ -78,12 +79,16 @@ void fpcM_Management(fpcM_ManagementFunc i_preExecuteFn, fpcM_ManagementFunc i_p
                 i_preExecuteFn();
             }
 
+            g_randoInfo.execute();
+
             if (!fapGm_HIO_c::isCaptureScreen()) {
                 fpcEx_Handler((fpcLnIt_QueueFunc)fpcM_Execute);
             }
             if (!fapGm_HIO_c::isCaptureScreen() || fapGm_HIO_c::getCaptureScreenDivH() != 1) {
                 fpcDw_Handler((fpcDw_HandlerFuncFunc)fpcM_DrawIterater, (fpcDw_HandlerFunc)fpcM_Draw);
             }
+
+            g_randoInfo.draw();
 
             if (i_postExecuteFn != NULL) {
                 i_postExecuteFn();

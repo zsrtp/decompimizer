@@ -195,8 +195,9 @@ config.dtk_path = args.dtk
 config.objdiff_path = args.objdiff
 config.binutils_path = args.binutils
 config.compilers_path = args.compilers
-config.generate_map = args.map
-config.non_matching = args.non_matching
+# Always enable non-matching and map generation for decompimizer
+config.non_matching = True
+config.generate_map = True
 config.sjiswrap_path = args.sjiswrap
 config.ninja_path = args.ninja
 config.progress = args.progress
@@ -535,6 +536,7 @@ def JSystemLib(lib_name: str, objects: List[Object], progress_category: str="thi
 Matching = True                   # Object matches and should be linked
 NonMatching = False               # Object does not match and should not be linked
 Equivalent = config.non_matching  # Object should be linked when configured with --non-matching
+Custom = config.non_matching      # Custom object, linked in non-matching builds
 
 
 ALL_GCN = ["GZ2E01", "GZ2P01", "GZ2J01"]
@@ -2908,6 +2910,16 @@ config.libs = [
     ActorRel(MatchingFor(ALL_GCN, "Shield"), "d_a_tboxSw"),
     ActorRel(MatchingFor(ALL_GCN), "d_a_title"),
     ActorRel(MatchingFor(ALL_GCN), "d_a_warp_bug"),
+
+    # rando
+    {
+        "lib": "rando",
+        "mw_version": MWVersion(config.version),
+        "cflags": cflags_framework,
+        "objects": [
+            Object(Custom, "rando/rando.cpp"),
+        ],
+    },
 ]
 
 
@@ -2974,11 +2986,12 @@ def link_order_callback(module_id: int, objects: List[str]) -> List[str]:
     if not config.non_matching:
         return objects
     if module_id == 0:  # DOL
-        return objects + ["dummy.c"]
+        return objects + [
+            "rando/rando.cpp",
+        ]
     return objects
 
-# Uncomment to enable the link order callback.
-# config.link_order_callback = link_order_callback
+config.link_order_callback = link_order_callback
 
 # Optional extra categories for progress tracking
 config.progress_categories = [
@@ -2998,6 +3011,60 @@ config.progress_report_args = [
 if args.mode == "configure":
     # Write build.ninja and objdiff.json
     generate_build(config)
+
+    # For non-matching builds, add ISO rebuild step directly to build.ninja
+    if config.non_matching:
+        with open("build.ninja", "r") as f:
+            content = f.read()
+
+        output_iso = f"decompimizer-{version}.iso"
+        orig_iso = f"orig/{version}/{version}.iso"
+        dol_output = f"build/{version}/framework.dol"
+        rel_output = f"build/{version}/f_pc_profile_lst/f_pc_profile_lst.rel"
+
+        assets_stamp = f"build/{version}/mod_assets.stamp"
+
+        # Add the rebuild_iso rule after the custom build rules section
+        iso_rule = f"""
+rule mod_assets_checksum
+  command = find mod_assets -type f 2>/dev/null | sort | xargs md5sum 2>/dev/null | md5sum | cut -d' ' -f1 > $out.tmp && (cmp -s $out.tmp $out || cp $out.tmp $out) && rm -f $out.tmp
+  restat = 1
+  description = CHECK mod_assets
+
+rule rebuild_iso
+  command = $python tools/rebuild-decomp-tp.py {orig_iso} $out ./ --version {version}
+  description = REBUILD ISO {version}
+
+"""
+        content = content.replace(
+            "# Source files",
+            iso_rule + "# Source files"
+        )
+
+        # Add the build step before the default rule
+        iso_build = f"""# mod_assets checksum
+build {assets_stamp}: mod_assets_checksum | always
+
+# Rebuild ISO
+build {output_iso}: rebuild_iso | {dol_output} {rel_output} tools/rebuild-decomp-tp.py {assets_stamp}
+
+"""
+        # Add phony always target if not already present
+        if "build always: phony" not in content:
+            iso_build = "build always: phony\n\n" + iso_build
+        content = content.replace(
+            "# Default rule\n",
+            iso_build + "# Default rule\n"
+        )
+
+        # Add ISO to the default target
+        content = content.replace(
+            "# Default rule\ndefault ",
+            f"# Default rule\ndefault {output_iso} $\n    "
+        )
+
+        with open("build.ninja", "w") as f:
+            f.write(content)
 elif args.mode == "progress":
     # Print progress information
     calculate_progress(config)

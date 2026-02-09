@@ -41,11 +41,15 @@ You will need the following dependencies:
 
 ### Windows
 
-On Windows, it's **highly recommended** to use native tooling. WSL or msys2 are **not** required.  
-When running under WSL, [objdiff](#diffing) is unable to get filesystem notifications for automatic rebuilds.
+On Windows, it's **highly recommended** to use native tooling. WSL or msys2 are **not** required.
 
 - Install [Python](https://www.python.org/downloads/) and add it to `%PATH%`.
   - Also available from the [Windows Store](https://apps.microsoft.com/store/detail/python-311/9NRWMJP3717K).
+- Install Lago's gclib tools:
+
+  ```
+  pip install "gclib[speedups] @ git+https://github.com/LagoLunatic/gclib.git"
+  ```
 - Download [ninja](https://github.com/ninja-build/ninja/releases) and add it to `%PATH%`.
   - Quick install via pip: `pip install ninja`
 
@@ -57,35 +61,57 @@ When running under WSL, [objdiff](#diffing) is unable to get filesystem notifica
   brew install ninja
   ```
 
+- Install Lago's gclib tools:
+
+  ```
+  pip install "gclib[speedups] @ git+https://github.com/LagoLunatic/gclib.git"
+  ```
+
 [wibo](https://github.com/decompals/wibo), a minimal 32-bit Windows binary wrapper, will be automatically downloaded and used.
 
 ### Linux
 
 - Install [ninja](https://github.com/ninja-build/ninja/wiki/Pre-built-Ninja-packages).
+- Install Lago's gclib tools:
 
-[wibo](https://github.com/decompals/wibo), a minimal 32-bit Windows binary wrapper, will be automatically downloaded and used.
+  ```
+  pip install "gclib[speedups] @ git+https://github.com/LagoLunatic/gclib.git"
+  ```
+- For non-x86(_64) platforms: Install wine from your package manager.
+  - For x86(_64), [wibo](https://github.com/decompals/wibo), a minimal 32-bit Windows binary wrapper, will be automatically downloaded and used.
 
 ## Building
 
 - Clone the repository:
 
   ```sh
-  git clone https://github.com/zeldaret/tp.git
+  git clone https://github.com/zsrtp/decompimizer.git
   ```
 
-- Copy your game's disc image to `orig/GZ2E01`.
+- Copy your game's disc image (ISO) to `orig/GZ2E01/GZ2E01.iso` (or appropriate version, e.g., `orig/GZ2P01/GZ2P01.iso`).
   - Supported formats: ISO (GCM), RVZ, WIA, WBFS, CISO, NFS, GCZ, TGC.
-  - After the initial build, the disc image can be deleted to save space.
+  - This is used for both asset extraction and rebuilding the final ISO.
 
-- Configure:
-
-  ```sh
-  python configure.py
-  ```
-
-  To use a version other than `GZ2E01` (GCN USA), specify it with `--version`.
-- Build:
+- Configure and build:
 
   ```sh
+  python configure.py -v GZ2E01
   ninja
   ```
+
+  - Replace `GZ2E01` with your desired version (e.g., `GZ2P01` for PAL)
+  - Currently supported versions: `GZ2E01`, `GZ2P01`, `GZ2J01`
+
+## Adding Custom Code
+
+To add new features to the randomizer:
+
+- Create new .cpp or .h files in appropriate directories (e.g., `src/rando/` for randomizer-specific custom code)
+- Add them to `configure.py` in the `config.libs` list, marked as `Custom`
+- Look at existing custom files in `src/rando/` for examples of how to structure and integrate new code
+- Re-run `python configure.py -v VERSION` and `ninja` to include your changes
+
+## Adding Custom Assets
+
+- Place your custom asset into the `mod_assets` directory. The directory structure will be copied 1:1 to the final disc image.
+- Re-run the build process above to include your changes
