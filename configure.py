@@ -3027,7 +3027,7 @@ if args.mode == "configure":
         # Add the rebuild_iso rule after the custom build rules section
         iso_rule = f"""
 rule mod_assets_checksum
-  command = find mod_assets -type f 2>/dev/null | sort | xargs md5sum 2>/dev/null | md5sum | cut -d' ' -f1 > $out.tmp && (cmp -s $out.tmp $out || cp $out.tmp $out) && rm -f $out.tmp
+  command = $python tools/check_mod_assets.py $out
   restat = 1
   description = CHECK mod_assets
 
