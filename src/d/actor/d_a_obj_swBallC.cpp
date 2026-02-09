@@ -218,7 +218,6 @@ int daObjSwBallC_c::demoProc() {
             Z2GetAudioMgr()->bgmStreamPrepare(0x200005e);
             field_0x585 = 0x37;
             setLightOnSwB();
-            dMeter2Info_setSword(0x29, 0);
             break;
         case 11:
             player->changeOriginalDemo();
@@ -237,7 +236,7 @@ int daObjSwBallC_c::demoProc() {
             break;
         case 10:
             field_0x584 = 1;
-            execItemGet(fpcNm_ITEM_LIGHT_SWORD);
+            execItemGet(fpcNm_ITEM_LIGHT_SWORD); // Collect Both Sols Check
             break;
         }
     }

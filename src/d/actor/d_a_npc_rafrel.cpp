@@ -193,7 +193,7 @@ int daNpcRafrel_c::Create() {
 
         mType = 0;
     } else if (strcmp(dComIfGp_getStartStageName(), "F_SP115") == 0 && dComIfGp_getStartStageRoomNo() == 0) {
-        if (daNpcF_chkEvtBit(0x169) || !daNpcF_chkEvtBit(0x108)) {
+        if (daNpcF_chkEvtBit(0x131) || !daNpcF_chkEvtBit(0x108)) {
             return cPhs_ERROR_e;
         }
 
