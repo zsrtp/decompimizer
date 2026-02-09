@@ -2995,6 +2995,33 @@ def link_order_callback(module_id: int, objects: List[str]) -> List[str]:
 
 config.link_order_callback = link_order_callback
 
+# Auto-extract defined symbols from custom DOL objects and add them to the
+# ldscript FORCEACTIVE section so REL modules can resolve references to them.
+custom_dol_objects = link_order_callback(0, [])
+if config.non_matching and custom_dol_objects:
+    nm_path = f"build/binutils/powerpc-eabi-nm"
+    obj_inputs = [f"build/{version}/src/{obj.replace('.cpp', '.o').replace('.c', '.o')}" for obj in custom_dol_objects]
+    ldscript_path = f"build/{version}/ldscript.lcf"
+    stamp_path = f"build/{version}/forceactive.stamp"
+
+    config.custom_build_rules = (config.custom_build_rules or []) + [
+        {
+            "name": "patch_forceactive",
+            "command": f"$python tools/patch_forceactive.py {ldscript_path} {nm_path} {' '.join(obj_inputs)} && touch $out",
+            "description": "FORCEACTIVE $out",
+            "restat": True,
+        },
+    ]
+    config.custom_build_steps = config.custom_build_steps or {}
+    config.custom_build_steps["post-compile"] = (config.custom_build_steps.get("post-compile") or []) + [
+        {
+            "outputs": stamp_path,
+            "rule": "patch_forceactive",
+            "inputs": obj_inputs,
+            "implicit": [ldscript_path, "build/binutils", "tools/patch_forceactive.py"],
+        },
+    ]
+
 # Optional extra categories for progress tracking
 config.progress_categories = [
     ProgressCategory("game", "TP Game Code"),
