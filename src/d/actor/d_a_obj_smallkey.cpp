@@ -156,15 +156,6 @@ int daKey_c::create() {
 
     m_itemNo = fpcNm_ITEM_SMALL_KEY;
 
-    if (strcmp(dComIfGp_getStartStageName(), "F_SP118") == 0) {
-        OS_REPORT(" SMKEY 0\n");
-        if (dComIfGs_isTbox(getSaveBitNo())) {
-            OS_REPORT(" SMKEY 1\n");
-            dComIfGp_setItemKeyNumCount(-dComIfGs_getKeyNum());
-            dComIfGs_offTbox(getSaveBitNo());
-        }
-    }
-
     if (dComIfGs_isTbox(getSaveBitNo())) {
         return cPhs_ERROR_e;
     }
