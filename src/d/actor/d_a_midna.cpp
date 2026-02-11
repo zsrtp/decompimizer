@@ -14,6 +14,7 @@
 #include "d/d_msg_object.h"
 #include "d/d_s_play.h"
 #include "d/d_debug_viewer.h"
+#include "rando/rando.h"
 
 static f32 dummy_lit_3777(int idx, u8 foo) {
     Vec dummy_vec = {0.0f, 0.0f, 0.0f};
@@ -3046,11 +3047,12 @@ void daMidna_c::setMidnaNoDrawFlg() {
 
 BOOL daMidna_c::checkMetamorphoseEnableBase() {
     BOOL tmp;
+    // We want to make sure that Midna only cares about NPCs if the "transform anywhere" setting is disabled. 
     if (
         !daAlink_getAlinkActorClass()->checkMidnaRide() || (g_env_light.mEvilInitialized & 0x80) ||
         /* dSv_event_flag_c::M_077 - Main Event - Get shadow crystal (can now transform) */
         !dComIfGs_isEventBit(0xD04) ||
-        fopAcIt_Judge((fopAcIt_JudgeFunc)daMidna_searchNpc, &tmp)
+        (fopAcIt_Judge((fopAcIt_JudgeFunc)daMidna_searchNpc, &tmp) && !g_randoInfo.checkValidTransformAnywhere())
     ) {
         return FALSE;
     }

@@ -11,8 +11,10 @@ public:
     int _delete();
     int execute();
     int draw();
+    bool checkValidTransformAnywhere();
 
     bool mInitialized;
+    bool transformAnywhere;
     u16 mFrameCounter;
 };
 
