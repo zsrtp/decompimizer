@@ -30,23 +30,23 @@ static Vec const l_eyeOffset = { 16.0f, -10.400001f, 0.0f };
 
 static Vec const l_headCenterOffset = { 0.0f, -10.400001f, 0.0f };
 
-static GXColorS10 const l_normalColor = { 0x50, 0x00, 0x00, 0x00 };
+static GXColorS10 const l_normalColor = { 0x50, 0x00, 0x00, 0x00 }; // glowWorldInactive
 
-static GXColor const l_normalKColor = { 0xB4, 0x87, 0x00, 0x00 };
+static GXColor const l_normalKColor = { 0xB4, 0x87, 0x00, 0x00 }; // baseDarkWorldInactive
 
-static GXColor const l_normalKColor2 = { 0x00, 0xC3, 0xC3, 0x00 };
+static GXColor const l_normalKColor2 = { 0x00, 0xC3, 0xC3, 0x00 }; // tipsDarkWorldAnyActive
 
-static GXColorS10 const l_bigColor = { 0xFF, 0x64, 0x78, 0x00 };
+static GXColorS10 const l_bigColor = { 0xFF, 0x64, 0x78, 0x00 }; // glowDarkWorldActive
 
-static GXColor const l_bigKColor = { 0x1E, 0x00, 0x00, 0x00 };
+static GXColor const l_bigKColor = { 0x1E, 0x00, 0x00, 0x00 }; // baseAnyWorldActive
 
-static GXColor const l_lNormalKColor = { 0xFF, 0xDC, 0x00, 0x00 };
+static GXColor const l_lNormalKColor = { 0xFF, 0xDC, 0x00, 0x00 }; // baseLightWorldInactive
 
-static GXColor const l_lNormalKColor2 = { 0x00, 0xC3, 0xEB, 0x00 };
+static GXColor const l_lNormalKColor2 = { 0x00, 0xC3, 0xEB, 0x00 }; // tipsLightWorldInactive 
 
-static GXColorS10 const l_lBigColor = { 0xFF, 0x78, 0x00, 0x00 };
+static GXColorS10 const l_lBigColor = { 0xFF, 0x78, 0x00, 0x00 }; // glowLightWorldActive
 
-static GXColor const l_lBigKColor2 = { 0xAA, 0xFF, 0xC3, 0x00 };
+static GXColor const l_lBigKColor2 = { 0xAA, 0xFF, 0xC3, 0x00 }; // tipsLightWorldActive
 
 static Vec const l_hairScale[5] = {
     {0.3f, 0.8f, 0.7f},
