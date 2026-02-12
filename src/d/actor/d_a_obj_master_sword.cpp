@@ -45,7 +45,22 @@ void daObjMasterSword_c::executeWait() {
     }
 
     if (fopAcM_checkCarryNow(this)) {
-        dMeter2Info_setCloth(fpcNm_ITEM_WEAR_KOKIRI, false);
+        // Copypasta-ing the current rando code here to come back and clean up later.
+        /*
+        // Give the player the Master Sword replacement
+        rando::Randomizer* randoPtr = rando::gRandomizer;
+        uint32_t itemToGive = randoPtr->getEventItem(items::Master_Sword);
+        randoPtr->addItemToEventQueue(itemToGive);
+
+        // Give the player the Shadow Crystal replacement
+        itemToGive = randoPtr->getEventItem(items::Shadow_Crystal);
+        randoPtr->addItemToEventQueue(itemToGive);
+        */
+        // Set the necessary flags to de-spawn the MS and set the save file event flag.
+        dComIfGs_onTmpBit(0x820);
+        dComIfGs_onEventBit(0x2120);
+
+        //dMeter2Info_setCloth(fpcNm_ITEM_WEAR_KOKIRI, false);
         fopAcM_orderMapToolEvent(this, getEventID(), 0xFF, 0xFFFF, 1, 0);
     }
 }
@@ -186,12 +201,14 @@ int daObjMasterSword_c::execute() {
     mBrk.play();
 
     if (dComIfGs_isTmpBit(dSv_event_tmp_flag_c::tempBitLabels[73])) {
+        /* We don't want the game to give the Master Sword to link automatically
         dComIfGs_onItemFirstBit(fpcNm_ITEM_MASTER_SWORD);
         dMeter2Info_setSword(fpcNm_ITEM_MASTER_SWORD, false);
         dComIfGs_setSelectEquipSword(fpcNm_ITEM_MASTER_SWORD);
 
         dComIfGp_setItemLifeCount(dComIfGs_getMaxLife(), 0);
         dComIfGs_onEventBit(dSv_event_flag_c::saveBitLabels[getFlagNo()]);
+        */
         fopAcM_delete(this);
     }
 
