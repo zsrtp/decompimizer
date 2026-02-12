@@ -288,6 +288,9 @@ int daTbox_c::checkNormal() {
 }
 
 int daTbox_c::checkEnvEffectTbox() {
+    // we don't want to play the "important item" cutscene on any chest. 
+    return false;
+    /*
     if (getShapeType() == SHAPE_SMALL) {
         return false;
     }
@@ -301,6 +304,7 @@ int daTbox_c::checkEnvEffectTbox() {
     }
 
     return dItem_data::chkFlag(getItemNo(), 0x40);
+    */
 }
 
 u32 daTbox_c::calcHeapSize() {
