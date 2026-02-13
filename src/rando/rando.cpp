@@ -66,3 +66,12 @@ bool randoInfo_c::checkValidTransformAnywhere()
     // Return true as the bool is set and there are no conflicting scenerios to prevent transformation
     return true;
 }
+
+int randoInfo_c::getBugReward(u8 bugId)
+{
+    /*
+    Once the infrastructure is built the code will look like the following:
+    int item = replaceBugReward(bugId); we will probably build the functionality out instead of calling another func though.
+    */
+    return bugId;
+}

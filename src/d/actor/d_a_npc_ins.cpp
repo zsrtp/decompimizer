@@ -9,6 +9,7 @@
 #include "d/actor/d_a_npc.h"
 #include "d/d_meter2_info.h"
 #include "d/d_msg_object.h"
+#include "rando/rando.h"
 
 enum Ins_RES_File_ID {
     /* BCK */
@@ -1482,6 +1483,8 @@ int daNpcIns_c::talk(void* param_1) {
                     if (mType == TYPE_0) {
                         itemNo = 0;
                         u32 eventID = mFlow.getEventId(&itemNo);
+                        // We want the item received to be based off the bug given instead of using the msg flow
+                        itemNo = g_randoInfo.getBugReward(dMeter2Info_getInsectSelectType());
 
                         OS_REPORT("会話終了時 イベントID=%d アイテムNo=%d\n", eventID, itemNo);
 

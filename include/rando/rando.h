@@ -12,6 +12,7 @@ public:
     int execute();
     int draw();
     bool checkValidTransformAnywhere();
+    int getBugReward(u8 bugId);
 
     bool mInitialized;
     bool transformAnywhere;
