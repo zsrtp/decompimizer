@@ -75,3 +75,12 @@ int randoInfo_c::getBugReward(u8 bugId)
     */
     return bugId;
 }
+
+u8 randoInfo_c::getSkyCharacterItem()
+{
+    /*
+    Once the infrastructure is built the code will look like the following:
+    u8 item = replaceCharacterReward(); we will probably build the functionality out instead of calling another func though.
+    */
+    return fpcNm_ITEM_ANCIENT_DOCUMENT;
+}

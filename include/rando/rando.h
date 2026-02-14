@@ -13,6 +13,7 @@ public:
     int draw();
     bool checkValidTransformAnywhere();
     int getBugReward(u8 bugId);
+    u8 getSkyCharacterItem();
 
     bool mInitialized;
     bool transformAnywhere;
