@@ -260,8 +260,8 @@ int daObjDrop_c::modeParentWait() {
         }
 
         mModeAction = 1;
-        mModeTimer = 40;
-        current.pos.y += 300.0f;
+        mModeTimer = 0; // Make the tear appear instantly
+        //current.pos.y += 300.0f; We want the tear to spawn on the ground.
         mSound.startSound(Z2SE_OBJ_LIGHTDROP_APPEAR, 0, -1);
         break;
     case 1:
@@ -271,7 +271,7 @@ int daObjDrop_c::modeParentWait() {
         break;
     case 2:
         createBodyEffect();
-        mModeTimer = 45;
+        mModeTimer = 0; // Make the tear appear instantly
         mModeAction = 0;
         setMode(MODE_WAIT_e);
         break;

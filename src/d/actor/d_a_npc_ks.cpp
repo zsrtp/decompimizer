@@ -3508,11 +3508,11 @@ static void action_check(npc_ks_class* i_this) {
                         }
                     }
                 } else if (saru_p[1] != NULL && saru_p[2] != NULL && saru_p[3] != NULL) {
-                    if (player->current.pos.y < 3000.0f) {
+                    /*if (player->current.pos.y < 3000.0f) {
                         dComIfGs_onSwitch(82, fopAcM_GetRoomNo(actor));
-                    }
-
-                    if (!dComIfGs_isSwitch(82, fopAcM_GetRoomNo(actor))) {
+                    }*/
+                    // We don't want the 4 monkey CS to play in the FT lobby
+                    if (dComIfGs_isSwitch(82, fopAcM_GetRoomNo(actor))) {
                         mae.x = player->current.pos.x - -500.0f;
                         mae.z = player->current.pos.z - 7211.0f;
                         if (JMAFastSqrt(mae.x * mae.x + mae.z * mae.z) < 200.0f) {

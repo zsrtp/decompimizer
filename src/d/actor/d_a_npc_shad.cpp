@@ -355,31 +355,8 @@ cPhs_Step daNpcShad_c::Create() {
         mMode = 0;
     } else {
         if (strcmp(dComIfGp_getStartStageName(), "R_SP209") == 0) {
-            if (daNpcF_chkEvtBit(0x311)) {
+            if (daNpcF_chkEvtBit(0x333)) { // Check custom flag before spawning
                 return cPhs_ERROR_e;
-            }
-
-            if (!daNpcF_chkEvtBit(0x10B) || (daNpcF_chkEvtBit(0x12E) && !daNpcF_chkEvtBit(0x31C))) {
-                return cPhs_ERROR_e;
-            }
-
-            if (daNpcF_chkEvtBit(0x12F)) {
-                if (!daNpcF_chkEvtBit(0x312)) {
-                    if (getPathPoint(getPathID(), 1, &home.pos)) {
-                        current.pos = home.pos;
-#if VERSION != VERSION_WII_USA_R0
-                        old.pos = current.pos;
-#endif
-                    }
-                }
-#if VERSION != VERSION_WII_USA_R0
-                else {
-                    home.pos.set(4342.7183f, -1518.5f, -3942.3232f);
-                    current.pos = home.pos;
-                    old.pos = current.pos;
-                    setAngle(-0x2581);
-                }
-#endif
             }
 
             mMode = 1;
@@ -1335,20 +1312,13 @@ bool daNpcShad_c::wait_type1(void* param_1) {
                         }
 
                         u8 sVar1 = dComIfGp_event_getPreItemNo();
-                        if (sVar1 == 0xE9) {
+                        if (sVar1 >= 0xE9) { // We want Shad to give us the dominion rod check no matter which skybook we have. 
                             field_0xe14 = 64;
                             daNpcF_offTmpBit(0xB);
                             daNpcF_offTmpBit(0xC);
                             daNpcF_offTmpBit(0xD);
                             daNpcF_offTmpBit(0xE);
                             mOrderEvtNo = 3;
-                            changeEvent(l_evtArcs[mOrderEvtNo], l_evtNames[mOrderEvtNo], 1, 0xFFFF);
-                        } else if (sVar1 == 0xEB) {
-                            field_0xe14 = 65;
-                            daNpcF_offTmpBit(0xB);
-                            daNpcF_offTmpBit(0xC);
-                            daNpcF_offTmpBit(0xD);
-                            mOrderEvtNo = 4;
                             changeEvent(l_evtArcs[mOrderEvtNo], l_evtNames[mOrderEvtNo], 1, 0xFFFF);
                         } else {
                             s16 eventIdx = dComIfGp_getEventManager().getEventIdx(this, "NO_RESPONSE", 0xFF);

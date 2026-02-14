@@ -12,6 +12,7 @@
 #include "d/d_procname.h"
 #include "d/actor/d_a_obj_life_container.h"
 #include "d/actor/d_a_obj_ystone.h"
+#include "d/d_item.h"
 
 static char* l_arcName = "ef_Portal";
 
@@ -505,7 +506,9 @@ int daObjBossWarp_c::demoProc() {
             mDoMtx_stack_c::multVec(&mYstoneTargetPos, &mYstoneTargetPos);
             mYstonePos.x = mYstoneTargetPos.x;
             mYstonePos.z = mYstoneTargetPos.z;
-            switch (getNowLevel()) {
+            // Instead of setting shadow/mirror flags, we want to give the dungeon reward item
+            // execItemGet(bossItem); // Commented out for now until we get the functionality in. 
+            /*switch (getNowLevel()) {
             case 0:
                 dComIfGs_onCollectCrystal(0);
                 break;
@@ -524,7 +527,7 @@ int daObjBossWarp_c::demoProc() {
             case 6:
                 dComIfGs_onCollectMirror(3);
                 break;
-            }
+            }*/
             mCounter = 0;
             break;
         case 5:  // STONE_MIDNA

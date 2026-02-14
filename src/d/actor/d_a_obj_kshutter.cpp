@@ -9,6 +9,7 @@
 #include "d/actor/d_a_player.h"
 #include "d/actor/d_a_obj_keyhole.h"
 #include "d/d_meter2_info.h"
+#include "rando/tools.h"
 
 enum S_shut00_RES_File_ID {
     /* BMDR */
@@ -585,7 +586,11 @@ BOOL daObjKshtr_c::keyUnlockInit() {
         keyhole_p->setOpen();
     }
 
-    dComIfGp_setItemKeyNumCount(-1);
+    // If we are unlocking the boss door in LBT, we don't want to remove a small key. 
+    if (!playerIsInRoomStage(3, "D_MN01"))
+    {
+        dComIfGp_setItemKeyNumCount(-1);
+    }
     fopAcM_seStart(this, Z2SE_OBJ_DOOR_CHAIN_LOCK_OPEN, 0);
 
     return TRUE;

@@ -16,6 +16,7 @@
 #include "JSystem/J3DGraphBase/J3DMaterial.h"
 #include "SSystem/SComponent/c_math.h"
 #include "c/c_damagereaction.h"
+#include "rando/tools.h"
 #include <cmath>
 
 enum B_bq_RES_File_ID {
@@ -896,6 +897,7 @@ static void b_bq_end(b_bq_class* i_this) {
         i_this->mMode = 1;
 
         int sw = fopAcM_GetParam(a_this) >> 0x18;
+        checkTransformFromWolf(); // If the player is wolf, they will softlock after the defeat cutscene is completed.
         dComIfGs_onSwitch(sw, fopAcM_GetRoomNo(a_this));
         // fallthrough
     }

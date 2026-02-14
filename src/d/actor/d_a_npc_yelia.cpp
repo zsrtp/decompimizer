@@ -7,6 +7,7 @@
 
 #include "d/actor/d_a_npc_yelia.h"
 #include "d/actor/d_a_demo_item.h"
+#include "rando/tools.h"
 
 static daNpc_GetParam1 l_bmdData[3] = {
     {3, 1},
@@ -1123,7 +1124,7 @@ BOOL daNpc_Yelia_c::cutTakeWoodStatue(int i_staffId) {
             if (prm == 99) {
                 daNpcT_onEvtBit(0x11f);
                 daNpcT_onEvtBit(0x17a);
-                dComIfGs_setWarashibeItem(0xff);
+                offWarashibeItem(fpcNm_ITEM_WOOD_STATUE); // Unset the statue item so it doesn't appear in the item wheel.
                 daNpcT_offTmpBit(0xb);
                 daNpcT_offTmpBit(0xc);
                 dComIfGs_onSaveSwitch(6, 0x40);

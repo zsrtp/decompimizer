@@ -529,6 +529,29 @@ int daDitem_c::execute() {
     }
 
     mSound.framework(0, dComIfGp_getReverb(fopAcM_GetRoomNo(this)));
+
+    // Certain items use field models that are too big to fit in link's hands so we want to scale them down to fit.
+    switch (m_itemNo)
+    {
+        case fpcNm_ITEM_MIRROR_PIECE_1:
+        case fpcNm_ITEM_MIRROR_PIECE_2:
+        case fpcNm_ITEM_MIRROR_PIECE_3:
+        case fpcNm_ITEM_MIRROR_PIECE_4:
+        {
+            scale.x = 0.05f;
+            break;
+        }
+        case fpcNm_ITEM_MASTER_SWORD:
+        case fpcNm_ITEM_LIGHT_SWORD:
+        {
+            scale.x = 0.001f;
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
     return 1;
 }
 

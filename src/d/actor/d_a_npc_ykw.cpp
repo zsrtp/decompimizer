@@ -572,7 +572,7 @@ int daNpc_ykW_c::isDelete() {
     case 0:
         return 0;
     case 1:
-        return dComIfGs_isDungeonItemBossKey();
+        return false; // We don't want Yeta to leave the dungeon, even if the BK is obtained.
     case 2:
         return !dComIfGs_isDungeonItemBossKey() ||
             (getBitSW2() != 0xff && dComIfGs_isSwitch(getBitSW2(), fopAcM_GetRoomNo(this)));

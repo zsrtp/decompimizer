@@ -1034,9 +1034,10 @@ bool daNpcBouS_c::wait(void* param_1) {
                 }
             }
 
-            if (!checkItemGet(fpcNm_ITEM_HVY_BOOTS, 1) && dComIfGs_isTbox(2)) {
+            // We don't want bo to try and talk to us once the chest has been opened. 
+            /*if (!checkItemGet(fpcNm_ITEM_HVY_BOOTS, 1) && dComIfGs_isTbox(2)) {
                 mForcibleTalk = 1;
-            }
+            }*/
 
             if (dComIfGp_event_runCheck()) {
                 if (eventInfo.checkCommandTalk()) {

@@ -553,7 +553,8 @@ BOOL daNpc_Pouya_c::checkChangeEvt() {
                     evtChange();
                     return TRUE;
                 }
-                if (dComIfGs_getPohSpiritNum() >= 60) {
+                // We only want to get the 60 poe reward from jovani if we have gotten the 20 poe reward. 
+                if ((dComIfGs_getPohSpiritNum() >= 60) &&  dComIfGs_isEventBit(0x4D80)){
                     /* dSv_event_flag_c::F_0458 - Coversation with Jovani after collecting 60 ghosts
                      */
                     if (!daNpcT_chkEvtBit(0x1CA)) {
