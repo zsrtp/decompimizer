@@ -14,6 +14,8 @@ public:
     bool checkValidTransformAnywhere();
     int getBugReward(u8 bugId);
     u8 getSkyCharacterItem();
+    u8 getPoeItem(u8 bitSw);
+    void handlePoeItem(u8 bitSw);
 
     bool mInitialized;
     bool transformAnywhere;

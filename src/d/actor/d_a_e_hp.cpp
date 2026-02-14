@@ -9,6 +9,7 @@
 #include "d/actor/d_a_alink.h"
 #include "d/d_debug_viewer.h"
 #include "f_op/f_op_actor_enemy.h"
+#include "rando/rando.h"
 
 class daE_HP_HIO_c : public JORReflexible {
 public:
@@ -724,13 +725,15 @@ void daE_HP_c::executeDead() {
             fopAcM_onSwitch(this, bitSw);
         }
 
-        dComIfGs_addPohSpiritNum();
+        //dComIfGs_addPohSpiritNum();
+        // Based on the flag we are setting, we want to replace the poe item with something else.
+        g_randoInfo.handlePoeItem(bitSw);
 
         field_0x784 = -1;
 
-        if (dComIfGs_getPohSpiritNum() == 20) {
+        /*if (dComIfGs_getPohSpiritNum() == 20) {
             dComIfGs_onEventBit(dSv_event_flag_c::saveBitLabels[0x1c9]);
-        }
+        }*/
 
         movemode++;
     }
@@ -750,10 +753,10 @@ void daE_HP_c::executeDead() {
                     field_0x788 = 1;
                 }
             }
-        } else if (field_0x788 != 0) {
+        } else {
             fopAcM_createDisappear(this, &current.pos, 8, 3, 0xff);
             fopAcM_delete(this);
-        } else {
+        }/* else {
             if (field_0x784 == -1) {
                 field_0x784 = fopAcM_createItemForPresentDemo(&current.pos, fpcNm_ITEM_POU_SPIRIT, 0, -1,
                                                               -1, 0, 0);
@@ -767,7 +770,7 @@ void daE_HP_c::executeDead() {
                     fopAcM_orderOtherEventId(this, field_0x778, 0xff, 0xffff, 6, 1);
                 }
             }
-        }
+        }*/
 
         break;
     }
