@@ -16,7 +16,7 @@
 #include "JSystem/J3DGraphBase/J3DMaterial.h"
 #include "SSystem/SComponent/c_math.h"
 #include "c/c_damagereaction.h"
-#include "rando/tools.h"
+#include "rando/tools/tools.h"
 #include <cmath>
 
 enum B_bq_RES_File_ID {

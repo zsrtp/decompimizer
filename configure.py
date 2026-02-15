@@ -2918,7 +2918,8 @@ config.libs = [
         "cflags": cflags_framework,
         "objects": [
             Object(Custom, "rando/rando.cpp"),
-            Object(Custom, "rando/tools.cpp"),
+            Object(Custom, "rando/tools/tools.cpp"),
+            Object(Custom, "rando/tools/verifyItemFunctions.cpp"),
         ],
     },
 ]
@@ -2989,7 +2990,8 @@ def link_order_callback(module_id: int, objects: List[str]) -> List[str]:
     if module_id == 0:  # DOL
         return objects + [
             "rando/rando.cpp",
-            "rando/tools.cpp",
+            "rando/tools/tools.cpp",
+            "rando/tools/verifyItemFunctions.cpp",
         ]
     return objects
 

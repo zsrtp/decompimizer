@@ -9,7 +9,7 @@
 #include "d/actor/d_a_player.h"
 #include "d/actor/d_a_obj_keyhole.h"
 #include "d/d_meter2_info.h"
-#include "rando/tools.h"
+#include "rando/tools/tools.h"
 
 enum S_shut00_RES_File_ID {
     /* BMDR */
