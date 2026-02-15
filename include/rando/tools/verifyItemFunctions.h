@@ -12,6 +12,6 @@ uint getProgressiveKeyShard();
 uint getProgressiveMirrorShard();
 uint getProgressiveFusedShadow();
 u8 getWarashibeItemCount();
-uint verifyProgressiveItem();
+uint verifyProgressiveItem(uint item);
 
 #endif  // VERIFY_ITEM_FUNCTIONS_H

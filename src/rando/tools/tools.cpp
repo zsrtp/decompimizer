@@ -2,6 +2,7 @@
 #include "d/d_com_inf_game.h"
 #include "d/actor/d_a_alink.h"
 #include "d/d_item.h"
+#include "f_op/f_op_actor_mng.h"
 
 bool playerIsInRoomStage(s32 room, const char* stage)
 {
@@ -78,4 +79,10 @@ void offWarashibeItem(u8 item)
 {
     g_dComIfG_gameInfo.info.getSavedata().getPlayer().getGetItem().offFirstBit(item);
     setNextWarashibeItem();
+}
+
+int initCreatePlayerItem(uint item, uint flag, const cXyz* pos, int roomNo, const csXyz* angle, const cXyz* scale)
+{
+    uint params = 0xFF0000 | ((flag & 0xFF) << 0x8) | (item & 0xFF);
+    return fopAcM_create(539, params, pos, roomNo, angle, scale, -1);
 }
