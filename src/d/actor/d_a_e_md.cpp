@@ -390,7 +390,8 @@ int daE_MD_c::create() {
     int phase_state = dComIfG_resLoad(&mPhase, "E_MD");
     if (phase_state == cPhs_COMPLEATE_e) {
         OS_REPORT("E_MD PARAM %x\n", fopAcM_GetParam(this));
-        if (cDmr_SkipInfo != 0 && current.pos.z > -1500.0f) {
+        // We want the statues to spawn, regardles of boss flag value.
+        if (current.pos.z > -1500.0f) {
             return cPhs_ERROR_e;
         }
 

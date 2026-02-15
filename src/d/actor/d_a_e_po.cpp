@@ -12,6 +12,7 @@
 #include "f_op/f_op_actor_enemy.h"
 #include "f_op/f_op_camera_mng.h"
 #include "Z2AudioLib/Z2Instances.h"
+#include "rando/rando.h"
 
 
 static s16 mAttackNo = 3;
@@ -1131,13 +1132,14 @@ static void e_po_dead(e_po_class* i_this) {
             camera_player->mCamera.Start();
             camera_player->mCamera.SetTrimSize(0);
             dComIfGp_event_reset();
-            dComIfGs_addPohSpiritNum();
+            /*dComIfGs_addPohSpiritNum();
 #if !PLATFORM_SHIELD
             if (dComIfGs_getPohSpiritNum() == 0x14) {
-                /* dSv_event_flag_c::F_0457 - Castle Town - Revived cat */
+                // dSv_event_flag_c::F_0457 - Castle Town - Revived cat 
                 dComIfGs_onEventBit(dSv_event_flag_c::saveBitLabels[457]);
             }
 #endif
+            */
             daPy_getPlayerActorClass()->cancelOriginalDemo();
         } else if (mArg0Check(i_this, 0) != 0) {
             if (!fopAcM_isSwitch(a_this, 0x22)) {
@@ -1264,7 +1266,9 @@ static void e_po_dead(e_po_class* i_this) {
             }
         } else {
             if (i_this->field_0x75C == -1) {
-                i_this->field_0x75C = fopAcM_createItemForPresentDemo(&a_this->current.pos, 0xE0, 0,
+                // We want to replace the poe item with a custom item.
+                int item = g_randoInfo.getPoeItem(i_this->BitSW);
+                i_this->field_0x75C = fopAcM_createItemForPresentDemo(&a_this->current.pos, item, 0,
                                                                       -1, -1, NULL, NULL);
             }
             if (fopAcM_IsExecuting(i_this->field_0x75C)) {

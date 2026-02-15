@@ -14,6 +14,7 @@
 #include "d/d_msg_object.h"
 #include "d/d_s_play.h"
 #include "d/d_debug_viewer.h"
+#include "rando/rando.h"
 
 static f32 dummy_lit_3777(int idx, u8 foo) {
     Vec dummy_vec = {0.0f, 0.0f, 0.0f};
@@ -30,23 +31,23 @@ static Vec const l_eyeOffset = { 16.0f, -10.400001f, 0.0f };
 
 static Vec const l_headCenterOffset = { 0.0f, -10.400001f, 0.0f };
 
-static GXColorS10 const l_normalColor = { 0x50, 0x00, 0x00, 0x00 };
+static GXColorS10 const l_normalColor = { 0x50, 0x00, 0x00, 0x00 }; // glowWorldInactive
 
-static GXColor const l_normalKColor = { 0xB4, 0x87, 0x00, 0x00 };
+static GXColor const l_normalKColor = { 0xB4, 0x87, 0x00, 0x00 }; // baseDarkWorldInactive
 
-static GXColor const l_normalKColor2 = { 0x00, 0xC3, 0xC3, 0x00 };
+static GXColor const l_normalKColor2 = { 0x00, 0xC3, 0xC3, 0x00 }; // tipsDarkWorldAnyActive
 
-static GXColorS10 const l_bigColor = { 0xFF, 0x64, 0x78, 0x00 };
+static GXColorS10 const l_bigColor = { 0xFF, 0x64, 0x78, 0x00 }; // glowDarkWorldActive
 
-static GXColor const l_bigKColor = { 0x1E, 0x00, 0x00, 0x00 };
+static GXColor const l_bigKColor = { 0x1E, 0x00, 0x00, 0x00 }; // baseAnyWorldActive
 
-static GXColor const l_lNormalKColor = { 0xFF, 0xDC, 0x00, 0x00 };
+static GXColor const l_lNormalKColor = { 0xFF, 0xDC, 0x00, 0x00 }; // baseLightWorldInactive
 
-static GXColor const l_lNormalKColor2 = { 0x00, 0xC3, 0xEB, 0x00 };
+static GXColor const l_lNormalKColor2 = { 0x00, 0xC3, 0xEB, 0x00 }; // tipsLightWorldInactive 
 
-static GXColorS10 const l_lBigColor = { 0xFF, 0x78, 0x00, 0x00 };
+static GXColorS10 const l_lBigColor = { 0xFF, 0x78, 0x00, 0x00 }; // glowLightWorldActive
 
-static GXColor const l_lBigKColor2 = { 0xAA, 0xFF, 0xC3, 0x00 };
+static GXColor const l_lBigKColor2 = { 0xAA, 0xFF, 0xC3, 0x00 }; // tipsLightWorldActive
 
 static Vec const l_hairScale[5] = {
     {0.3f, 0.8f, 0.7f},
@@ -3046,11 +3047,12 @@ void daMidna_c::setMidnaNoDrawFlg() {
 
 BOOL daMidna_c::checkMetamorphoseEnableBase() {
     BOOL tmp;
+    // We want to make sure that Midna only cares about NPCs if the "transform anywhere" setting is disabled. 
     if (
         !daAlink_getAlinkActorClass()->checkMidnaRide() || (g_env_light.mEvilInitialized & 0x80) ||
         /* dSv_event_flag_c::M_077 - Main Event - Get shadow crystal (can now transform) */
         !dComIfGs_isEventBit(0xD04) ||
-        fopAcIt_Judge((fopAcIt_JudgeFunc)daMidna_searchNpc, &tmp)
+        (fopAcIt_Judge((fopAcIt_JudgeFunc)daMidna_searchNpc, &tmp) && !g_randoInfo.checkValidTransformAnywhere())
     ) {
         return FALSE;
     }

@@ -9,6 +9,7 @@
 #include "d/actor/d_a_tag_statue_evt.h"
 #include "d/d_com_inf_game.h"
 #include "d/d_debug_viewer.h"
+#include "rando/rando.h"
 
 class daTagStatue_HIO_c : public mDoHIO_entry_c {
 public:
@@ -354,13 +355,16 @@ int daTagStatue_c::demoProc() {
             case DEMO_ACTION_AWARD_ITEM:
                 // If the player already has 5 Sky Characters, reward them with the completed
                 // Ancient Sky Book, otherwise, reward another character
-                if (getLetterCount() == 5) {
+                /*if (getLetterCount() == 5) {
                     item = fpcNm_ITEM_ANCIENT_DOCUMENT2;
-                    /* Sky character - Sky character 6 */
+                    //Sky character - Sky character 6 
                     dComIfGs_onEventBit(dSv_event_flag_c::F_0796);
                 } else {
                     item = fpcNm_ITEM_AIR_LETTER;
-                }
+                }*/
+
+                // In the rando, we want to manually decide on which item is given for each statue.
+                item = g_randoInfo.getSkyCharacterItem();
 
                 mItemId =
                     fopAcM_createItemForTrBoxDemo(&current.pos, item, -1,

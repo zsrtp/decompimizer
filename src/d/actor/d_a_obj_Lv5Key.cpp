@@ -7,6 +7,7 @@
 
 #include "d/actor/d_a_obj_Lv5Key.h"
 #include "d/d_com_inf_game.h"
+#include "d/d_map.h"
 
 static int useHeapInit(fopAc_ac_c*);
 
@@ -113,6 +114,44 @@ void daObjLv5Key_c::Action() {
 }
 
 void daObjLv5Key_c::Wait(int param_0) {
+    // Prevent softlock that occurs when opening a locked door from behind.
+    // This patch compares z and x pos depending on yRot and turns the lock to face the player.
+    Vec player_pos = dMapInfo_n::getMapPlayerPos();
+
+    const s32 collisionRotY = shape_angle.y;
+
+    float* playerAxisPos = NULL;
+    float* lockPos = NULL;
+
+    if (collisionRotY & 0x4000)
+    {
+        playerAxisPos = &player_pos.x;
+        lockPos = &current.pos.x;
+    }
+    else
+    {
+        playerAxisPos = &player_pos.z;
+        lockPos = &current.pos.z;
+    }
+
+    bool swapSides = false;
+    if (((collisionRotY & 0x8000) && (*playerAxisPos > *lockPos + 17.f)))
+    {
+        *lockPos += 34.f;
+        swapSides = true;
+    }
+    else if (*playerAxisPos < *lockPos - 17.f)
+    {
+        *lockPos -= 34.f;
+        swapSides = true;
+    }
+
+    if (swapSides)
+    {
+        shape_angle.y ^= 0x8000;
+        current.angle.y ^= 0x8000;
+    }
+
     switch (mMode) {
     case -1:
         break;

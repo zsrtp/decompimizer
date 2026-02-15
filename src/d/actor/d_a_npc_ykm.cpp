@@ -946,7 +946,7 @@ BOOL daNpc_ykM_c::isDelete() {
             return FALSE;
 
         case TYPE_COOK:
-            return dComIfGs_isDungeonItemBossKey();
+            return false; // We don't want cooking Yeto to leave the dungeon, even if the BK is obtained.
 
         case TYPE_2:
             return daNpcT_chkEvtBit(0x134); // dSv_event_flag_c::F_0308 - Snowpeak mountain - Watched first meeting event with Yeto at top of mountain (human)
