@@ -401,7 +401,7 @@ public:
 
     u8 getPohNum() const { return mPohNum; }
     void addPohNum() {
-        if (mPohNum < 0xFF) {
+        if (mPohNum < 0x3D) {
             mPohNum += 1;
         }
     };

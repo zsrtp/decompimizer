@@ -1095,6 +1095,7 @@ void dComIfGs_setSelectEquipClothes(u8 i_itemNo);
 void dComIfGs_setSelectEquipSword(u8 i_itemNo);
 void dComIfGs_setSelectEquipShield(u8 i_itemNo);
 void dComIfGs_setKeyNum(int i_stageNo, u8 i_keyNum);
+u8 dComIfGs_getKeyNum(int i_stageNo);
 void dComIfGs_setWarpItemData(char const* stage, cXyz pos, s16 angle, s8 roomNo, u8 param_4,
                               u8 param_5);
 void dComIfGs_setLastWarpMarkItemData(const char* stage, cXyz pos, s16 angle, s8 roomNo, u8, u8);
