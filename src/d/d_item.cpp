@@ -689,6 +689,16 @@ void item_func_SMALL_KEY() {
 
 void item_func_KAKERA_HEART() {
     dComIfGp_setItemMaxLifeCount(1);
+    /*
+    Pasting rando code until the framework has been updated
+    uint8_t maxLife = libtp::tp::d_com_inf_game::dComIfG_gameInfo.save.save_file.player.player_status_a.maxHealth + 1;
+
+        // Check if we have enough hearts to break the barrier.
+        randoPtr->checkSetHCBarrierFlag(rando::HC_Hearts, maxLife);
+
+        // Check if we have enough hearts to unlock the BK check.
+        randoPtr->checkSetHCBkFlag(rando::HC_BK_Hearts, maxLife);
+    */
 }
 
 void item_func_UTUWA_HEART() {
@@ -700,6 +710,17 @@ void item_func_UTUWA_HEART() {
     stage_stag_info_class* stag_info = dComIfGp_getStageStagInfo();
     int tmp = dStage_stagInfo_GetSaveTbl(stag_info);
     dComIfGs_onStageLife();
+
+    /*
+    Pasting Rando code until the framework gets updated
+    uint8_t maxLife = libtp::tp::d_com_inf_game::dComIfG_gameInfo.save.save_file.player.player_status_a.maxHealth + 5;
+
+        // Check if we have enough hearts to break the barrier.
+        randoPtr->checkSetHCBarrierFlag(rando::HC_Hearts, maxLife);
+
+        // Check if we have enough hearts to unlock the BK check.
+        randoPtr->checkSetHCBkFlag(rando::HC_BK_Hearts, maxLife);
+    */
 }
 
 void item_func_MAP() {
@@ -859,7 +880,7 @@ void item_func_WOOD_STICK() {
     dComIfGs_setCollectSword(COLLECT_WOODEN_SWORD);
     dComIfGs_setSelectEquipSword(fpcNm_ITEM_WOOD_STICK);
 
-    dComIfGs_onSwitch(28, dComIfGp_roomControl_getStayNo());
+    //dComIfGs_onSwitch(28, dComIfGp_roomControl_getStayNo());
 }
 
 void item_func_BOOMERANG() {
@@ -1218,7 +1239,10 @@ void item_func_RAFRELS_MEMO() {
 }
 
 void item_func_ASHS_SCRIBBLING() {
-    dComIfGs_setItem(SLOT_19, fpcNm_ITEM_ASHS_SCRIBBLING);
+    if (!dComIfGs_isEventBit(0x3B80)) // Got earring from Ralis
+    {
+        dComIfGs_setItem(SLOT_19, fpcNm_ITEM_ASHS_SCRIBBLING);
+    }
 }
 
 void item_func_FOREST_BOSS_KEY() {
