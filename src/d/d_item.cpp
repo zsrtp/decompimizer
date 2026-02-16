@@ -8,6 +8,7 @@
 #include "d/d_item.h"
 #include "d/d_com_inf_game.h"
 #include "d/d_meter2_info.h"
+#include "rando/tools/verifyItemFunctions.h"
 
 static void (*item_func_ptr[256])() = {
     item_func_HEART,
@@ -274,6 +275,7 @@ inline void getItemFunc(u8 i_itemNo) {
 }
 
 void execItemGet(u8 i_itemNo) {
+    i_itemNo = verifyProgressiveItem(i_itemNo);
     getItemFunc(i_itemNo);
 }
 

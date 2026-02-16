@@ -1268,11 +1268,10 @@ void daNpc_Fairy_c::AppearDemoCall() {
             } else {
                 mEvtNo = EVT_APPEAR_50F_02;
             }
-        } else if (dComIfGs_checkEmptyBottle()) {
+        } 
+        else {
             mEvtNo = EVT_APPEAR_50F_01;
-        } else {
-            mEvtNo = EVT_APPEAR_50F_04;
-        }
+        } 
     } else {
         static u16 const sEvtType1[5] = {
             EVT_APPEAR_10F_01,
