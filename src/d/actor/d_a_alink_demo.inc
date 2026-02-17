@@ -1010,13 +1010,19 @@ void daAlink_c::setGetItemFace(u16 i_itemNo) {
         || i_itemNo == fpcNm_ITEM_ANCIENT_DOCUMENT2
         || i_itemNo == fpcNm_ITEM_DROP_CONTAINER
         || i_itemNo == fpcNm_ITEM_DROP_CONTAINER02
-        || i_itemNo == fpcNm_ITEM_DROP_CONTAINER03)
+        || i_itemNo == fpcNm_ITEM_DROP_CONTAINER03
+        || i_itemNo == fpcNm_ITEM_WOOD_STICK
+        || i_itemNo == fpcNm_ITEM_SWORD
+        || i_itemNo == fpcNm_ITEM_SHIELD
+        || i_itemNo == fpcNm_ITEM_MASTER_SWORD
+        || i_itemNo == fpcNm_ITEM_LIGHT_SWORD
+        || i_itemNo == fpcNm_ITEM_MAGIC_LV1)
     {
         setFaceBasicBck(dRes_ID_ALANM_BCK_FI_e);
     } else if (i_itemNo == fpcNm_ITEM_DUNGEON_EXIT || i_itemNo == fpcNm_ITEM_LV7_DUNGEON_EXIT) {
         setFaceBasicTexture(FTANM_K_A);
         setFaceBasicBck(dRes_ID_ALANM_BCK_FK_e);
-    } else if (i_itemNo == fpcNm_ITEM_TOMATO_PUREE || i_itemNo == fpcNm_ITEM_TASTE) {
+    } else if (i_itemNo == fpcNm_ITEM_TOMATO_PUREE || i_itemNo == fpcNm_ITEM_TASTE || i_itemNo == fpcNm_ITEM_FOOLISH_ITEM) {
         setFaceBasicBck(dRes_ID_ALANM_BCK_FJ_e);
     }
 }
