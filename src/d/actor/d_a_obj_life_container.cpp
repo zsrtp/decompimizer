@@ -173,9 +173,9 @@ int daObjLife_c::create() {
         return cPhs_ERROR_e;
     }
 
-    if (m_itemNo == fpcNm_ITEM_UTAWA_HEART && dComIfGs_isStageLife()) {
+    /*if (m_itemNo == fpcNm_ITEM_UTAWA_HEART && dComIfGs_isStageLife()) {
         return cPhs_ERROR_e;
-    }
+    }*/
 
     int phase_state = dComIfG_resLoad(&mPhase, dItem_data::getFieldArc(m_itemNo));
     if (phase_state == cPhs_COMPLEATE_e) {

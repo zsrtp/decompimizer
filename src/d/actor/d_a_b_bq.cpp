@@ -2496,12 +2496,12 @@ static int daB_BQ_Create(fopAc_ac_c* i_this) {
             csXyz angle(0, 0, 0);
             fopAcM_createWarpHole(&pos, &angle, fopAcM_GetRoomNo(i_this), 0, 0, 0xFF);
 
-            if (!dComIfGs_isStageLife()) {
-                cXyz scale(1.0f, 1.0f, 1.0f);
-                pos.set(60.0f, 0.0f, 1778.0f);
-                fopAcM_createItemForBoss(&pos, fpcNm_ITEM_UTAWA_HEART, fopAcM_GetRoomNo(i_this),
-                                         &i_this->shape_angle, &scale, 0.0f, 0.0f, -1);
-            }
+            //if (!dComIfGs_isStageLife()) {
+            cXyz scale(1.0f, 1.0f, 1.0f);
+            pos.set(60.0f, 0.0f, 1778.0f);
+            fopAcM_createItemForBoss(&pos, fpcNm_ITEM_UTAWA_HEART, fopAcM_GetRoomNo(i_this),
+                                        &i_this->shape_angle, &scale, 0.0f, 0.0f, -1);
+            //}
 
             g_env_light.mColpatWeather = 6;
             g_env_light.wether_pat0 = 6;

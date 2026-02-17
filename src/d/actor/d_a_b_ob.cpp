@@ -3491,12 +3491,12 @@ static int daB_OB_Create(fopAc_ac_c* i_this) {
 
             fopAcM_createWarpHole(&pos, &angle, fopAcM_GetRoomNo(a_this), 0, 0, 2);
 
-            if (!dComIfGs_isStageLife()) {
-                cXyz scale(1.0f, 1.0f, 1.0f);
-                pos.set(-916.0f, -23954.0f, 8916.0f);
-                fopAcM_createItemForBoss(&pos, fpcNm_ITEM_UTAWA_HEART, fopAcM_GetRoomNo(a_this),
-                                         &a_this->shape_angle, &scale, 0.0f, 0.0f, -1);
-            }
+            //if (!dComIfGs_isStageLife()) {
+            cXyz scale(1.0f, 1.0f, 1.0f);
+            pos.set(-916.0f, -23954.0f, 8916.0f);
+            fopAcM_createItemForBoss(&pos, fpcNm_ITEM_UTAWA_HEART, fopAcM_GetRoomNo(a_this),
+                                        &a_this->shape_angle, &scale, 0.0f, 0.0f, -1);
+            //}
 
             return cPhs_ERROR_e;
         }

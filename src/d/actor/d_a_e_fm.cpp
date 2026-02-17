@@ -3737,11 +3737,11 @@ static int daE_FM_Create(fopAc_ac_c* i_this) {
             csXyz rot(0, 0, 0);
             fopAcM_createWarpHole(&pos, &rot, fopAcM_GetRoomNo(i_this), 0, 0, 0xFF);
 
-            if (!dComIfGs_isStageLife()) {
-                cXyz size(1.0f, 1.0f, 1.0f);
-                pos.set(209.0f, 0.0f, 861.0f);
-                fopAcM_createItemForBoss(&pos, fpcNm_ITEM_UTAWA_HEART, fopAcM_GetRoomNo(i_this), &i_this->shape_angle, &size, 0.0f, 0.0f, -1);
-            }
+            //if (!dComIfGs_isStageLife()) {
+            cXyz size(1.0f, 1.0f, 1.0f);
+            pos.set(209.0f, 0.0f, 861.0f);
+            fopAcM_createItemForBoss(&pos, fpcNm_ITEM_UTAWA_HEART, fopAcM_GetRoomNo(i_this), &i_this->shape_angle, &size, 0.0f, 0.0f, -1);
+            //}
 
             g_env_light.mColpatWeather = 2;
             g_env_light.wether_pat0 = 2;

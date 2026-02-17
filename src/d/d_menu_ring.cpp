@@ -1614,6 +1614,11 @@ u8 dMenu_Ring_c::getItemNum(u8 i_slotNo) {
     case fpcNm_ITEM_PACHINKO:
         ret = dComIfGs_getPachinkoNum();
         break;
+    case fpcNm_ITEM_ANCIENT_DOCUMENT:
+    case fpcNm_ITEM_AIR_LETTER:
+    case fpcNm_ITEM_ANCIENT_DOCUMENT2:
+        ret = dComIfGs_getAncientDocumentNum();
+        break;
     }
     return ret;
 }
@@ -1653,6 +1658,11 @@ u8 dMenu_Ring_c::getItemMaxNum(u8 i_slotNo) {
     case fpcNm_ITEM_PACHINKO:
         ret = dComIfGs_getPachinkoMax();
         break;
+        case fpcNm_ITEM_ANCIENT_DOCUMENT:
+        case fpcNm_ITEM_AIR_LETTER:
+        case fpcNm_ITEM_ANCIENT_DOCUMENT2:
+            ret = 6;
+            break;
     }
     return ret;
 }

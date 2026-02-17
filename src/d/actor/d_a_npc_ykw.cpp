@@ -579,7 +579,7 @@ int daNpc_ykW_c::isDelete() {
     case 3:
         return 0;
     case 4:
-        return dComIfGs_isStageBossEnemy() && dComIfGs_isStageLife();
+        return 0;
     case 5:
         return 0;
     case 6:
@@ -1187,38 +1187,38 @@ fopAc_ac_c* daNpc_ykW_c::putUtuwaHeart(cXyz* i_pos, f32 i_speedF, f32 i_speedY, 
     fopAc_ac_c* heartContainer = NULL;
     csXyz heartAngle;
 
-    if (!dComIfGs_isStageLife()) {
-        cXyz heartPos(211.0f, 0.0f, -900.0f);
-        if (i_pos != NULL) {
-            heartPos.x = i_pos->x;
-            heartPos.y = i_pos->y;
-            heartPos.z = i_pos->z;
+    //if (!dComIfGs_isStageLife()) {
+    cXyz heartPos(211.0f, 0.0f, -900.0f);
+    if (i_pos != NULL) {
+        heartPos.x = i_pos->x;
+        heartPos.y = i_pos->y;
+        heartPos.z = i_pos->z;
+    }
+
+    if (mItemPartnerId == fpcM_ERROR_PROCESS_ID_e) {
+        cXyz scale(1.0f, 1.0f, 1.0f);
+        if (i_scale != NULL) {
+            scale.x = i_scale->x;
+            scale.y = i_scale->y;
+            scale.z = i_scale->z;
         }
 
-        if (mItemPartnerId == fpcM_ERROR_PROCESS_ID_e) {
-            cXyz scale(1.0f, 1.0f, 1.0f);
-            if (i_scale != NULL) {
-                scale.x = i_scale->x;
-                scale.y = i_scale->y;
-                scale.z = i_scale->z;
-            }
-
-            heartAngle.setall(0);
-            heartAngle.y = i_yPos;
-            mItemPartnerId =
-                fopAcM_createItemForBoss(&heartPos, 0x22, fopAcM_GetRoomNo(this), &heartAngle,
-                                         &scale, i_speedF, i_speedY, -1);
-        } else if (fopAcM_SearchByID(mItemPartnerId, &heartContainer) && heartContainer != NULL) {
-            if (fopAcM_IsActor(heartContainer) && fopAcM_IsExecuting(mItemPartnerId)) {
-                heartContainer->old.pos = heartPos;
-                heartContainer->current.pos = heartPos;
-                heartContainer->speedF = 0;
-                heartContainer->speed.setall(0.0f);
-            } else {
-                heartContainer = 0;
-            }
+        heartAngle.setall(0);
+        heartAngle.y = i_yPos;
+        mItemPartnerId =
+            fopAcM_createItemForBoss(&heartPos, 0x22, fopAcM_GetRoomNo(this), &heartAngle,
+                                        &scale, i_speedF, i_speedY, -1);
+    } else if (fopAcM_SearchByID(mItemPartnerId, &heartContainer) && heartContainer != NULL) {
+        if (fopAcM_IsActor(heartContainer) && fopAcM_IsExecuting(mItemPartnerId)) {
+            heartContainer->old.pos = heartPos;
+            heartContainer->current.pos = heartPos;
+            heartContainer->speedF = 0;
+            heartContainer->speed.setall(0.0f);
+        } else {
+            heartContainer = 0;
         }
     }
+    //}
 
     return heartContainer;
 }

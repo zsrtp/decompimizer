@@ -711,7 +711,7 @@ void item_func_UTUWA_HEART() {
 
     stage_stag_info_class* stag_info = dComIfGp_getStageStagInfo();
     int tmp = dStage_stagInfo_GetSaveTbl(stag_info);
-    dComIfGs_onStageLife();
+    // dComIfGs_onStageLife();
 
     /*
     Pasting Rando code until the framework gets updated
