@@ -19,6 +19,9 @@ public:
 
     bool mInitialized;
     bool transformAnywhere;
+    u16 smallWalletMax;
+    u16 bigWalletMax;
+    u16 giantWalletMax;
     u16 mFrameCounter;
 };
 
