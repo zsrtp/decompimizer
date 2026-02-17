@@ -653,12 +653,13 @@ int dMsgFlow_c::eventNodeProc(fopAc_ac_c* i_speaker_p, fopAc_ac_c** i_talkPartne
     case 9:
         if (getParam(node->params) == 0) {
             int msgNum;
+            /*
             if (daAlink_getAlinkActorClass()->getMidnaMsgNum() == 0xFFFF) {
                 msgNum = dStage_FileList_dt_GetMsg(dComIfGp_roomControl_getStatusRoomDt(dComIfGp_roomControl_getStayNo())->getFileListInfo());
-            } else {
-                msgNum = daAlink_getAlinkActorClass()->getMidnaMsgNum();
-                daAlink_getAlinkActorClass()->setMidnaMsg();
-            }
+            }*/
+            // We want midna to use the same starting message ID so we can consistently modify her text.
+            msgNum = 0xbb8; //daAlink_getAlinkActorClass()->getMidnaMsgNum();
+            daAlink_getAlinkActorClass()->setMidnaMsg();
 
             setInitValueGroupChange(msgNum, i_talkPartners);
             break;
