@@ -2310,6 +2310,7 @@ void daB_YO_c::executeDeath() {
         mCamFovY = 68.0f;
         mMode = 1;
         dComIfGs_onStageBossEnemy();
+        dComIfGs_onStageSwitch(0x8, 0x19); // Post SPR save prompt
         dComIfGs_onSwitch(mSwNo2, fopAcM_GetRoomNo(this));
         Z2GetAudioMgr()->bgmStop(0x1e, 0);
         Z2GetAudioMgr()->bgmStreamPrepare(0x2000059);

@@ -1753,6 +1753,8 @@ static void demo_camera(e_fm_class* i_this) {
             dComIfGs_onStageBossEnemy();
             /* dSv_event_flag_c::M_031 - Goron Mines - Goron Mines clear */
             dComIfGs_onEventBit(dSv_event_flag_c::saveBitLabels[64]);
+            dComIfGs_onStageSwitch(0x3, 0x7C); // Post-GM save prompt
+            dComIfGs_onEventBit(0x1320); // Watched Post-GM Cutscene
         }
         break;
     }

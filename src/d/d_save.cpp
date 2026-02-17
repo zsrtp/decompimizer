@@ -1154,6 +1154,38 @@ BOOL dSv_memBit_c::isItem(int i_no) const {
 }
 
 void dSv_memBit_c::onDungeonItem(int i_no) {
+    switch(i_no)
+    {
+        case STAGE_BOSS_ENEMY:
+        {
+            // Start at 1 because we haven't set the current dungeon's flag yet.
+            int numCompletedDungeons = 1;
+            for (int i = 0x10; i < 0x18; i++)
+            {
+                if (dComIfGs_isStageBossEnemy(i))
+                {
+                    numCompletedDungeons++;
+                }
+            }
+
+            /*
+            Pasting rando code for the time being until the framework is built:
+            // Check if we have completed enough dungeons to break the barrier.
+                    randoPtr->checkSetHCBarrierFlag(rando::HC_Dungeons, numDungeons);
+
+                    // Check if we have completed enough dungeons to unlock the BK check.
+                    randoPtr->checkSetHCBkFlag(rando::HC_BK_Dungeons, numDungeons);
+            */
+            if (i_no == 0x13) // Stallord
+            {
+                /*
+                const uint32_t agDungeonReward = randoPtr->getEventItem(rando::customItems::Mirror_Piece_1);
+                randoPtr->addItemToEventQueue(agDungeonReward);
+                */
+            }
+            break;
+        }
+    }
     JUT_ASSERT(2969, 0 <= i_no && i_no < DSV_MEMBIT_ENUM_MAX);
     mDungeonItem |= (u8)(1 << i_no);
 }
