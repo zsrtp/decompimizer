@@ -21,6 +21,7 @@
 #include "d/actor/d_a_npc_zra.h"
 #include "d/actor/d_a_obj_tks.h"
 #include "d/actor/d_a_npc_tkc.h"
+#include "rando/rando.h"
 
 BOOL daAlink_c::checkEventRun() const {
     return dComIfGp_event_runCheck() || checkPlayerDemoMode();
@@ -2278,6 +2279,10 @@ int daAlink_c::procCoGetItemInit() {
             item_no = dComIfGp_event_getGtItm();
         }
 
+        if (g_randoInfo.getGiveItemToPlayerStatus() == ITEM_IN_QUEUE)
+        {
+            g_randoInfo.setGiveItemToPlayerStatus(CLEAR_QUEUE);
+        }
         fpc_ProcID item_partner_id = fopAcM_createItemForPresentDemo(&current.pos, item_no, 0, -1,
                                                               fopAcM_GetRoomNo(this), NULL, NULL);
         if (item_partner_id != fpcM_ERROR_PROCESS_ID_e) {

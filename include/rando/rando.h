@@ -3,6 +3,13 @@
 
 #include "dolphin/types.h"
 
+enum EventItemStatus
+{
+    QUEUE_EMPTY,
+    ITEM_IN_QUEUE,
+    CLEAR_QUEUE,
+};
+
 class randoInfo_c {
 public:
     randoInfo_c() { mInitialized = false; }
@@ -16,12 +23,15 @@ public:
     u8 getSkyCharacterItem();
     u8 getPoeItem(u8 bitSw);
     void handlePoeItem(u8 bitSw);
+    u8 getGiveItemToPlayerStatus() { return eventItemStatus;}
+    void setGiveItemToPlayerStatus(u8 status) { eventItemStatus = status;}
 
     bool mInitialized;
     bool transformAnywhere;
     u16 smallWalletMax;
     u16 bigWalletMax;
     u16 giantWalletMax;
+    u8 eventItemStatus;
     u16 mFrameCounter;
 };
 
