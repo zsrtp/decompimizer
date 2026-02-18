@@ -2504,9 +2504,11 @@ int daAlink_c::procCoGetItem() {
                     } else if (mProcVar2.field_0x300c == 0x23 && checkStageName("D_MN11")) {
                         field_0x32cc = 0x5C0;
                     } else if (mProcVar2.field_0x300c == 0xE0) {
-                        if (dComIfGs_getPohSpiritNum() == 20) {
+                        // Display 20 and 60 poe messages when player has 19 and 59
+                        // This is because our modifications changes increment after the message is displayed
+                        if (dComIfGs_getPohSpiritNum() == 19) {
                             field_0x32cc = 0x4CF;
-                        } else if (dComIfGs_getPohSpiritNum() == 60) {
+                        } else if (dComIfGs_getPohSpiritNum() == 59) {
                             field_0x32cc = 0x4D0;
                         } else {
                             field_0x32cc = mProcVar2.field_0x300c + 0x65;
