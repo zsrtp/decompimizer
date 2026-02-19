@@ -11,6 +11,7 @@
 #include "d/d_meter_map.h"
 #include "d/d_msg_class.h"
 #include "d/d_msg_object.h"
+#include "rando/tools/verifyItemFunctions.h"
 
 enum ITEMICON_RES_FILE_ID {
     ITEMICON_BTI_ARI_MESU_00=0x3,
@@ -1358,8 +1359,17 @@ void dMeter2Info_c::resetMiniGameItem(bool i_saveItem) {
             dComIfGs_setSelectItemIndex(i, mSaveSelItemIdx[i]);
         }
 
-        dComIfGs_setItem(SLOT_4, mSaveBowItem);
-        dComIfGp_setItem(SLOT_4, mSaveBowItem);
+        // If the player has the bow, we don't want to possibly take it away from them. 
+        if (haveItem(fpcNm_ITEM_BOW))
+        {
+            dComIfGs_setItem(SLOT_4, fpcNm_ITEM_BOW);
+            dComIfGp_setItem(SLOT_4, fpcNm_ITEM_BOW);
+        }
+        else
+        {
+            dComIfGs_setItem(SLOT_4, mSaveBowItem);
+            dComIfGp_setItem(SLOT_4, mSaveBowItem);
+        }
 
         dComIfGs_setItem((u8)(mRentalBombBagIdx + SLOT_15), mSaveBombItem);
         dComIfGp_setItem((u8)(mRentalBombBagIdx + SLOT_15), mSaveBombItem);
