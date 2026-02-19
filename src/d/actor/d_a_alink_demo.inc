@@ -2241,6 +2241,13 @@ int daAlink_c::procCoGetItemInit() {
     s16 var_r22 = 0;
     BOOL var_r31 = FALSE;
     BOOL var_r30 = FALSE;
+
+    // If we are giving a custom item, we want to set mParam0 to 0x100 so that instead of trying to search for an item
+    // actor that doesnt exist we want the game to create one using the item id in mGtItm.
+    if (g_randoInfo.getGiveItemToPlayerStatus() == ITEM_IN_QUEUE)
+    {
+        mDemo.setParam0(0x100);
+    }
     if (mProcID == PROC_GET_ITEM || mProcID == PROC_INSECT_CATCH ||
         (mProcID == PROC_PREACTION_UNEQUIP && !checkNoUpperAnime()))
     {
