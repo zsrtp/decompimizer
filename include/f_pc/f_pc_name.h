@@ -241,7 +241,7 @@ enum fpcNm_ITEM {
     /* 0xE5 */ fpcNm_ITEM_MORTAL_DRAW,
     /* 0xE6 */ fpcNm_ITEM_JUMP_STRIKE,
     /* 0xE7 */ fpcNm_ITEM_GREAT_SPIN,
-    /* 0xE8 */ fpcNm_ITEM_BRIDGE_OF_ELDIN_PORTAL,
+    /* 0xE8 */ fpcNm_ITEM_ELDIN_BRIDGE_PORTAL,
     /* 0xE9 */ fpcNm_ITEM_ANCIENT_DOCUMENT,
     /* 0xEA */ fpcNm_ITEM_AIR_LETTER,
     /* 0xEB */ fpcNm_ITEM_ANCIENT_DOCUMENT2,

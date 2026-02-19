@@ -152,7 +152,50 @@ void daItem_c::CreateInit() {
     procInitNormal();
     show();
 
-    mItemScale.setall(1.0f);
+    // Adjust item scale based on item ID
+    switch(m_itemNo)
+    {
+        case fpcNm_ITEM_KAKERA_HEART:
+        case fpcNm_ITEM_UTAWA_HEART:
+        case fpcNm_ITEM_ARROW_10:
+        case fpcNm_ITEM_ARROW_20:
+        case fpcNm_ITEM_ARROW_30:
+        case fpcNm_ITEM_GREEN_RUPEE:
+        case fpcNm_ITEM_BLUE_RUPEE:
+        case fpcNm_ITEM_YELLOW_RUPEE:
+        case fpcNm_ITEM_RED_RUPEE:
+        case fpcNm_ITEM_PURPLE_RUPEE:
+        case fpcNm_ITEM_ORANGE_RUPEE:
+        case fpcNm_ITEM_SILVER_RUPEE:
+        case fpcNm_ITEM_HEART:
+        {
+            mItemScale.setall(1.0f);
+            break;
+        }
+
+        case fpcNm_ITEM_BOW:
+        {
+            mItemScale.setall(1.5f);
+            break;
+        }
+
+        case fpcNm_ITEM_MASTER_SWORD:
+        case fpcNm_ITEM_LIGHT_SWORD:
+        case fpcNm_ITEM_MIRROR_PIECE_1:
+        case fpcNm_ITEM_MIRROR_PIECE_2:
+        case fpcNm_ITEM_MIRROR_PIECE_3:
+        case fpcNm_ITEM_MIRROR_PIECE_4:
+        {
+            mItemScale.setall(0.7f);
+            break;
+        }
+        default:
+        {
+            mItemScale.setall(2.0f);
+            break;
+        }
+    }
+    
 
     switch (daItem_prm::getType(this)) {
     case TYPE_BOOM_HIT_e:
@@ -181,9 +224,11 @@ void daItem_c::CreateInit() {
     initBaseMtx();
     animPlay(1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
 
-    if (m_itemNo == fpcNm_ITEM_BOOMERANG) {
+    // Prevent game from giving Boomerange on room load
+    /*if (m_itemNo == fpcNm_ITEM_BOOMERANG) {
         itemGetNextExecute();
-    } else if ((m_itemNo == fpcNm_ITEM_ORANGE_RUPEE || m_itemNo == fpcNm_ITEM_SILVER_RUPEE) &&
+    } else */
+    if ((m_itemNo == fpcNm_ITEM_ORANGE_RUPEE || m_itemNo == fpcNm_ITEM_SILVER_RUPEE) &&
                mSparkleEmtr.getEmitter() == NULL)
     {
         dComIfGp_particle_set(0x0C14, &mSparklePos, NULL, NULL, -1, &mSparkleEmtr, -1, NULL, NULL,

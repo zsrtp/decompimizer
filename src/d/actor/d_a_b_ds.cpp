@@ -5440,16 +5440,16 @@ cPhs_Step daB_DS_c::create() {
             g_env_light.mColpatCurrGather = 4;
             g_env_light.mColPatBlendGather = 1.0f;
 
-            if (!dComIfGs_isStageLife()) {
-                cXyz scale(1.0f, 1.0f, 1.0f);
-                cXyz pos;
-                csXyz angle;
-                angle.x = angle.y = angle.z = 0;
-                pos.set(-400.0f, 1775.0f, -4132.0f);
+            //if (!dComIfGs_isStageLife()) {
+            cXyz scale(1.0f, 1.0f, 1.0f);
+            cXyz pos;
+            csXyz angle;
+            angle.x = angle.y = angle.z = 0;
+            pos.set(-400.0f, 1775.0f, -4132.0f);
 
-                fopAcM_createItemForBoss(&pos, fpcNm_ITEM_UTAWA_HEART, fopAcM_GetRoomNo(this), &angle, &scale,
-                                         0.0f, 0.0f, -1);
-            }
+            fopAcM_createItemForBoss(&pos, fpcNm_ITEM_UTAWA_HEART, fopAcM_GetRoomNo(this), &angle, &scale,
+                                        0.0f, 0.0f, -1);
+            //}
 
             return cPhs_ERROR_e;
         }

@@ -21,6 +21,7 @@
 #include "d/actor/d_a_npc_zra.h"
 #include "d/actor/d_a_obj_tks.h"
 #include "d/actor/d_a_npc_tkc.h"
+#include "rando/rando.h"
 
 BOOL daAlink_c::checkEventRun() const {
     return dComIfGp_event_runCheck() || checkPlayerDemoMode();
@@ -1010,13 +1011,19 @@ void daAlink_c::setGetItemFace(u16 i_itemNo) {
         || i_itemNo == fpcNm_ITEM_ANCIENT_DOCUMENT2
         || i_itemNo == fpcNm_ITEM_DROP_CONTAINER
         || i_itemNo == fpcNm_ITEM_DROP_CONTAINER02
-        || i_itemNo == fpcNm_ITEM_DROP_CONTAINER03)
+        || i_itemNo == fpcNm_ITEM_DROP_CONTAINER03
+        || i_itemNo == fpcNm_ITEM_WOOD_STICK
+        || i_itemNo == fpcNm_ITEM_SWORD
+        || i_itemNo == fpcNm_ITEM_SHIELD
+        || i_itemNo == fpcNm_ITEM_MASTER_SWORD
+        || i_itemNo == fpcNm_ITEM_LIGHT_SWORD
+        || i_itemNo == fpcNm_ITEM_MAGIC_LV1)
     {
         setFaceBasicBck(dRes_ID_ALANM_BCK_FI_e);
     } else if (i_itemNo == fpcNm_ITEM_DUNGEON_EXIT || i_itemNo == fpcNm_ITEM_LV7_DUNGEON_EXIT) {
         setFaceBasicTexture(FTANM_K_A);
         setFaceBasicBck(dRes_ID_ALANM_BCK_FK_e);
-    } else if (i_itemNo == fpcNm_ITEM_TOMATO_PUREE || i_itemNo == fpcNm_ITEM_TASTE) {
+    } else if (i_itemNo == fpcNm_ITEM_TOMATO_PUREE || i_itemNo == fpcNm_ITEM_TASTE || i_itemNo == fpcNm_ITEM_FOOLISH_ITEM) {
         setFaceBasicBck(dRes_ID_ALANM_BCK_FJ_e);
     }
 }
@@ -1961,9 +1968,9 @@ void daAlink_c::setGetSubBgm(int i_itemNo) {
         /* fpcNm_ITEM_ARROW_30          */ SETYPE_ITEM_GET_ME,
         /* fpcNm_ITEM_ARROW_1           */ SETYPE_ITEM_GET_ME,
         /* fpcNm_ITEM_PACHINKO_SHOT     */ SETYPE_ITEM_GET_ME,
-        /* fpcNm_ITEM_NOENTRY_19        */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_20        */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_21        */ SETYPE_NONE,
+        /* fpcNm_ITEM_NOENTRY_19        */ SETYPE_ITEM_GET_MINI,
+        /* fpcNm_ITEM_NOENTRY_20        */ SETYPE_ITEM_GET_MINI,
+        /* fpcNm_ITEM_NOENTRY_21        */ SETYPE_ITEM_GET_MINI,
         /* fpcNm_ITEM_WATER_BOMB_5      */ SETYPE_ITEM_GET_ME,
         /* fpcNm_ITEM_WATER_BOMB_10     */ SETYPE_ITEM_GET_ME,
         /* fpcNm_ITEM_WATER_BOMB_20     */ SETYPE_ITEM_GET_ME,
@@ -1973,7 +1980,7 @@ void daAlink_c::setGetSubBgm(int i_itemNo) {
         /* fpcNm_ITEM_BOMB_INSECT_20    */ SETYPE_ITEM_GET_ME,
         /* fpcNm_ITEM_BOMB_INSECT_30    */ SETYPE_ITEM_GET_ME,
         /* fpcNm_ITEM_RECOVERY_FAILY    */ SETYPE_ITEM_GET_MINI,
-        /* fpcNm_ITEM_TRIPLE_HEART      */ SETYPE_NONE,
+        /* fpcNm_ITEM_TRIPLE_HEART      */ SETYPE_ITEM_GET_MINI,
         /* fpcNm_ITEM_SMALL_KEY         */ SETYPE_ITEM_GET_MINI,
         /* fpcNm_ITEM_KAKERA_HEART      */ SETYPE_ITEM_GET_MINI,
         /* fpcNm_ITEM_UTAWA_HEART       */ SETYPE_HEART,
@@ -1981,28 +1988,28 @@ void daAlink_c::setGetSubBgm(int i_itemNo) {
         /* fpcNm_ITEM_COMPUS            */ SETYPE_ITEM_GET,
         /* fpcNm_ITEM_DUNGEON_EXIT      */ SETYPE_ITEM_GET_MINI,
         /* fpcNm_ITEM_BOSS_KEY          */ SETYPE_ITEM_GET,
-        /* fpcNm_ITEM_DUNGEON_BACK      */ SETYPE_NONE,
+        /* fpcNm_ITEM_DUNGEON_BACK      */ SETYPE_ITEM_GET_MINI,
         /* fpcNm_ITEM_SWORD             */ SETYPE_ITEM_GET,
-        /* fpcNm_ITEM_MASTER_SWORD      */ SETYPE_NONE,
+        /* fpcNm_ITEM_MASTER_SWORD      */ SETYPE_ITEM_GET,
         /* fpcNm_ITEM_WOOD_SHIELD       */ SETYPE_ITEM_GET,
         /* fpcNm_ITEM_SHIELD            */ SETYPE_ITEM_GET,
         /* fpcNm_ITEM_HYLIA_SHIELD      */ SETYPE_ITEM_GET,
-        /* fpcNm_ITEM_TKS_LETTER        */ SETYPE_NONE,
-        /* fpcNm_ITEM_WEAR_CASUAL       */ SETYPE_NONE,
-        /* fpcNm_ITEM_WEAR_KOKIRI       */ SETYPE_NONE,
+        /* fpcNm_ITEM_TKS_LETTER        */ SETYPE_ITEM_GET_MINI,
+        /* fpcNm_ITEM_WEAR_CASUAL       */ SETYPE_ITEM_GET_MINI,
+        /* fpcNm_ITEM_WEAR_KOKIRI       */ SETYPE_ITEM_GET_MINI,
         /* fpcNm_ITEM_ARMOR             */ SETYPE_ITEM_GET,
         /* fpcNm_ITEM_WEAR_ZORA         */ SETYPE_ITEM_GET,
-        /* fpcNm_ITEM_MAGIC_LV1         */ SETYPE_NONE,
+        /* fpcNm_ITEM_MAGIC_LV1         */ SETYPE_ITEM_GET,
         /* fpcNm_ITEM_DUNGEON_EXIT_2    */ SETYPE_ITEM_GET_MINI,
-        /* fpcNm_ITEM_WALLET_LV1        */ SETYPE_NONE,
+        /* fpcNm_ITEM_WALLET_LV1        */ SETYPE_ITEM_GET_MINI,
         /* fpcNm_ITEM_WALLET_LV2        */ SETYPE_ITEM_GET,
         /* fpcNm_ITEM_WALLET_LV3        */ SETYPE_ITEM_GET,
-        /* fpcNm_ITEM_NOENTRY_55        */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_56        */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_57        */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_58        */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_59        */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_60        */ SETYPE_NONE,
+        /* fpcNm_ITEM_NOENTRY_55        */ SETYPE_ITEM_GET_MINI,
+        /* fpcNm_ITEM_NOENTRY_56        */ SETYPE_ITEM_GET_MINI,
+        /* fpcNm_ITEM_NOENTRY_57        */ SETYPE_ITEM_GET_MINI,
+        /* fpcNm_ITEM_NOENTRY_58        */ SETYPE_ITEM_GET_MINI,
+        /* fpcNm_ITEM_NOENTRY_59        */ SETYPE_ITEM_GET_MINI,
+        /* fpcNm_ITEM_NOENTRY_60        */ SETYPE_ITEM_GET_MINI,
         /* fpcNm_ITEM_ZORAS_JEWEL       */ SETYPE_ITEM_GET,
         /* fpcNm_ITEM_HAWK_EYE          */ SETYPE_ITEM_GET,
         /* fpcNm_ITEM_WOOD_STICK        */ SETYPE_ITEM_GET_MINI,
@@ -2019,25 +2026,25 @@ void daAlink_c::setGetSubBgm(int i_itemNo) {
         /* fpcNm_ITEM_FISHING_ROD_1     */ SETYPE_ITEM_GET,
         /* fpcNm_ITEM_PACHINKO          */ SETYPE_ITEM_GET,
         /* fpcNm_ITEM_COPY_ROD_2        */ SETYPE_ITEM_GET,
-        /* fpcNm_ITEM_NOENTRY_77        */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_78        */ SETYPE_NONE,
+        /* fpcNm_ITEM_NOENTRY_77        */ SETYPE_ITEM_GET_MINI,
+        /* fpcNm_ITEM_NOENTRY_78        */ SETYPE_ITEM_GET_MINI,
         /* fpcNm_ITEM_BOMB_BAG_LV2      */ SETYPE_ITEM_GET,
         /* fpcNm_ITEM_BOMB_BAG_LV1      */ SETYPE_ITEM_GET,
         /* fpcNm_ITEM_BOMB_IN_BAG       */ SETYPE_ITEM_GET,
-        /* fpcNm_ITEM_NOENTRY_82        */ SETYPE_NONE,
-        /* fpcNm_ITEM_LIGHT_ARROW       */ SETYPE_NONE,
-        /* fpcNm_ITEM_ARROW_LV1         */ SETYPE_NONE,
+        /* fpcNm_ITEM_NOENTRY_82        */ SETYPE_ITEM_GET_MINI,
+        /* fpcNm_ITEM_LIGHT_ARROW       */ SETYPE_ITEM_GET_MINI,
+        /* fpcNm_ITEM_ARROW_LV1         */ SETYPE_ITEM_GET_MINI,
         /* fpcNm_ITEM_ARROW_LV2         */ SETYPE_ITEM_GET,
         /* fpcNm_ITEM_ARROW_LV3         */ SETYPE_ITEM_GET,
-        /* fpcNm_ITEM_NOENTRY_87        */ SETYPE_NONE,
-        /* fpcNm_ITEM_LURE_ROD          */ SETYPE_NONE,
-        /* fpcNm_ITEM_BOMB_ARROW        */ SETYPE_NONE,
-        /* fpcNm_ITEM_HAWK_ARROW        */ SETYPE_NONE,
-        /* fpcNm_ITEM_BEE_ROD           */ SETYPE_NONE,
-        /* fpcNm_ITEM_JEWEL_ROD         */ SETYPE_NONE,
-        /* fpcNm_ITEM_WORM_ROD          */ SETYPE_NONE,
-        /* fpcNm_ITEM_JEWEL_BEE_ROD     */ SETYPE_NONE,
-        /* fpcNm_ITEM_JEWEL_WORM_ROD    */ SETYPE_NONE,
+        /* fpcNm_ITEM_NOENTRY_87        */ SETYPE_ITEM_GET_MINI,
+        /* fpcNm_ITEM_LURE_ROD          */ SETYPE_ITEM_GET_MINI,
+        /* fpcNm_ITEM_BOMB_ARROW        */ SETYPE_ITEM_GET_MINI,
+        /* fpcNm_ITEM_HAWK_ARROW        */ SETYPE_ITEM_GET_MINI,
+        /* fpcNm_ITEM_BEE_ROD           */ SETYPE_ITEM_GET_MINI,
+        /* fpcNm_ITEM_JEWEL_ROD         */ SETYPE_ITEM_GET_MINI,
+        /* fpcNm_ITEM_WORM_ROD          */ SETYPE_ITEM_GET_MINI,
+        /* fpcNm_ITEM_JEWEL_BEE_ROD     */ SETYPE_ITEM_GET_MINI,
+        /* fpcNm_ITEM_JEWEL_WORM_ROD    */ SETYPE_ITEM_GET_MINI,
         /* fpcNm_ITEM_EMPTY_BOTTLE      */ SETYPE_ITEM_GET,
         /* fpcNm_ITEM_RED_BOTTLE        */ SETYPE_ITEM_GET_MINI,
         /* fpcNm_ITEM_GREEN_BOTTLE      */ SETYPE_ITEM_GET_MINI,
@@ -2045,7 +2052,7 @@ void daAlink_c::setGetSubBgm(int i_itemNo) {
         /* fpcNm_ITEM_MILK_BOTTLE       */ SETYPE_ITEM_GET_MINI,
         /* fpcNm_ITEM_HALF_MILK_BOTTLE  */ SETYPE_ITEM_GET,
         /* fpcNm_ITEM_OIL_BOTTLE        */ SETYPE_ITEM_GET_MINI,
-        /* fpcNm_ITEM_WATER_BOTTLE      */ SETYPE_NONE,
+        /* fpcNm_ITEM_WATER_BOTTLE      */ SETYPE_ITEM_GET_MINI,
         /* fpcNm_ITEM_OIL_BOTTLE_2      */ SETYPE_ITEM_GET_MINI,
         /* fpcNm_ITEM_RED_BOTTLE_2      */ SETYPE_ITEM_GET_MINI,
         /* fpcNm_ITEM_UGLY_SOUP         */ SETYPE_ITEM_GET_MINI,
@@ -2054,9 +2061,9 @@ void daAlink_c::setGetSubBgm(int i_itemNo) {
         /* fpcNm_ITEM_HOT_SPRING_2      */ SETYPE_ITEM_GET_MINI,
         /* fpcNm_ITEM_OIL2              */ SETYPE_ITEM_GET_MINI,
         /* fpcNm_ITEM_OIL               */ SETYPE_ITEM_GET_MINI,
-        /* fpcNm_ITEM_NORMAL_BOMB       */ SETYPE_NONE,
-        /* fpcNm_ITEM_WATER_BOMB        */ SETYPE_NONE,
-        /* fpcNm_ITEM_POKE_BOMB         */ SETYPE_NONE,
+        /* fpcNm_ITEM_NORMAL_BOMB       */ SETYPE_ITEM_GET_MINI,
+        /* fpcNm_ITEM_WATER_BOMB        */ SETYPE_ITEM_GET_MINI,
+        /* fpcNm_ITEM_POKE_BOMB         */ SETYPE_ITEM_GET_MINI,
         /* fpcNm_ITEM_FAIRY_DROP        */ SETYPE_ITEM_GET,
         /* fpcNm_ITEM_WORM              */ SETYPE_ITEM_GET_MINI,
         /* fpcNm_ITEM_DROP_BOTTLE       */ SETYPE_ITEM_GET,
@@ -2074,66 +2081,66 @@ void daAlink_c::setGetSubBgm(int i_itemNo) {
         /* fpcNm_ITEM_BILL              */ SETYPE_ITEM_GET_MINI,
         /* fpcNm_ITEM_WOOD_STATUE       */ SETYPE_ITEM_GET_MINI,
         /* fpcNm_ITEM_IRIAS_PENDANT     */ SETYPE_ITEM_GET_MINI,
-        /* fpcNm_ITEM_HORSE_FLUTE       */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_133       */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_134       */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_135       */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_136       */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_137       */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_138       */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_139       */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_140       */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_141       */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_142       */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_143       */ SETYPE_NONE,
+        /* fpcNm_ITEM_HORSE_FLUTE       */ SETYPE_ITEM_GET_MINI,
+        /* fpcNm_ITEM_NOENTRY_133       */ SETYPE_ITEM_GET_MINI,
+        /* fpcNm_ITEM_NOENTRY_134       */ SETYPE_ITEM_GET_MINI,
+        /* fpcNm_ITEM_NOENTRY_135       */ SETYPE_ITEM_GET_MINI,
+        /* fpcNm_ITEM_NOENTRY_136       */ SETYPE_ITEM_GET_MINI,
+        /* fpcNm_ITEM_NOENTRY_137       */ SETYPE_ITEM_GET_MINI,
+        /* fpcNm_ITEM_NOENTRY_138       */ SETYPE_ITEM_GET_MINI,
+        /* fpcNm_ITEM_NOENTRY_139       */ SETYPE_ITEM_GET_MINI,
+        /* fpcNm_ITEM_NOENTRY_140       */ SETYPE_ITEM_GET_MINI,
+        /* fpcNm_ITEM_NOENTRY_141       */ SETYPE_ITEM_GET_MINI,
+        /* fpcNm_ITEM_NOENTRY_142       */ SETYPE_ITEM_GET_MINI,
+        /* fpcNm_ITEM_NOENTRY_143       */ SETYPE_ITEM_GET_MINI,
         /* fpcNm_ITEM_RAFRELS_MEMO      */ SETYPE_ITEM_GET_MINI,
         /* fpcNm_ITEM_ASHS_SCRIBBLING   */ SETYPE_ITEM_GET_MINI,
-        /* fpcNm_ITEM_NOENTRY_146       */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_147       */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_148       */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_149       */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_150       */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_151       */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_152       */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_153       */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_154       */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_155       */ SETYPE_NONE,
+        /* fpcNm_ITEM_NOENTRY_146       */ SETYPE_ITEM_GET,
+        /* fpcNm_ITEM_NOENTRY_147       */ SETYPE_ITEM_GET,
+        /* fpcNm_ITEM_NOENTRY_148       */ SETYPE_ITEM_GET,
+        /* fpcNm_ITEM_NOENTRY_149       */ SETYPE_ITEM_GET,
+        /* fpcNm_ITEM_NOENTRY_150       */ SETYPE_ITEM_GET,
+        /* fpcNm_ITEM_NOENTRY_151       */ SETYPE_ITEM_GET,
+        /* fpcNm_ITEM_NOENTRY_152       */ SETYPE_ITEM_GET,
+        /* fpcNm_ITEM_NOENTRY_153       */ SETYPE_ITEM_GET_MINI,
+        /* fpcNm_ITEM_NOENTRY_154       */ SETYPE_ITEM_GET_MINI,
+        /* fpcNm_ITEM_NOENTRY_155       */ SETYPE_ITEM_GET_MINI,
         /* fpcNm_ITEM_CHUCHU_YELLOW2    */ SETYPE_ITEM_GET_MINI,
         /* fpcNm_ITEM_OIL_BOTTLE3       */ SETYPE_ITEM_GET,
         /* fpcNm_ITEM_SHOP_BEE_CHILD    */ SETYPE_ITEM_GET_MINI,
         /* fpcNm_ITEM_CHUCHU_BLACK      */ SETYPE_ITEM_GET_MINI,
-        /* fpcNm_ITEM_LIGHT_DROP        */ SETYPE_NONE,
+        /* fpcNm_ITEM_LIGHT_DROP        */ SETYPE_ITEM_GET_MINI,
         /* fpcNm_ITEM_DROP_CONTAINER    */ SETYPE_ITEM_GET,
         /* fpcNm_ITEM_DROP_CONTAINER02  */ SETYPE_ITEM_GET,
         /* fpcNm_ITEM_DROP_CONTAINER03  */ SETYPE_ITEM_GET,
-        /* fpcNm_ITEM_FILLED_CONTAINER  */ SETYPE_NONE,
-        /* fpcNm_ITEM_MIRROR_PIECE_2    */ SETYPE_NONE,
-        /* fpcNm_ITEM_MIRROR_PIECE_3    */ SETYPE_NONE,
-        /* fpcNm_ITEM_MIRROR_PIECE_4    */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_168       */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_169       */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_170       */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_171       */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_172       */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_173       */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_174       */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_175       */ SETYPE_NONE,
+        /* fpcNm_ITEM_FILLED_CONTAINER  */ SETYPE_ITEM_GET_MINI,
+        /* fpcNm_ITEM_MIRROR_PIECE_2    */ SETYPE_ITEM_GET,
+        /* fpcNm_ITEM_MIRROR_PIECE_3    */ SETYPE_ITEM_GET,
+        /* fpcNm_ITEM_MIRROR_PIECE_4    */ SETYPE_ITEM_GET,
+        /* fpcNm_ITEM_NOENTRY_168       */ SETYPE_ITEM_GET_MINI,
+        /* fpcNm_ITEM_NOENTRY_169       */ SETYPE_ITEM_GET_MINI,
+        /* fpcNm_ITEM_NOENTRY_170       */ SETYPE_ITEM_GET_MINI,
+        /* fpcNm_ITEM_NOENTRY_171       */ SETYPE_ITEM_GET_MINI,
+        /* fpcNm_ITEM_NOENTRY_172       */ SETYPE_ITEM_GET_MINI,
+        /* fpcNm_ITEM_NOENTRY_173       */ SETYPE_ITEM_GET_MINI,
+        /* fpcNm_ITEM_NOENTRY_174       */ SETYPE_ITEM_GET_MINI,
+        /* fpcNm_ITEM_NOENTRY_175       */ SETYPE_ITEM_GET_MINI,
         /* fpcNm_ITEM_SMELL_YELIA_POUCH */ SETYPE_ITEM_GET_SMELL,
         /* fpcNm_ITEM_SMELL_PUMPKIN     */ SETYPE_ITEM_GET_SMELL,
         /* fpcNm_ITEM_SMELL_POH         */ SETYPE_ITEM_GET_SMELL,
         /* fpcNm_ITEM_SMELL_FISH        */ SETYPE_ITEM_GET_SMELL,
         /* fpcNm_ITEM_SMELL_CHILDREN    */ SETYPE_ITEM_GET_SMELL,
         /* fpcNm_ITEM_SMELL_MEDICINE    */ SETYPE_ITEM_GET_SMELL,
-        /* fpcNm_ITEM_NOENTRY_182       */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_183       */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_184       */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_185       */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_186       */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_187       */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_188       */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_189       */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_190       */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_191       */ SETYPE_NONE,
+        /* fpcNm_ITEM_NOENTRY_182       */ SETYPE_ITEM_GET_MINI,
+        /* fpcNm_ITEM_NOENTRY_183       */ SETYPE_ITEM_GET_MINI,
+        /* fpcNm_ITEM_NOENTRY_184       */ SETYPE_ITEM_GET_MINI,
+        /* fpcNm_ITEM_NOENTRY_185       */ SETYPE_ITEM_GET_MINI,
+        /* fpcNm_ITEM_NOENTRY_186       */ SETYPE_ITEM_GET_MINI,
+        /* fpcNm_ITEM_NOENTRY_187       */ SETYPE_ITEM_GET_MINI,
+        /* fpcNm_ITEM_NOENTRY_188       */ SETYPE_ITEM_GET_MINI,
+        /* fpcNm_ITEM_NOENTRY_189       */ SETYPE_ITEM_GET_MINI,
+        /* fpcNm_ITEM_NOENTRY_190       */ SETYPE_ITEM_GET_MINI,
+        /* fpcNm_ITEM_NOENTRY_191       */ SETYPE_ITEM_GET_MINI,
         /* fpcNm_ITEM_M_BEETLE          */ SETYPE_ITEM_GET_INSECT,
         /* fpcNm_ITEM_F_BEETLE          */ SETYPE_ITEM_GET_INSECT,
         /* fpcNm_ITEM_M_BUTTERFLY       */ SETYPE_ITEM_GET_INSECT,
@@ -2158,23 +2165,23 @@ void daAlink_c::setGetSubBgm(int i_itemNo) {
         /* fpcNm_ITEM_F_ANT             */ SETYPE_ITEM_GET_INSECT,
         /* fpcNm_ITEM_M_MAYFLY          */ SETYPE_ITEM_GET_INSECT,
         /* fpcNm_ITEM_F_MAYFLY          */ SETYPE_ITEM_GET_INSECT,
-        /* fpcNm_ITEM_NOENTRY_216       */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_217       */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_218       */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_219       */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_220       */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_221       */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_222       */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_223       */ SETYPE_NONE,
+        /* fpcNm_ITEM_NOENTRY_216       */ SETYPE_ITEM_GET,
+        /* fpcNm_ITEM_NOENTRY_217       */ SETYPE_ITEM_GET,
+        /* fpcNm_ITEM_NOENTRY_218       */ SETYPE_ITEM_GET,
+        /* fpcNm_ITEM_NOENTRY_219       */ SETYPE_ITEM_GET,
+        /* fpcNm_ITEM_NOENTRY_220       */ SETYPE_ITEM_GET,
+        /* fpcNm_ITEM_NOENTRY_221       */ SETYPE_ITEM_GET,
+        /* fpcNm_ITEM_NOENTRY_222       */ SETYPE_ITEM_GET,
+        /* fpcNm_ITEM_NOENTRY_223       */ SETYPE_ITEM_GET,
         /* fpcNm_ITEM_POU_SPIRIT        */ SETYPE_ITEM_GET_POU,
-        /* fpcNm_ITEM_NOENTRY_225       */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_226       */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_227       */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_228       */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_229       */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_230       */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_231       */ SETYPE_NONE,
-        /* fpcNm_ITEM_NOENTRY_232       */ SETYPE_NONE,
+        /* fpcNm_ITEM_NOENTRY_225       */ SETYPE_ITEM_GET,
+        /* fpcNm_ITEM_NOENTRY_226       */ SETYPE_ITEM_GET,
+        /* fpcNm_ITEM_NOENTRY_227       */ SETYPE_ITEM_GET,
+        /* fpcNm_ITEM_NOENTRY_228       */ SETYPE_ITEM_GET,
+        /* fpcNm_ITEM_NOENTRY_229       */ SETYPE_ITEM_GET,
+        /* fpcNm_ITEM_NOENTRY_230       */ SETYPE_ITEM_GET,
+        /* fpcNm_ITEM_NOENTRY_231       */ SETYPE_ITEM_GET,
+        /* fpcNm_ITEM_NOENTRY_232       */ SETYPE_ITEM_GET,
         /* fpcNm_ITEM_ANCIENT_DOCUMENT  */ SETYPE_ITEM_GET_MINI,
         /* fpcNm_ITEM_AIR_LETTER        */ SETYPE_ITEM_GET_MINI,
         /* fpcNm_ITEM_ANCIENT_DOCUMENT2 */ SETYPE_ITEM_GET,
@@ -2234,6 +2241,13 @@ int daAlink_c::procCoGetItemInit() {
     s16 var_r22 = 0;
     BOOL var_r31 = FALSE;
     BOOL var_r30 = FALSE;
+
+    // If we are giving a custom item, we want to set mParam0 to 0x100 so that instead of trying to search for an item
+    // actor that doesnt exist we want the game to create one using the item id in mGtItm.
+    if (g_randoInfo.getGiveItemToPlayerStatus() == ITEM_IN_QUEUE)
+    {
+        mDemo.setParam0(0x100);
+    }
     if (mProcID == PROC_GET_ITEM || mProcID == PROC_INSECT_CATCH ||
         (mProcID == PROC_PREACTION_UNEQUIP && !checkNoUpperAnime()))
     {
@@ -2272,6 +2286,10 @@ int daAlink_c::procCoGetItemInit() {
             item_no = dComIfGp_event_getGtItm();
         }
 
+        if (g_randoInfo.getGiveItemToPlayerStatus() == ITEM_IN_QUEUE)
+        {
+            g_randoInfo.setGiveItemToPlayerStatus(CLEAR_QUEUE);
+        }
         fpc_ProcID item_partner_id = fopAcM_createItemForPresentDemo(&current.pos, item_no, 0, -1,
                                                               fopAcM_GetRoomNo(this), NULL, NULL);
         if (item_partner_id != fpcM_ERROR_PROCESS_ID_e) {
@@ -2498,9 +2516,11 @@ int daAlink_c::procCoGetItem() {
                     } else if (mProcVar2.field_0x300c == 0x23 && checkStageName("D_MN11")) {
                         field_0x32cc = 0x5C0;
                     } else if (mProcVar2.field_0x300c == 0xE0) {
-                        if (dComIfGs_getPohSpiritNum() == 20) {
+                        // Display 20 and 60 poe messages when player has 19 and 59
+                        // This is because our modifications changes increment after the message is displayed
+                        if (dComIfGs_getPohSpiritNum() == 19) {
                             field_0x32cc = 0x4CF;
-                        } else if (dComIfGs_getPohSpiritNum() == 60) {
+                        } else if (dComIfGs_getPohSpiritNum() == 59) {
                             field_0x32cc = 0x4D0;
                         } else {
                             field_0x32cc = mProcVar2.field_0x300c + 0x65;

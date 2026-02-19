@@ -208,9 +208,11 @@ static bool isOutfontKanjiCode(int iCharacter) {
 }
 
 static u32 getFontCCColorTable(u8 i_colorNo, u8 i_fukiKind) {
-    static const u32 colorTable[9] = {
+     // White, red, green, light blue, yellow, purple, null, orange, dark green, blue, silver
+    static const u32 colorTable[12] = {
         0xFFFFFFFF, 0xF07878FF, 0xAADC8CFF, 0xA0B4DCFF, 0xDCDC82FF,
-        0xB4C8E6FF, 0xC8A0DCFF, 0xFFFFFFFF, 0xDCAA78FF,
+        0xB4C8E6FF, 0xC8A0DCFF, 0xFFFFFFFF, 0xDCAA78FF, 0x4BBE4BFF,
+        0x4B96D7FF, 0xBFBFBFFF,
     };
 
     if (i_colorNo > 8) {
@@ -242,9 +244,11 @@ static u32 getFontCCColorTable(u8 i_colorNo, u8 i_fukiKind) {
 }
 
 static u32 getFontGCColorTable(u8 i_colorNo, u8 i_fukiKind) {
-    static const u32 colorTable[9] = {
+    static const u32 colorTable[12] = {
+        // White, red, green, light blue, yellow, purple, null, orange, dark green, blue, silver
         0xFFFFFFFF, 0xF07878FF, 0xAADC8CFF, 0xA0B4DCFF, 0xDCDC82FF,
-        0xB4C8E6FF, 0xC8A0DCFF, 0xFFFFFFFF, 0xDCAA78FF,
+        0xB4C8E6FF, 0xC8A0DCFF, 0xFFFFFFFF, 0xDCAA78FF, 0x4BBE4BFF,
+        0x4B96D7FF, 0xBFBFBFFF,
     };
 
     if (i_colorNo > 8) {

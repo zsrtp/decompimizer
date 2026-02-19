@@ -2100,11 +2100,11 @@ static int daB_GM_Create(fopAc_ac_c* i_this) {
             csXyz angle(0, 0, 0);
             fopAcM_createWarpHole(&pos, &angle, fopAcM_GetRoomNo(i_this), 0, 0, 0xFF);
 
-            if (!dComIfGs_isStageLife()) {
-                cXyz size(1.0f, 1.0f, 1.0f);
-                pos.set(400.0f, 0.0f, 0.0f);
-                fopAcM_createItemForBoss(&pos, fpcNm_ITEM_UTAWA_HEART, fopAcM_GetRoomNo(i_this), &i_this->shape_angle, &size, 0.0f, 0.0f, -1);
-            }
+            //if (!dComIfGs_isStageLife()) {
+            cXyz size(1.0f, 1.0f, 1.0f);
+            pos.set(400.0f, 0.0f, 0.0f);
+            fopAcM_createItemForBoss(&pos, fpcNm_ITEM_UTAWA_HEART, fopAcM_GetRoomNo(i_this), &i_this->shape_angle, &size, 0.0f, 0.0f, -1);
+            //}
 
             return phase_state;
         }

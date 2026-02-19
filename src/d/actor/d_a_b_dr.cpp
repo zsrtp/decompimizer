@@ -4099,16 +4099,16 @@ int daB_DR_c::create() {
                 OS_REPORT("B_DR やられ後なので再セットしません\n");
                 fopAcM_createWarpHole(&warp_pos, &shape_angle, fopAcM_GetRoomNo(this), 2, 0, 0xFF);
 
-                if (!dComIfGs_isStageLife()) {
-                    cXyz size(1.0f, 1.0f, 1.0f);
-                    cXyz pos;
-                    csXyz angle;
+                //if (!dComIfGs_isStageLife()) {
+                cXyz size(1.0f, 1.0f, 1.0f);
+                cXyz pos;
+                csXyz angle;
 
-                    angle.x = angle.y = angle.z = 0;
-                    pos.set(224.0f, 0.0f, 762.0f);
+                angle.x = angle.y = angle.z = 0;
+                pos.set(224.0f, 0.0f, 762.0f);
 
-                    fopAcM_createItemForBoss(&pos, fpcNm_ITEM_UTAWA_HEART, fopAcM_GetRoomNo(this), &angle, &size, 0.0f, 0.0f, -1);
-                }
+                fopAcM_createItemForBoss(&pos, fpcNm_ITEM_UTAWA_HEART, fopAcM_GetRoomNo(this), &angle, &size, 0.0f, 0.0f, -1);
+                //}
 
                 dScnKy_env_light_c* kankyo = dKy_getEnvlight();
                 kankyo->wether = 0;

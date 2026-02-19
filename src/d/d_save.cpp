@@ -12,7 +12,10 @@
 #include "d/d_meter2_info.h"
 #include "d/d_save.h"
 #include "d/d_save_init.h"
+#include "d/actor/d_a_alink.h"
+#include "d/d_stage.h"
 #include "f_op/f_op_scene_mng.h"
+#include "rando/rando.h"
 #include <cstdio>
 
 #if PLATFORM_WII || PLATFORM_SHIELD
@@ -109,11 +112,11 @@ u16 dSv_player_status_a_c::getRupeeMax() const {
     if (mWalletSize < 3) {  // if you make this a default, it wont match. Compiler, pls.
         switch (mWalletSize) {
         case WALLET:
-            return 300;
+            return g_randoInfo.smallWalletMax;
         case BIG_WALLET:
-            return 600;
+            return g_randoInfo.bigWalletMax;
         case GIANT_WALLET:
-            return 1000;
+            return g_randoInfo.giantWalletMax;
         }
     }
 
@@ -386,11 +389,11 @@ u8 dSv_player_item_c::getItem(int i_slotNo, bool i_checkCombo) const {
 }
 
 void dSv_player_item_c::setLineUpItem() {
-    static u8 i_item_lst[23] = {
+    static u8 i_item_lst[24] = {
         10, 8,  6,  2,  9,  4,  3,
         0,  1,  23, 20, 5,  15, 16,
         17, 11, 12, 13, 14, 19, 18,
-        22, 21
+        22, 21, 7
     };
 
     int slot_idx = 0;
@@ -399,7 +402,7 @@ void dSv_player_item_c::setLineUpItem() {
         mItemSlots[i] = fpcNm_ITEM_NONE;
     }
 
-    for (int i = 0; i < 23; i++) {
+    for (int i = 0; i < 24; i++) {
         u8 current = i_item_lst[i];
         if (mItems[current] != fpcNm_ITEM_NONE) {
             mItemSlots[slot_idx] = current;
@@ -1151,6 +1154,38 @@ BOOL dSv_memBit_c::isItem(int i_no) const {
 }
 
 void dSv_memBit_c::onDungeonItem(int i_no) {
+    switch(i_no)
+    {
+        case STAGE_BOSS_ENEMY:
+        {
+            // Start at 1 because we haven't set the current dungeon's flag yet.
+            int numCompletedDungeons = 1;
+            for (int i = 0x10; i < 0x18; i++)
+            {
+                if (dComIfGs_isStageBossEnemy(i))
+                {
+                    numCompletedDungeons++;
+                }
+            }
+
+            /*
+            Pasting rando code for the time being until the framework is built:
+            // Check if we have completed enough dungeons to break the barrier.
+                    randoPtr->checkSetHCBarrierFlag(rando::HC_Dungeons, numDungeons);
+
+                    // Check if we have completed enough dungeons to unlock the BK check.
+                    randoPtr->checkSetHCBkFlag(rando::HC_BK_Dungeons, numDungeons);
+            */
+            if (i_no == 0x13) // Stallord
+            {
+                /*
+                const uint32_t agDungeonReward = randoPtr->getEventItem(rando::customItems::Mirror_Piece_1);
+                randoPtr->addItemToEventQueue(agDungeonReward);
+                */
+            }
+            break;
+        }
+    }
     JUT_ASSERT(2969, 0 <= i_no && i_no < DSV_MEMBIT_ENUM_MAX);
     mDungeonItem |= (u8)(1 << i_no);
 }
@@ -1161,6 +1196,57 @@ void dSv_memBit_c::offDungeonItem(int i_no) {
 }
 
 s32 dSv_memBit_c::isDungeonItem(int i_no) const {
+    switch(i_no)
+    {
+        case STAGE_BOSS_ENEMY:
+        {
+            // If we are in a dungeon or fighting a midboss, we don't want the boss being defeated to affect the gameplay.
+            // Note, technically you could go through and patch all of the actors that cause the issues, but that's over 80 different calls and I don't want to deal with all that research rn - lunar
+            static const char* dungeonStages[] = {
+            "D_MN05",
+            "D_MN05B",
+            "D_MN04",
+            "D_MN04B",
+            "D_MN01",
+            "D_MN01B",
+            "D_MN10",
+            "D_MN10B",
+            "D_MN11",
+            "D_MN11B",
+            "D_MN06",
+            "D_MN06B",
+            "D_MN07",
+            "D_MN07B",
+            "D_MN08",
+            "D_MN08B",
+            "D_MN08C"};
+            uint32_t totalDungeonStages = sizeof(dungeonStages) / sizeof(dungeonStages[0]);
+            for (uint32_t i = 0; i < totalDungeonStages; i++)
+            {
+                if (daAlink_c::checkStageName(dungeonStages[i]))
+                {
+                    return false;
+                }
+            }
+            break;
+        }
+        case STAGE_BOSS_ENEMY_2:
+        {
+            // If we are in the early rooms of FT, we don't want Ook being defeated to affect gameplay
+            if (daAlink_c::checkStageName("D_MN05"))
+            {
+                if (dComIfGp_roomControl_getStayNo() < 4)
+                {
+                    return false;
+                }
+            }
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }  
     JUT_ASSERT(2998, 0 <= i_no && i_no < DSV_MEMBIT_ENUM_MAX);
     return mDungeonItem & (u8)(1 << i_no) ? TRUE : FALSE;
 }

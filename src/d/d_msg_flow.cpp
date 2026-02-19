@@ -12,6 +12,7 @@
 #include "d/actor/d_a_midna.h"
 #include "d/actor/d_a_myna.h"
 #include "d/actor/d_a_obj_ss_base.h"
+#include "rando/rando.h"
 #include "SSystem/SComponent/c_math.h"
 
 dMsgFlow_c::dMsgFlow_c() {
@@ -652,12 +653,13 @@ int dMsgFlow_c::eventNodeProc(fopAc_ac_c* i_speaker_p, fopAc_ac_c** i_talkPartne
     case 9:
         if (getParam(node->params) == 0) {
             int msgNum;
+            /*
             if (daAlink_getAlinkActorClass()->getMidnaMsgNum() == 0xFFFF) {
                 msgNum = dStage_FileList_dt_GetMsg(dComIfGp_roomControl_getStatusRoomDt(dComIfGp_roomControl_getStayNo())->getFileListInfo());
-            } else {
-                msgNum = daAlink_getAlinkActorClass()->getMidnaMsgNum();
-                daAlink_getAlinkActorClass()->setMidnaMsg();
-            }
+            }*/
+            // We want midna to use the same starting message ID so we can consistently modify her text.
+            msgNum = 0xbb8; //daAlink_getAlinkActorClass()->getMidnaMsgNum();
+            daAlink_getAlinkActorClass()->setMidnaMsg();
 
             setInitValueGroupChange(msgNum, i_talkPartners);
             break;
@@ -1505,13 +1507,21 @@ u16 dMsgFlow_c::query042(mesg_flow_node_branch* i_flowNode_p, fopAc_ac_c* i_spea
     daMidna_c* midna_p = daPy_py_c::getMidnaActor();
 
     u8 ret = 0;
-    if (strcmp("F_SP116", dComIfGp_getStartStageName()) == 0 && dComIfGs_isSaveDunSwitch(60)) {
-        ret = 4;
-    } else if (midna_p->checkNpcNear()) {
-        ret = 1;
-    } else if (midna_p->checkNpcFar()) {
-        ret = 2;
-    } else if (g_env_light.mEvilInitialized & 0x80) {
+
+    // If transform everywhere is enabled, we can skip most of the checks here.
+    if (!g_randoInfo.checkValidTransformAnywhere())
+    {
+        if (strcmp("F_SP116", dComIfGp_getStartStageName()) == 0 && dComIfGs_isSaveDunSwitch(60)) {
+            ret = 4;
+        } else if (midna_p->checkNpcNear()) {
+            ret = 1;
+        } else if (midna_p->checkNpcFar()) {
+            ret = 2;
+        }
+    } 
+    // Regardless of transform status, we want to check for the PoT fog.
+    if (g_env_light.mEvilInitialized & 0x80) 
+    {
         ret = 3;
     }
 
@@ -1635,6 +1645,7 @@ u16 dMsgFlow_c::query048(mesg_flow_node_branch* i_flowNode_p, fopAc_ac_c* i_spea
 u16 dMsgFlow_c::query049(mesg_flow_node_branch* i_flowNode_p, fopAc_ac_c* i_speaker_p, int param_2) {
     u8 num = dComIfGs_getPohSpiritNum();
 
+    // If we have 60 souls, we want to make sure we get the 20 poe reward before allowing the player to get the 60 poe reward.
     u8 ret = 0;
     if (num == 0) {
         ret = 0;
@@ -1645,7 +1656,14 @@ u16 dMsgFlow_c::query049(mesg_flow_node_branch* i_flowNode_p, fopAc_ac_c* i_spea
     } else if (num <= 59) {
         ret = 3;
     } else {
-        ret = 4;
+        if (!dComIfGs_isEventBit(0x4D80))
+        {
+            ret = 3;
+        }
+        else
+        {
+            ret = 4;
+        }
     }
 
     if (param_2 != 0) {

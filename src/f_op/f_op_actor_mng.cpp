@@ -13,6 +13,7 @@
 #include "SSystem/SComponent/c_math.h"
 #include "d/actor/d_a_obj_carry.h"
 #include "d/actor/d_a_player.h"
+#include "d/actor/d_a_alink.h"
 #include "d/actor/d_a_tag_stream.h"
 #include "d/d_item.h"
 #include "d/d_path.h"
@@ -22,6 +23,8 @@
 #include "f_op/f_op_camera_mng.h"
 #include "f_op/f_op_scene_mng.h"
 #include "m_Do/m_Do_lib.h"
+#include "rando/tools/verifyItemFunctions.h"
+#include "rando/tools/tools.h"
 #include <cstring>
 
 #define MAKE_ITEM_PARAMS(itemNo, itemBitNo, param_2, param_3)                                      \
@@ -1363,6 +1366,7 @@ fopAc_ac_c* fopAcM_getEventPartner(fopAc_ac_c const* i_actor) {
 fpc_ProcID fopAcM_createItemForPresentDemo(cXyz const* i_pos, int i_itemNo, u8 param_2,
                                            int i_itemBitNo, int i_roomNo, csXyz const* i_angle,
                                            cXyz const* i_scale) {
+    i_itemNo = verifyProgressiveItem(i_itemNo);
     JUT_ASSERT(3214, 0 <= i_itemNo && i_itemNo < 256);
     dComIfGp_event_setGtItm(i_itemNo);
 
@@ -1376,7 +1380,7 @@ fpc_ProcID fopAcM_createItemForPresentDemo(cXyz const* i_pos, int i_itemNo, u8 p
 
 fpc_ProcID fopAcM_createItemForTrBoxDemo(cXyz const* i_pos, int i_itemNo, int i_itemBitNo,
                                          int i_roomNo, csXyz const* i_angle, cXyz const* i_scale) {
-   
+    i_itemNo = verifyProgressiveItem(i_itemNo);
    JUT_ASSERT(3259, 0 <= i_itemNo && i_itemNo < 256);
    dComIfGp_event_setGtItm(i_itemNo);
 
@@ -1550,22 +1554,32 @@ fpc_ProcID fopAcM_createDemoItem(const cXyz* i_pos, int i_itemNo, int i_itemBitN
 fpc_ProcID fopAcM_createItemForBoss(const cXyz* i_pos, int i_itemNo, int i_roomNo,
                                     const csXyz* i_angle, const cXyz* i_scale, f32 i_speedF,
                                     f32 i_speedY, int param_8) {
-    int _ = -1;
-    u32 params = 0xFFFF0000 | param_8 << 8 | (i_itemNo & 0xFF);
-
-    fopAc_ac_c* actor = fopAcM_fastCreate(PROC_Obj_LifeContainer, params, i_pos, i_roomNo, i_angle,
-                                          i_scale, -1, NULL, NULL);
-    if (actor != NULL) {
-        actor->speedF = i_speedF;
-        actor->speed.y = i_speedY;
+    // getBossItem(i_itemNo);
+    i_itemNo = verifyProgressiveItem(i_itemNo);
+    if (i_itemNo == fpcNm_ITEM_UTAWA_HEART)
+    {
+        param_8 = 0x9F; // Custom flag used for dungeon heart containers.
     }
 
-    return fopAcM_GetID(actor);
+    // If we are in Hyrule Field, we want to spawn the goron HP on the ground.
+    if (daAlink_c::checkStageName("F_SP121"))
+    {
+        *const_cast<float*>(&i_pos->y) = -190.f;
+    }
+
+    return initCreatePlayerItem(i_itemNo, param_8 & 0xFF, i_pos, i_roomNo, i_angle, i_scale);
 }
 
 fpc_ProcID fopAcM_createItemForMidBoss(const cXyz* i_pos, int i_itemNo, int i_roomNo,
                                        const csXyz* i_angle, const cXyz* i_scale, int param_6,
                                        int param_7) {
+    // If we are fighting Ook, we want to handle the boomerang check a different way.
+    if (daAlink_c::checkStageName("D_MN05B"))
+    {
+        i_itemNo = verifyProgressiveItem(i_itemNo);
+        return initCreatePlayerItem(i_itemNo, 0xFF, i_pos, i_roomNo, i_angle, i_scale);
+    }
+    
     UNUSED(i_angle);
     UNUSED(param_6);
     fpc_ProcID ret = -1;

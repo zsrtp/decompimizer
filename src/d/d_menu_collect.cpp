@@ -34,6 +34,7 @@
 #include "JSystem/J2DGraph/J2DGrafContext.h"
 #include "d/d_menu_window.h"
 #include "JSystem/J3DGraphBase/J3DMaterial.h"
+#include "rando/rando.h"
 
 typedef void (dMenu_Collect2D_c::*initFunc)();
 static initFunc init[] = {
@@ -507,9 +508,9 @@ void dMenu_Collect2D_c::screenSet() {
     field_0x184[4][2] = 0x196;
     field_0x184[5][2] = 0x195;
     field_0x184[6][2] = 0;
-    if (dComIfGs_getRupeeMax() == WALLET_MAX) {
+    if (dComIfGs_getRupeeMax() == g_randoInfo.smallWalletMax) {
         field_0x184[0][3] = 0x199;
-    } else if (dComIfGs_getRupeeMax() == BIG_WALLET_MAX) {
+    } else if (dComIfGs_getRupeeMax() == g_randoInfo.bigWalletMax) {
         field_0x184[0][3] = 0x19a;
     } else {
         field_0x184[0][3] = 0x19b;

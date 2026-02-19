@@ -56,6 +56,23 @@ int CheckFieldItemCreateHeap(fopAc_ac_c* i_this) {
     daItemBase_c* a_this = static_cast<daItemBase_c*>(i_this);
 
     u8 item_no = a_this->getItemNo();
+
+    switch (item_no)
+    {
+        case fpcNm_ITEM_EMPTY_BOTTLE:
+        case fpcNm_ITEM_HALF_MILK_BOTTLE:
+        case fpcNm_ITEM_OIL_BOTTLE3:
+        case fpcNm_ITEM_DROP_BOTTLE:
+        case fpcNm_ITEM_LINKS_SAVINGS:
+        case fpcNm_ITEM_POU_SPIRIT:
+        {
+            return CheckItemCreateHeap(i_this);
+        }
+        default:
+        {
+            break;
+        }
+    }
     return a_this->CreateItemHeap(
         dItem_data::getFieldArc(item_no), dItem_data::getItemBmdName(item_no),
         dItem_data::getItemBtkName(item_no), dItem_data::getItemBpkName(item_no),

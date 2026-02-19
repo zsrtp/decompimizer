@@ -2626,6 +2626,11 @@ void dComIfGs_setKeyNum(int i_stageNo, u8 i_keyNum) {
     g_dComIfG_gameInfo.info.getSavedata().getSave(i_stageNo).getBit().setKeyNum(i_keyNum);
 }
 
+// Rando-added function
+u8 dComIfGs_getKeyNum(int i_stageNo) {
+    return g_dComIfG_gameInfo.info.getSavedata().getSave(i_stageNo).getBit().getKeyNum();
+}
+
 static void dComIfGs_setWarpItemData(int param_0, char const* i_stage, cXyz i_pos, s16 i_angle, s8 i_roomNo,
                                      u8 param_5, u8 param_6) {
     UNUSED(param_0);

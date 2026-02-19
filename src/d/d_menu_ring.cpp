@@ -25,6 +25,7 @@
 #include "d/d_msg_string.h"
 #include "m_Do/m_Do_controller_pad.h"
 #include "m_Do/m_Do_graphic.h"
+#include "rando/itemWheelMenu.h"
 #include <string>
 
 #include <cstdio>
@@ -116,7 +117,8 @@ dMenu_Ring_c::dMenu_Ring_c(JKRExpHeap* i_heap, STControl* i_stick, CSTControl* i
     mRingScaleH = 1.0f;
     mRingScaleV = 1.0f;
     mRingAlpha = 1.0f;
-    mPlayerIsWolf = daPy_py_c::checkNowWolf();
+    // We want the item wheel to assume the player is always human so they can equip items no matter the form
+    mPlayerIsWolf = false;
     mNameStringID = 0;
     field_0x63a = 0;
     field_0x63c = 0;
@@ -537,12 +539,13 @@ dMenu_Ring_c::~dMenu_Ring_c() {
  * and plays the item wheel opening sound
 */
 void dMenu_Ring_c::_create() {
+    g_customMenuRing.setRingOpen(true);
     (this->*stick_init[mStatus])();
     Z2GetAudioMgr()->seStart(Z2SE_ITEM_RING_IN, NULL, 0, 0, 1.0f, 1.0f, -1.0f, -1.0f, 0);
 }
 
 void dMenu_Ring_c::_delete() {
-    /* empty function */
+    g_customMenuRing.setRingOpen(false);
 }
 
 /** @details
@@ -1614,6 +1617,11 @@ u8 dMenu_Ring_c::getItemNum(u8 i_slotNo) {
     case fpcNm_ITEM_PACHINKO:
         ret = dComIfGs_getPachinkoNum();
         break;
+    case fpcNm_ITEM_ANCIENT_DOCUMENT:
+    case fpcNm_ITEM_AIR_LETTER:
+    case fpcNm_ITEM_ANCIENT_DOCUMENT2:
+        ret = dComIfGs_getAncientDocumentNum();
+        break;
     }
     return ret;
 }
@@ -1653,6 +1661,11 @@ u8 dMenu_Ring_c::getItemMaxNum(u8 i_slotNo) {
     case fpcNm_ITEM_PACHINKO:
         ret = dComIfGs_getPachinkoMax();
         break;
+        case fpcNm_ITEM_ANCIENT_DOCUMENT:
+        case fpcNm_ITEM_AIR_LETTER:
+        case fpcNm_ITEM_ANCIENT_DOCUMENT2:
+            ret = 6;
+            break;
     }
     return ret;
 }

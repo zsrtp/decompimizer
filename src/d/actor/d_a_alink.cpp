@@ -50,6 +50,7 @@
 #include "d/actor/d_a_canoe.h"
 #include "d/actor/d_a_ni.h"
 #include "d/d_s_play.h"
+#include "rando/tools/tools.h"
 
 #include "res/Object/Alink.h"
 
@@ -14332,6 +14333,23 @@ bool daAlink_c::checkCastleTownUseItem(u16 i_itemNo) {
             return true;
         } else {
             return false;
+        }
+    }
+    // If we are in sacred grove past or ToT lobby, we don't want to use Ooccoo because it can softlock.
+    else if (playerIsInRoomStage(2, "F_SP117") || playerIsInRoomStage(0, "D_MN06"))
+    {
+        switch (i_itemNo)
+        {
+            case fpcNm_ITEM_DUNGEON_BACK:
+            case fpcNm_ITEM_DUNGEON_EXIT:
+            case fpcNm_ITEM_DUNGEON_EXIT_2:
+            {
+                return false;
+            }
+            default:
+            {
+                break;
+            }
         }
     }
 
