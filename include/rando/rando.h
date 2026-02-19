@@ -27,10 +27,6 @@ public:
     void setGiveItemToPlayerStatus(u8 status) { eventItemStatus = status;}
 
     bool mInitialized;
-    bool transformAnywhere;
-    u16 smallWalletMax;
-    u16 bigWalletMax;
-    u16 giantWalletMax;
     u8 eventItemStatus;
     u16 mFrameCounter;
 };

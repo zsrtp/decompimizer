@@ -16,6 +16,7 @@
 #include "d/d_stage.h"
 #include "f_op/f_op_scene_mng.h"
 #include "rando/rando.h"
+#include "rando/seed/seed.h"
 #include <cstdio>
 
 #if PLATFORM_WII || PLATFORM_SHIELD
@@ -112,11 +113,11 @@ u16 dSv_player_status_a_c::getRupeeMax() const {
     if (mWalletSize < 3) {  // if you make this a default, it wont match. Compiler, pls.
         switch (mWalletSize) {
         case WALLET:
-            return g_randoInfo.smallWalletMax;
+            return g_seedInfo.getHeaderPtr()->getSmallWalletMax();
         case BIG_WALLET:
-            return g_randoInfo.bigWalletMax;
+            return g_seedInfo.getHeaderPtr()->getBigWalletMax();
         case GIANT_WALLET:
-            return g_randoInfo.giantWalletMax;
+            return g_seedInfo.getHeaderPtr()->getGiantWalletMax();
         }
     }
 
