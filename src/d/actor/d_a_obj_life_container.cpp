@@ -9,6 +9,7 @@
 #include "d/d_com_inf_game.h"
 #include "d/actor/d_a_player.h"
 #include "d/d_item_data.h"
+#include "d/actor/d_a_alink.h"
 #include "SSystem/SComponent/c_math.h"
 
 const static dCcD_SrcCyl l_cyl_src = {
@@ -439,6 +440,55 @@ int daObjLife_c::execute() {
         &daObjLife_c::actionBoomerangCarry,
         &daObjLife_c::actionWait2,
     };
+
+    static const char* hpStages[] = {
+        "F_SP121",
+        "F_SP126",
+        "F_SP117",
+        "D_MN10A",
+        "D_MN08A",};
+    uint32_t totalHpStages = sizeof(hpStages) / sizeof(hpStages[0]);
+    for (uint32_t i = 0; i < totalHpStages; i++)
+    {
+        if (daAlink_c::checkStageName(hpStages[i]))
+        {
+            // For stages where we replace other actors with HP/HCs, we want them to stay in their original place and rotate normally
+            gravity = 0.0f;
+            mRotateSpeed = 0x226;
+        }
+    }
+
+    switch (m_itemNo)
+    {
+        case fpcNm_ITEM_UTAWA_HEART:
+        case fpcNm_ITEM_KAKERA_HEART:
+        case fpcNm_ITEM_ARROW_10:
+        case fpcNm_ITEM_ARROW_20:
+        case fpcNm_ITEM_ARROW_30:
+        {
+            scale.y = 1.0f;
+            break;
+        }
+        case fpcNm_ITEM_BOW:
+        {
+            scale.y = 1.5f;
+            break;
+        }
+        case fpcNm_ITEM_MASTER_SWORD:
+        case fpcNm_ITEM_LIGHT_SWORD:
+        case fpcNm_ITEM_MIRROR_PIECE_1:
+        case fpcNm_ITEM_MIRROR_PIECE_2:
+        case fpcNm_ITEM_MIRROR_PIECE_3:
+        case fpcNm_ITEM_MIRROR_PIECE_4:
+        {
+            scale.y = 0.7f;
+            break;
+        }
+        default:
+        {
+            scale.y = 2.0f;
+        }
+    }
 
     mPrevSpeed = speed;
     mCounter++;
