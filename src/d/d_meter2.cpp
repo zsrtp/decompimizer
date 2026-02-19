@@ -22,6 +22,7 @@
 #include "d/d_meter_string.h"
 #include "f_op/f_op_msg_mng.h"
 #include "d/actor/d_a_horse.h"
+#include "rando/itemWheelMenu.h"
 
 int dMeter2_c::_create() {
     stage_stag_info_class* stag_info = dComIfGp_getStageStagInfo();
@@ -418,7 +419,15 @@ void dMeter2_c::checkStatus() {
     mStatus = 0;
     field_0x12c = field_0x128;
 
-    field_0x128 = daPy_py_c::checkNowWolf();
+    // If the menu ring is open, we want to be able to equip items as wolf.
+    if (g_customMenuRing.isRingOpen())
+    {
+        field_0x128 = 0;
+    }
+    else
+    {
+        field_0x128 = daPy_py_c::checkNowWolf();
+    }
 
     if (!dComIfGp_2dShowCheck() || dMsgObject_getMsgObjectClass()->isPlaceMessage()) {
         mStatus |= 0x4000;

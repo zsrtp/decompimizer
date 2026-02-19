@@ -2920,6 +2920,7 @@ config.libs = [
             Object(Custom, "rando/rando.cpp"),
             Object(Custom, "rando/tools/tools.cpp"),
             Object(Custom, "rando/tools/verifyItemFunctions.cpp"),
+            Object(Custom, "rando/itemWheelMenu.cpp"),
         ],
     },
 ]
@@ -2992,6 +2993,7 @@ def link_order_callback(module_id: int, objects: List[str]) -> List[str]:
             "rando/rando.cpp",
             "rando/tools/tools.cpp",
             "rando/tools/verifyItemFunctions.cpp",
+            "rando/itemWheelMenu.cpp",
         ]
     return objects
 

@@ -1,4 +1,5 @@
 #include "rando/rando.h"
+#include "rando/itemWheelMenu.h"
 #include "d/d_com_inf_game.h"
 #include "SSystem/SComponent/c_math.h"
 #include "d/actor/d_a_alink.h"
@@ -9,6 +10,7 @@ int randoInfo_c::_create() {
     mFrameCounter = 0;
     transformAnywhere = false;
     mInitialized = true;
+    g_customMenuRing._initialize();
     return 1;
 }
 
