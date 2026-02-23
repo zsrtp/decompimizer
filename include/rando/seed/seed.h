@@ -65,8 +65,8 @@ public:
     u16 getBigWalletMax() const { return bigWalletMax; }
     u16 getGiantWalletMax() const { return giantWalletMax; }
 
-    const EntryInfo* getVolatilePatchInfoPtr() const { return &volatilePatchInfo; }
-    const EntryInfo* getOneTimePatchInfoPtr() const { return &oneTimePatchInfo; }
+    //const EntryInfo* getVolatilePatchInfoPtr() const { return &volatilePatchInfo; }
+    //const EntryInfo* getOneTimePatchInfoPtr() const { return &oneTimePatchInfo; }
     const EntryInfo* getFlagBitfieldPtr() const { return &flagBitfieldInfo; }
     const EntryInfo* getEventFlagsInfoPtr() const { return &eventFlagsInfo; }
     const EntryInfo* getRegionFlagsInfoPtr() const { return &regionFlagsInfo; }
@@ -78,43 +78,48 @@ public:
     const EntryInfo* getStartingItemCheckInfoPtr() const { return &startingItemInfo; }
     
     /* 0x00 */ char magic[3]; // Not null terminated, should always be TPR
-    /* 0x00 */ char seedName[33];
-    /* 0x22 */ u16 headerSize; // Total size of the header in bytes
-    /* 0x2A */ u16 dataSize;   // Total number of bytes of seed data
-    /* 0x2C */ uint totalSize;  // Total number of bytes in the GCI
+    /* 0x03 */ char seedName[33];
+    /* 0x24 */ u16 headerSize; // Total size of the header in bytes
+    /* 0x26 */ u16 dataSize;   // Total number of bytes of seed data
+    /* 0x28 */ uint totalSize;  // Total number of bytes in the GCI
 
     // BitArray where each bit represents a patch/modification to be applied for this playthrough; these
     // patchs/modifications must be applied every time a file is loaded
-    /* 0x30 */ EntryInfo volatilePatchInfo;
+    ///* 0x30 */ EntryInfo volatilePatchInfo;
+    // Note for moving forward: we can add functionality for most of these patches pretty easily
+    // example: for faron twilight, just check if we set the evt bit and run the code from there.
 
     // BitArray where each bit represents a patch/modification to be applied for this playthrough; these
     // patchs/modifications must be applied only when a seed is loaded
-    /* 0x34 */ EntryInfo oneTimePatchInfo;
+    // /* 0x34 */ EntryInfo oneTimePatchInfo;
+    // Note for moving forward: we can just set up the code to check for a bool since we won't have custom functions. 
 
     // BitArray where each bit represents an arbitrary flag indicated by the SeedEnabledFlag enum
-    /* 0x38 */ EntryInfo flagBitfieldInfo;
+    /* 0x2C */ EntryInfo flagBitfieldInfo;
 
-    /* 0x3C */ EntryInfo eventFlagsInfo;  // eventFlags that need to be set for this seed
-    /* 0x40 */ EntryInfo regionFlagsInfo; // regionFlags that need to be set, alternating
-    /* 0x5C */ EntryInfo poeRewardInfo;
-    /* 0x58 */ EntryInfo bossCheckInfo;
-    /* 0x5C */ EntryInfo hiddenSkillCheckInfo;
-    /* 0x60 */ EntryInfo bugRewardCheckInfo;
-    /* 0x6C */ EntryInfo eventItemCheckInfo;
-    /* 0x70 */ EntryInfo startingItemInfo;
-    /* 0x8E */ u16 maloShopDonationAmount;
-    /* 0x90 */ u8 castleRequirements;
-    /* 0x91 */ u8 palaceRequirements;
-    /* 0x92 */ u8 mapClearBits;
-    /* 0x93 */ u8 damageMagnification;
-    /* 0x94 */ u8 totSwordRequirement;
-    /* 0x95 */ u8 mirrorChamberEntrance;
-    /* 0x96 */ u8 barrierReqCount; // See below for notes
-    /* 0x97 */ u8 hcBkRequirement;
-    /* 0x98 */ u8 hcBkReqCount; // See below for notes  
-    u16 smallWalletMax;
-    u16 bigWalletMax;
-    u16 giantWalletMax;
+    /* 0x30 */ EntryInfo eventFlagsInfo;  // eventFlags that need to be set for this seed
+    /* 0x34 */ EntryInfo regionFlagsInfo; // regionFlags that need to be set, alternating
+    /* 0x38 */ EntryInfo poeRewardInfo;
+    /* 0x3C */ EntryInfo bossCheckInfo;
+    /* 0x40 */ EntryInfo hiddenSkillCheckInfo;
+    /* 0x44 */ EntryInfo bugRewardCheckInfo;
+    /* 0x48 */ EntryInfo eventItemCheckInfo;
+    /* 0x4C */ EntryInfo startingItemInfo;
+    /* 0x50 */ u16 maloShopDonationAmount;
+    /* 0x52 */ u8 castleRequirements;
+    /* 0x53 */ u8 palaceRequirements;
+    /* 0x54 */ u8 mapClearBits;
+    /* 0x55 */ u8 damageMagnification;
+    /* 0x56 */ u8 totSwordRequirement;
+    /* 0x57 */ u8 mirrorChamberEntrance;
+    /* 0x58 */ u8 barrierReqCount; // See below for notes
+    /* 0x59 */ u8 hcBkRequirement;
+    /* 0x5A */ u8 hcBkReqCount; // See below for notes  
+    /* 0x5B */ u8 padding;
+    /* 0x5C */ u16 smallWalletMax;
+    /* 0x5E */ u16 bigWalletMax;
+    /* 0x60 */ u16 giantWalletMax;
+    /* 0x62 */ u16 padding2;
 };
 
 class seedInfo_c {

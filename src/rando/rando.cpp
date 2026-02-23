@@ -13,6 +13,7 @@ int randoInfo_c::_create() {
     mFrameCounter = 0;
     mInitialized = true;
     g_customMenuRing._initialize();
+    g_seedInfo._create();
     return 1;
 }
 
