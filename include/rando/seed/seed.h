@@ -3,6 +3,7 @@
 
 #include "dolphin/types.h"
 #include "rando/seed/seedData.h"
+#include <string>
 
 enum SeedEnabledFlag
 {
@@ -36,9 +37,14 @@ class EntryInfo
 
 class seedHeaderInfo_c {
 public:
-
+    seedHeaderInfo_c(const void* fileData) { memcpy(this, fileData, sizeof(seedHeaderInfo_c));}
     int _create();
     int _delete();
+
+    bool magicIsValid() const
+    {
+        return memcmp(&magic[0], "TPR", sizeof(magic)) == 0;
+    }
 
     const char* getSeedNamePtr() const { return &seedName[0]; }
     u16 getHeaderSize() const { return headerSize; }
@@ -66,11 +72,12 @@ public:
     const EntryInfo* getRegionFlagsInfoPtr() const { return &regionFlagsInfo; }
     const EntryInfo* getBossCheckInfoPtr() const { return &bossCheckInfo; }
     const EntryInfo* getHiddenSkillCheckInfoPtr() const { return &hiddenSkillCheckInfo; }
+    const EntryInfo* getPoeRewardInfoPtr() const { return &poeRewardInfo; }
     const EntryInfo* getBugRewardCheckInfoPtr() const { return &bugRewardCheckInfo; }
-    const EntryInfo* getSkyCharacterCheckInfoPtr() const { return &skyCharacterCheckInfo; }
     const EntryInfo* getEventItemCheckInfoPtr() const { return &eventItemCheckInfo; }
     const EntryInfo* getStartingItemCheckInfoPtr() const { return &startingItemInfo; }
     
+    /* 0x00 */ char magic[3]; // Not null terminated, should always be TPR
     /* 0x00 */ char seedName[33];
     /* 0x22 */ u16 headerSize; // Total size of the header in bytes
     /* 0x2A */ u16 dataSize;   // Total number of bytes of seed data
@@ -89,10 +96,10 @@ public:
 
     /* 0x3C */ EntryInfo eventFlagsInfo;  // eventFlags that need to be set for this seed
     /* 0x40 */ EntryInfo regionFlagsInfo; // regionFlags that need to be set, alternating
+    /* 0x5C */ EntryInfo poeRewardInfo;
     /* 0x58 */ EntryInfo bossCheckInfo;
     /* 0x5C */ EntryInfo hiddenSkillCheckInfo;
     /* 0x60 */ EntryInfo bugRewardCheckInfo;
-    /* 0x64 */ EntryInfo skyCharacterCheckInfo;
     /* 0x6C */ EntryInfo eventItemCheckInfo;
     /* 0x70 */ EntryInfo startingItemInfo;
     /* 0x8E */ u16 maloShopDonationAmount;
@@ -122,7 +129,7 @@ class seedInfo_c {
         const BossCheck* getBossChecksPtr() const { return m_BossChecks; }
         const HiddenSkillCheck* getHiddenSkillChecksPtr() const { return m_HiddenSkillChecks; }
         const BugReward* getBugRewardChecksPtr() const { return m_BugRewardChecks; }
-        const SkyCharacter* getSkyBookChecksPtr() const { return m_SkyBookChecks; }
+        const PoeReward* getPoeRewardsPtr() const { return m_PoeRewards; }
         const EventItem* getEventChecksPtr() const { return m_EventChecks; }
 
         const RawRGBTable* getRawRGBTablePtr() const { return m_RawRGBTable; }
@@ -158,7 +165,7 @@ class seedInfo_c {
         const BossCheck* m_BossChecks;
         const HiddenSkillCheck* m_HiddenSkillChecks;
         const BugReward* m_BugRewardChecks;
-        const SkyCharacter* m_SkyBookChecks;
+        const PoeReward* m_PoeRewards;
         const EventItem* m_EventChecks;
 
         const RawRGBTable* m_RawRGBTable;

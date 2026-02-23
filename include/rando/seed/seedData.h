@@ -83,20 +83,21 @@ class BugReward
     u8 padding;
 };
 
-class SkyCharacter
+class PoeReward
 {
     public:
-    SkyCharacter() {}
-    ~SkyCharacter() {}
+    PoeReward() {}
+    ~PoeReward() {}
 
-    u16 getStageIDX() const { return stageIDX; }
-    u8 getItemId() const { return itemID; }
-    u8 getRoomID() const { return roomID; }
+    u8 getStageIDX() const { return stageIDX; }
+    u8 getFlag() const { return flag; }
+    u8 getItem() const { return item; }
 
     private:
-    u16 stageIDX; // The stage that the Owl Statue is located.
-    u8 itemID;    // The item to be given.
-    u8 roomID;    // The room that the Owl Statue is located in.
+    u8 stageIDX;
+    u8 flag; // Flag used for identification
+    u8 item; // New item id
+    u8 padding;
 };
 
 // These items are given either during cutscenes or at a specific time.

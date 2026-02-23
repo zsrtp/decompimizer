@@ -129,6 +129,7 @@ public:
     bool getPlayerSubject();
     bool isBButtonShow(bool);
     s16 getButtonTimer();
+    f32 getZButtonAlpha() { return mButtonZAlpha;}
 
     virtual ~dMeter2Draw_c();
 

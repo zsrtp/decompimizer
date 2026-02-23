@@ -1,9 +1,11 @@
 #include "rando/rando.h"
 #include "rando/seed/seed.h"
+#include "rando/tools/tools.h"
 #include "rando/itemWheelMenu.h"
 #include "d/d_com_inf_game.h"
 #include "SSystem/SComponent/c_math.h"
 #include "d/actor/d_a_alink.h"
+#include "m_Do/m_Do_controller_pad.h"
 
 randoInfo_c g_randoInfo;
 
@@ -23,6 +25,18 @@ int randoInfo_c::execute() {
     if (!mInitialized) {
         return 0;
     }
+    const uint currentButtons = mDoCPd_c::getHold(PAD_1);
+
+    if (currentButtons != getLastButtonInput())
+    {
+        // Store before processing since we (potentially) un-set the padInfo values later
+        setLastButtonInput(currentButtons);
+    }
+
+    if (checkButtonComboAnalog(PAD_TRIGGER_R | PAD_BUTTON_Y))
+    {
+        handleQuickTransform();
+    }
 
     // Every 300 frames, set rupees to a random value
     mFrameCounter++;
@@ -32,6 +46,8 @@ int randoInfo_c::execute() {
         dComIfGs_setRupee(randomRupees);
     }
 
+    // Main code as ran, so update any previous frame variables.
+    setPrevFrameAnalogR(mDoCPd_c::getAnalogR(PAD_1));
     return 1;
 }
 
@@ -76,15 +92,6 @@ int randoInfo_c::getBugReward(u8 bugId)
     int item = replaceBugReward(bugId); we will probably build the functionality out instead of calling another func though.
     */
     return bugId;
-}
-
-u8 randoInfo_c::getSkyCharacterItem()
-{
-    /*
-    Once the infrastructure is built the code will look like the following:
-    u8 item = replaceCharacterReward(); we will probably build the functionality out instead of calling another func though.
-    */
-    return fpcNm_ITEM_ANCIENT_DOCUMENT;
 }
 
 u8 randoInfo_c::getPoeItem(u8 bitSw)

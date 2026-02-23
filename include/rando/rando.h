@@ -20,15 +20,20 @@ public:
     int draw();
     bool checkValidTransformAnywhere();
     int getBugReward(u8 bugId);
-    u8 getSkyCharacterItem();
     u8 getPoeItem(u8 bitSw);
     void handlePoeItem(u8 bitSw);
     u8 getGiveItemToPlayerStatus() { return eventItemStatus;}
     void setGiveItemToPlayerStatus(u8 status) { eventItemStatus = status;}
+    u16 getLastButtonInput() { return m_LastButtonInput;}
+    void setLastButtonInput(u16 buttonInput) { m_LastButtonInput = buttonInput;}
+    float getPrevFrameAnalogR() { return prevFrameAnalogR;}
+    void setPrevFrameAnalogR(float value) { prevFrameAnalogR = value;}
 
     bool mInitialized;
     u8 eventItemStatus;
     u16 mFrameCounter;
+    u16 m_LastButtonInput;
+    float prevFrameAnalogR;
 };
 
 extern randoInfo_c g_randoInfo;

@@ -295,6 +295,7 @@ public:
 
     void onEndResetStateFlg0(daMidna_ERFLG0 pFlg) { mEndResetStateFlg0 |= pFlg; }
     void onStateFlg0(daMidna_FLG0 i_flag) { mStateFlg0 |= i_flag; }
+    u32 getStateFlg0() { return mStateFlg0; }
     void offStateFlg0(daMidna_FLG0 i_flag) { mStateFlg0 &= ~i_flag; }
     void onStateFlg1(daMidna_FLG1 i_flag) { mStateFlg1 |= i_flag; }
     void offStateFlg1(daMidna_FLG1 i_flag) { mStateFlg1 &= ~i_flag; }

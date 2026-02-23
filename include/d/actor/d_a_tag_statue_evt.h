@@ -80,6 +80,11 @@ private:
     u8 getType() {
         return fopAcM_GetParamBit(this, 8, 4);
     }
+
+    // Custom function added for randomizer
+    u8 getItem() {
+        return fopAcM_GetParamBit(this, 24, 8);
+    }
 };
 
 #endif /* D_A_TAG_STATUE_EVT_H */

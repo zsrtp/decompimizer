@@ -12142,7 +12142,18 @@ BOOL daAlink_c::checkGroundSpecialMode() {
     if (mLinkAcch.ChkGroundHit() && !checkModeFlg(MODE_PLAYER_FLY) && !checkMagneBootsOn() &&
         checkEndResetFlg0(ERFLG0_FORCE_WOLF_CHANGE))
     {
-        return procCoMetamorphoseInit();
+        // If we are in Palace, we dont' want the fog to transform us unless we have the ability to transform.
+        if (checkStageName("D_MN08"))
+        {
+            if (dComIfGs_isEventBit(0xD04))
+            {
+                return procCoMetamorphoseInit();
+            }
+        }
+        else
+        {
+            return procCoMetamorphoseInit();
+        }
     }
 
     if (mLinkAcch.ChkGroundHit() && !checkModeFlg(MODE_PLAYER_FLY) && checkBoardRestart()) {
