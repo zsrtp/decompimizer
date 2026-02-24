@@ -306,3 +306,36 @@ int readFile(const char* file, bool allocFromHead, u8** dataOut)
     *dataOut = fileData;
     return fileSize;
 }
+
+GXColor getRainbowRGB(f32 amplitude)
+{
+    f32 angleIncrement = 1.0f; // Degrees per frame (Adjust for speed)
+    g_randoInfo.rainbowPhaseAngle += angleIncrement;
+    if (g_randoInfo.rainbowPhaseAngle >= 360.0f)
+    {
+        g_randoInfo.rainbowPhaseAngle -= 360.0f;
+    }
+    f32 phase_rad = g_randoInfo.rainbowPhaseAngle * M_PI / 180.0f;
+
+    u8 r_val = (u8)(amplitude * (sinf(phase_rad) + 1.0f) + 0.5f);
+    u8 g_val = (u8)(amplitude * (sinf(phase_rad + 2.0f * M_PI / 3.0f) + 1.0f) + 0.5f);
+    u8 b_val = (u8)(amplitude * (sinf(phase_rad + 4.0f * M_PI / 3.0f) + 1.0f));
+    GXColor rgbColor;
+    rgbColor.r = r_val;
+    rgbColor.g = g_val;
+    rgbColor.b = b_val;
+    rgbColor.a = 0xff;
+    return rgbColor;
+}
+
+void adjustMidnaHairColor()
+{
+    GXColor rgbColor = getRainbowRGB(127.5f);
+    if (daPy_py_c::getMidnaActor())
+    {
+        u8 tip_color = 200;
+        daPy_py_c::getMidnaActor()->setField_0x6e0Color(rgbColor.r, rgbColor.g, rgbColor.b, 0);
+        daPy_py_c::getMidnaActor()->setField_0x6e8Color((u8)(rgbColor.r / 10.f), (u8)(rgbColor.g / 10.f), (u8)(rgbColor.b / 10.f), 0);
+        daPy_py_c::getMidnaActor()->setField_0x6ecColor(tip_color, tip_color, tip_color, 0);
+    }
+}

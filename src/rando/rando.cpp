@@ -12,6 +12,7 @@ randoInfo_c g_randoInfo;
 int randoInfo_c::_create() {
     mFrameCounter = 0;
     mInitialized = true;
+    rainbowPhaseAngle = 0.f;
     g_customMenuRing._initialize();
     g_seedInfo._create();
     return 1;
@@ -45,6 +46,15 @@ int randoInfo_c::execute() {
         mFrameCounter = 0;
         u16 randomRupees = (u16)cM_rndF(1000.0f);
         dComIfGs_setRupee(randomRupees);
+    }
+
+    // Any custom functionality that relies on Link's actor being on a stage
+    if (daAlink_getAlinkActorClass())
+    {
+        if (g_seedInfo.isMidnaHairRainbow())
+        {
+            adjustMidnaHairColor();
+        }
     }
 
     // Main code as ran, so update any previous frame variables.

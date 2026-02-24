@@ -2,6 +2,7 @@
 #define TOOLS_H
 
 #include "dolphin/types.h"
+#include "dolphin/gx/GXStruct.h"
 #include "SSystem/SComponent/c_xyz.h"
 #include "SSystem/SComponent/c_sxyz.h"
 
@@ -13,5 +14,7 @@ int initCreatePlayerItem(uint item, uint flag, const cXyz* pos, int roomNo, cons
 bool checkButtonComboAnalog(uint combo);
 void handleQuickTransform();
 int readFile(const char* file, bool allocFromHead, u8** dataOut);
+GXColor getRainbowRGB(f32 amplitude);
+void adjustMidnaHairColor();
 
 #endif  // TOOLS_H

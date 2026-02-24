@@ -34,6 +34,7 @@ public:
     u16 mFrameCounter;
     u16 m_LastButtonInput;
     float prevFrameAnalogR;
+    f32 rainbowPhaseAngle;
 };
 
 extern randoInfo_c g_randoInfo;

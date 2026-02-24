@@ -64,6 +64,15 @@ public:
     u16 getSmallWalletMax() const { return smallWalletMax; }
     u16 getBigWalletMax() const { return bigWalletMax; }
     u16 getGiantWalletMax() const { return giantWalletMax; }
+    GXColorS10 getNormalColor() const {return l_normalColor; }
+    GXColor getNormalKColor() const { return l_normalKColor; }
+    GXColor getNormalKColor2() const { return l_normalKColor2; }
+    GXColorS10 getBigColor() const { return l_bigColor; }
+    GXColor getBigKColor() const { return l_bigKColor; }
+    GXColor getLNormalKColor() const { return l_lNormalKColor; }
+    GXColor getLNormalKColor2() const { return l_lNormalKColor2; }
+    GXColorS10 getLBigColor() const { return l_lBigColor; }
+    GXColor getLBigKColor2() const { return l_lBigKColor2; }
 
     //const EntryInfo* getVolatilePatchInfoPtr() const { return &volatilePatchInfo; }
     //const EntryInfo* getOneTimePatchInfoPtr() const { return &oneTimePatchInfo; }
@@ -120,6 +129,15 @@ public:
     /* 0x5E */ u16 bigWalletMax;
     /* 0x60 */ u16 giantWalletMax;
     /* 0x62 */ u16 padding2;
+    /* 0x64 */ GXColorS10 l_normalColor;
+    /* 0x6C */ GXColor l_normalKColor;
+    /* 0x70 */ GXColor l_normalKColor2;
+    /* 0x74 */ GXColorS10 l_bigColor;
+    /* 0x7C */ GXColor l_bigKColor;
+    /* 0x80 */ GXColor l_lNormalKColor;
+    /* 0x84 */ GXColor l_lNormalKColor2;
+    /* 0x88 */ GXColorS10 l_lBigColor;
+    /* 0x90 */ GXColor l_lBigKColor2;
 };
 
 class seedInfo_c {
