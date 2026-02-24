@@ -16,5 +16,6 @@ void handleQuickTransform();
 int readFile(const char* file, bool allocFromHead, u8** dataOut);
 GXColor getRainbowRGB(f32 amplitude);
 void adjustMidnaHairColor();
+int getStageID(const char* stage);
 
 #endif  // TOOLS_H

@@ -200,6 +200,7 @@ public:
     void setTime(f32 i_time) { mTime = i_time; }
     u16 getDate() const { return mDate; }
     void setDate(u16 i_date) { mDate = i_date; }
+    u8 getDarkClearLV() { return mDarkClearLevelFlag; }
 
 private:
     /* 0x00 */ OSTime mDateIpl;

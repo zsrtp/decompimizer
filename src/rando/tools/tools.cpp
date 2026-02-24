@@ -2,6 +2,7 @@
 #include "rando/tools/memory.h"
 #include "rando/rando.h"
 #include "rando/seed/seed.h"
+#include "rando/data/stages.h"
 #include "d/d_com_inf_game.h"
 #include "d/actor/d_a_alink.h"
 #include "d/actor/d_a_player.h"
@@ -338,4 +339,18 @@ void adjustMidnaHairColor()
         daPy_py_c::getMidnaActor()->setField_0x6e8Color((u8)(rgbColor.r / 10.f), (u8)(rgbColor.g / 10.f), (u8)(rgbColor.b / 10.f), 0);
         daPy_py_c::getMidnaActor()->setField_0x6ecColor(tip_color, tip_color, tip_color, 0);
     }
+}
+
+int getStageID(const char* stage)
+{
+    int loopCount = sizeof(allStages) / sizeof(allStages[0]);
+    for (int i = 0; i < loopCount; i++)
+    {
+        if (daAlink_c::checkStageName(allStages[i]))
+        {
+            return i;
+        }
+    }
+    // Didn't find the current stage for some reason
+    return -1;
 }
