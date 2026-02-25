@@ -51,6 +51,7 @@
 #include "d/actor/d_a_ni.h"
 #include "d/d_s_play.h"
 #include "rando/tools/tools.h"
+#include "rando/rando.h"
 
 #include "res/Object/Alink.h"
 
@@ -16162,6 +16163,7 @@ int daAlink_c::procFrontRoll() {
 }
 
 int daAlink_c::procFrontRollCrashInit() {
+    g_randoInfo.handleBonkDamage();
     commonProcInit(PROC_FRONT_ROLL_CRASH);
     setSingleAnime(ANM_ROLL_CRASH, 0.0f,
                    mpHIO->mFrontRoll.m.mCrashAnm.mStartFrame,

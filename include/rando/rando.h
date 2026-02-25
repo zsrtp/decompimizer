@@ -26,6 +26,7 @@ public:
     u8 getEventItem(u8 flag);
     void addItemToEventQueue(u8 item);
     void initGiveItemToPlayer();
+    void handleBonkDamage();
 
     u8 getGiveItemToPlayerStatus() { return eventItemStatus;}
     void setGiveItemToPlayerStatus(u8 status) { eventItemStatus = status;}

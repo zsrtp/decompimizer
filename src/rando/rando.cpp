@@ -236,3 +236,32 @@ void randoInfo_c::initGiveItemToPlayer()
         }
     }
 }
+
+void randoInfo_c::handleBonkDamage()
+{
+    if (!g_seedInfo.bonksDoDamage())
+    {
+        return;
+    }
+
+    u8 currentDamageMultiplier = g_seedInfo.getHeaderPtr()->getDamageMagnification();
+    u16 currentHealth = dComIfGs_getLife();
+    int newHealth;
+
+    if (dComIfGs_getTransformStatus())
+    {
+        // Wolf takes double damage
+        newHealth = currentHealth - (2 * currentDamageMultiplier);
+    }
+    else
+    {
+        newHealth = currentHealth - currentDamageMultiplier;
+    }
+
+    // Make sure an underflow doesn't occur
+    if (newHealth < 0)
+    {
+        newHealth = 0;
+    }
+    dComIfGs_setLife(newHealth);
+}
