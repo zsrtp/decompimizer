@@ -32,6 +32,8 @@
 #include "d/d_msg_object.h"
 #include "f_op/f_op_kankyo_mng.h"
 #include "m_Do/m_Do_controller_pad.h"
+#include "rando/tools/tools.h"
+#include "rando/seed/seed.h"
 
 // Forward declarations (for clangd)
 int daAlink_kandelaarModelCallBack(J3DJoint* param_0, int param_1);
@@ -6798,6 +6800,9 @@ void daAlink_c::setWolfLockDomeModel() {
     } else {
         field_0x0724->setFrame(0.0f);
     }
+
+    replaceEquipItemColor(g_seedInfo.getHeaderPtr()->getWolfDomeAttackWave1Color(), g_seedInfo.getHeaderPtr()->getWolfDomeAttackWave2Color());
+    g_randoInfo.isWolfDomeDrawn = true;
 }
 
 void daAlink_c::setWolfBallModel() {

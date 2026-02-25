@@ -16,7 +16,8 @@ enum SeedEnabledFlag
     RAINBOW_LANTERN,
     RAINBOW_MIDNA,
     RAINBOW_LIGHT_SWORD,
-    LIGHT_SWORD_ALWAYS_ON
+    LIGHT_SWORD_ALWAYS_ON,
+    RAINBOW_LOCK_DOME,
 };
 
 bool flagIsEnabled(const uint* bitfieldPtr, uint totalFlags, uint flag);
@@ -73,6 +74,10 @@ public:
     GXColor getLNormalKColor2() const { return l_lNormalKColor2; }
     GXColorS10 getLBigColor() const { return l_lBigColor; }
     GXColor getLBigKColor2() const { return l_lBigKColor2; }
+    GXColor getWolfDomeAttackWave1Color() const { return wolfDomeAttackWave1Color; }
+    GXColor getWolfDomeAttackWave2Color() const { return wolfDomeAttackWave2Color; }
+    const u8* getWolfDomeAttackWave1ColorPtr() const { return (u8*)&wolfDomeAttackWave1Color; }
+    const u8* getWolfDomeAttackWave2ColorPtr() const { return (u8*)&wolfDomeAttackWave2Color; }
 
     //const EntryInfo* getVolatilePatchInfoPtr() const { return &volatilePatchInfo; }
     //const EntryInfo* getOneTimePatchInfoPtr() const { return &oneTimePatchInfo; }
@@ -138,6 +143,8 @@ public:
     /* 0x84 */ GXColor l_lNormalKColor2;
     /* 0x88 */ GXColorS10 l_lBigColor;
     /* 0x90 */ GXColor l_lBigKColor2;
+    /* 0x94 */ GXColor wolfDomeAttackWave1Color;
+    /* 0x98 */ GXColor wolfDomeAttackWave2Color;
 };
 
 class seedInfo_c {
@@ -168,6 +175,7 @@ class seedInfo_c {
         bool isMidnaHairRainbow() const { return flagBitfieldFlagIsEnabled(RAINBOW_MIDNA); }
         bool isLightSwordRainbow() const { return flagBitfieldFlagIsEnabled(RAINBOW_LIGHT_SWORD); }
         bool isLightSwordAlwaysOn() const { return flagBitfieldFlagIsEnabled(LIGHT_SWORD_ALWAYS_ON); }
+        bool isWolfDomeRainbow() const { return flagBitfieldFlagIsEnabled(RAINBOW_LOCK_DOME); }
 
         bool spinnerSpeedIsIncreased() const
         {

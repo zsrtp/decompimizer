@@ -17,5 +17,7 @@ int readFile(const char* file, bool allocFromHead, u8** dataOut);
 GXColor getRainbowRGB(f32 amplitude);
 void adjustMidnaHairColor();
 int getStageID(const char* stage);
+void replaceEquipItemColor(GXColor wave1RGBA, GXColor wave2RGBA);
+void replaceEquipItemColor();
 
 #endif  // TOOLS_H

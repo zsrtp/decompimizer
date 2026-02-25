@@ -14674,6 +14674,10 @@ void daAlink_c::deleteEquipItem(BOOL i_isPlaySound, BOOL i_isDeleteKantera) {
     field_0x071c = NULL;
     field_0x0720 = NULL;
     field_0x0724 = NULL;
+    if (g_randoInfo.isWolfDomeDrawn)
+    {
+        g_randoInfo.isWolfDomeDrawn = false;
+    }
     field_0x0728 = NULL;
     field_0x072c = NULL;
     mpItemModelData = NULL;

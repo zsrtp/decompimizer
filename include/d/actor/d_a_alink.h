@@ -7746,6 +7746,8 @@ public:
 
     u16 getReadyItem() { return dComIfGp_getSelectItem(mSelectItemId); }
 
+    s16** getDomeLockChromaTable() { return &field_0x0724->mAnmCRegDataR;}
+
     static u32 getOtherHeapSize() { return 0xF0A60; }
 
     static daAlink_BckData const m_mainBckShield[20];

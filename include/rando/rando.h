@@ -35,6 +35,7 @@ public:
     u16 m_LastButtonInput;
     float prevFrameAnalogR;
     f32 rainbowPhaseAngle;
+    bool isWolfDomeDrawn;
 };
 
 extern randoInfo_c g_randoInfo;

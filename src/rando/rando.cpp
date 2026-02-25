@@ -12,6 +12,7 @@ randoInfo_c g_randoInfo;
 int randoInfo_c::_create() {
     mFrameCounter = 0;
     mInitialized = true;
+    isWolfDomeDrawn = false;
     rainbowPhaseAngle = 0.f;
     g_customMenuRing._initialize();
     g_seedInfo._create();
@@ -54,6 +55,10 @@ int randoInfo_c::execute() {
         if (g_seedInfo.isMidnaHairRainbow())
         {
             adjustMidnaHairColor();
+        }
+        if (g_seedInfo.isWolfDomeRainbow() && daAlink_getAlinkActorClass()->checkWolfLockAttackChargeState() && isWolfDomeDrawn)
+        {
+            replaceEquipItemColor();
         }
     }
 

@@ -341,6 +341,49 @@ void adjustMidnaHairColor()
     }
 }
 
+void replaceEquipItemColor(GXColor wave1RGBA, GXColor wave2RGBA)
+{
+    const u8 domeWave1RGBA[3] = {wave1RGBA.r, wave1RGBA.g, wave1RGBA.b};
+    const u8 domeWave2RGBA[3] = {wave2RGBA.r, wave2RGBA.g, wave2RGBA.b};
+    u8** chromaRegisterTable = (u8**)(daAlink_getAlinkActorClass()->getDomeLockChromaTable());
+
+    for (int i = 0; i < 3; i++)
+    {
+        u8* currentTable = chromaRegisterTable[i];
+        const u8 currentWave1Color = domeWave1RGBA[i];
+        const u8 currentWave2Color = domeWave2RGBA[i];
+        const u8 currentBaseColor = (currentWave1Color + currentWave2Color) / 2;
+
+        currentTable[0x3] = currentBaseColor;  // Set Alpha for the ring base
+        currentTable[0x13] = currentWave1Color; // Set Alpha for ring wave 1
+        currentTable[0x23] = currentWave2Color; // Set Alpha for ring wave 2
+        currentTable[0xB] = currentBaseColor;  // Set Alpha for darkworld ring base
+        currentTable[0x1B] = currentWave1Color; // Set Alpha for darkworld ring wave 1
+        currentTable[0x2B] = currentWave2Color; // Set Alpha for darkworld ring wave 2
+    }
+    
+}
+
+void replaceEquipItemColor()
+{
+    GXColor rgbColor = getRainbowRGB(127.5f);
+    const u8 domeWaveRGBA[3] = {rgbColor.r, rgbColor.g, rgbColor.b};
+    u8** chromaRegisterTable = (u8**)(daAlink_getAlinkActorClass()->getDomeLockChromaTable());
+
+    for (int i = 0; i < 3; i++)
+    {
+        u8* currentTable = chromaRegisterTable[i];
+        const u8 currentColor = domeWaveRGBA[i];
+
+        currentTable[0x3] = currentColor;  // Set Alpha for the ring base
+        currentTable[0x13] = currentColor; // Set Alpha for ring wave 1
+        currentTable[0x23] = currentColor; // Set Alpha for ring wave 2
+        currentTable[0xB] = currentColor;  // Set Alpha for darkworld ring base
+        currentTable[0x1B] = currentColor; // Set Alpha for darkworld ring wave 1
+    }
+      
+}
+
 int getStageID(const char* stage)
 {
     int loopCount = sizeof(allStages) / sizeof(allStages[0]);
