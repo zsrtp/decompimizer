@@ -8,6 +8,7 @@
 #include "d/actor/d_a_horse.h"
 #include "d/actor/d_a_crod.h"
 #include "d/d_msg_object.h"
+#include "rando/seed/seed.h"
 
 #if DEBUG
 #include "d/d_s_menu.h"
@@ -160,7 +161,7 @@ f32 daAlink_c::damageMagnification(BOOL i_checkZoraMag, int param_1) {
         return 10.0f * base_mag;
     }
 
-    return base_mag;
+    return (base_mag * g_seedInfo.getHeaderPtr()->getDamageMagnification());
 }
 
 int daAlink_c::setDamagePoint(int i_dmgAmount, BOOL i_checkZoraMag, BOOL i_setDmgTimer, int param_3) {
