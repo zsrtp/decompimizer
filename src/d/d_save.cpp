@@ -1177,13 +1177,6 @@ void dSv_memBit_c::onDungeonItem(int i_no) {
                     // Check if we have completed enough dungeons to unlock the BK check.
                     randoPtr->checkSetHCBkFlag(rando::HC_BK_Dungeons, numDungeons);
             */
-            if (i_no == 0x13) // Stallord
-            {
-                /*
-                const uint32_t agDungeonReward = randoPtr->getEventItem(rando::customItems::Mirror_Piece_1);
-                randoPtr->addItemToEventQueue(agDungeonReward);
-                */
-            }
             break;
         }
     }

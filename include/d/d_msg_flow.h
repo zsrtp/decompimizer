@@ -57,6 +57,7 @@ public:
     int checkEventRender(int*, int*, int*, int*);
     void remove();
     u16 getEventId(int*);
+    u16 getEventId();
     u32 getMsgNo();
     u32 getNowMsgNo();
     msg_class* getMsg();

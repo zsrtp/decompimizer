@@ -17,6 +17,7 @@
 #include "SSystem/SComponent/c_math.h"
 #include "c/c_damagereaction.h"
 #include "f_op/f_op_actor_enemy.h"
+#include "rando/rando.h"
 #include "Z2AudioLib/Z2Instances.h"
 
 enum daB_DS_Joint {
@@ -4084,6 +4085,9 @@ void daB_DS_c::executeBattle2Dead() {
             camera->mCamera.SetTrimSize(0);
             dComIfGp_event_reset();
             dComIfGs_onStageBossEnemy(0x13);
+            // Give the boss item
+            u8 agDungeonReward = g_randoInfo.getEventItem(fpcNm_ITEM_MIRROR_PIECE_1);
+            g_randoInfo.addItemToEventQueue(agDungeonReward);
             /* dSv_event_flag_c::F_0265 - Arbiter's Grounds - Arbiter's Grounds clear */
             dComIfGs_onEventBit(0x2010);
             fopAcM_delete(this);

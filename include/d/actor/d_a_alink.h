@@ -7750,6 +7750,8 @@ public:
 
     static u32 getOtherHeapSize() { return 0xF0A60; }
 
+    u16 getEventId() { return mMsgFlow.getEventId(); }
+
     static daAlink_BckData const m_mainBckShield[20];
     static daAlink_BckData const m_mainBckSword[5];
     static daAlink_BckData const m_mainBckFishing[28];

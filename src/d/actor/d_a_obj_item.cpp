@@ -760,9 +760,10 @@ void daItem_c::mode_wait() {
     case fpcNm_ITEM_LIGHT_ARROW:
         itemActionForArrow();
         break;
-    case fpcNm_ITEM_BOOMERANG:
+    /*case fpcNm_ITEM_BOOMERANG:
         itemActionForBoomerang();
         break;
+    */
     case fpcNm_ITEM_GREEN_RUPEE:
     case fpcNm_ITEM_BLUE_RUPEE:
     case fpcNm_ITEM_YELLOW_RUPEE:
@@ -830,7 +831,7 @@ void daItem_c::itemGetNextExecute() {
         BOOL haveItem = false;
 
         switch (m_itemNo) {
-        case fpcNm_ITEM_HEART:
+        /*case fpcNm_ITEM_HEART:
         case fpcNm_ITEM_GREEN_RUPEE:
         case fpcNm_ITEM_ARROW_10:
         case fpcNm_ITEM_ARROW_20:
@@ -838,7 +839,7 @@ void daItem_c::itemGetNextExecute() {
         case fpcNm_ITEM_ARROW_1:
             procInitSimpleGetDemo();
             itemGet();
-            break;
+            break;*/
         case fpcNm_ITEM_BLUE_RUPEE:
         case fpcNm_ITEM_YELLOW_RUPEE:
         case fpcNm_ITEM_RED_RUPEE:
@@ -865,12 +866,16 @@ void daItem_c::itemGetNextExecute() {
                 itemGet();
             }
             break;
-        case fpcNm_ITEM_BOOMERANG:
-            procInitGetDemoEvent();
-            break;
+        //case fpcNm_ITEM_BOOMERANG:
+        //    procInitGetDemoEvent();
+        //    break;
         default:
             // "[daItem_c] Get process not defined[%d]\n"
-            OS_REPORT_ERROR("[daItem_c]ゲット処理が定義されていません[%d]\n", m_itemNo);
+            //OS_REPORT_ERROR("[daItem_c]ゲット処理が定義されていません[%d]\n", m_itemNo);
+            // All non rupee/ammo items are given by default
+            procInitSimpleGetDemo();
+            itemGet();
+            break;
         }
 
         fopAcM_onItem(this, mItemBitNo);
@@ -915,7 +920,7 @@ void daItem_c::itemGet() {
         mDoAud_seStart(Z2SE_RED_LUPY_GET, NULL, 0, 0);
         execItemGet(m_itemNo);
         break;
-    case fpcNm_ITEM_BOOMERANG:
+    /*case fpcNm_ITEM_BOOMERANG:
         break;
     case fpcNm_ITEM_ARROW_10:
     case fpcNm_ITEM_ARROW_20:
@@ -923,10 +928,13 @@ void daItem_c::itemGet() {
     case fpcNm_ITEM_ARROW_1:
     case fpcNm_ITEM_PACHINKO_SHOT:
         mDoAud_seStart(Z2SE_CONSUMP_ITEM_GET, NULL, 0, 0);
-        execItemGet(m_itemNo);
+        execItemGet(m_itemNo);*/
     default:
         // "[daItem_c] Get process not defined[%d]\n"
-        OS_REPORT_ERROR("[daItem_c]ゲット処理が定義されていません[%d]\n", m_itemNo);
+        //OS_REPORT_ERROR("[daItem_c]ゲット処理が定義されていません[%d]\n", m_itemNo);
+        // Give all items that don't have a special case.
+        mDoAud_seStart(Z2SE_CONSUMP_ITEM_GET, NULL, 0, 0);
+        execItemGet(m_itemNo);
         break;
     }
 }

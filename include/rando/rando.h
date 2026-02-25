@@ -1,5 +1,6 @@
 #ifndef RANDO_H
 #define RANDO_H
+#define EVENT_ITEM_QUEUE_SIZE 0x10
 
 #include "dolphin/types.h"
 
@@ -22,6 +23,10 @@ public:
     int getBugReward(u8 bugId);
     u8 getPoeItem(u8 bitSw);
     void handlePoeItem(u8 bitSw);
+    u8 getEventItem(u8 flag);
+    void addItemToEventQueue(u8 item);
+    void initGiveItemToPlayer();
+
     u8 getGiveItemToPlayerStatus() { return eventItemStatus;}
     void setGiveItemToPlayerStatus(u8 status) { eventItemStatus = status;}
     u16 getLastButtonInput() { return m_LastButtonInput;}
@@ -36,6 +41,7 @@ public:
     float prevFrameAnalogR;
     f32 rainbowPhaseAngle;
     bool isWolfDomeDrawn;
+    u8 eventItemQueue[EVENT_ITEM_QUEUE_SIZE];
 };
 
 extern randoInfo_c g_randoInfo;

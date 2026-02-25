@@ -256,6 +256,10 @@ u16 dMsgFlow_c::getEventId(int* oItemId_p) {
     return mEventId;
 }
 
+u16 dMsgFlow_c::getEventId() {
+    return mEventId;
+}
+
 u32 dMsgFlow_c::getMsgNo() {
     return mMsgNo;
 }
