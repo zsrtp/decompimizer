@@ -419,7 +419,6 @@ static int phase_1(dScnPly_c* i_this) {
         // dComIfGs_onItemFirstBit(fpcNm_ITEM_HORSE_FLUTE);
         // dComIfGs_setItem(SLOT_21, fpcNm_ITEM_HORSE_FLUTE);
         u8 itemToGive = g_randoInfo.getEventItem(fpcNm_ITEM_HORSE_FLUTE);
-        g_randoInfo.addItemToEventQueue(itemToGive);
         execItemGet(fpcNm_ITEM_HORSE_FLUTE);
         offWarashibeItem(fpcNm_ITEM_IRIAS_PENDANT);
     }
