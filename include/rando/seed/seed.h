@@ -79,6 +79,7 @@ public:
     GXColor getWolfDomeAttackWave2Color() const { return wolfDomeAttackWave2Color; }
     const u8* getWolfDomeAttackWave1ColorPtr() const { return (u8*)&wolfDomeAttackWave1Color; }
     const u8* getWolfDomeAttackWave2ColorPtr() const { return (u8*)&wolfDomeAttackWave2Color; }
+    GXColor getLightSwordGlowColor() const { return lightSwordGlowColor; }
 
     //const EntryInfo* getVolatilePatchInfoPtr() const { return &volatilePatchInfo; }
     //const EntryInfo* getOneTimePatchInfoPtr() const { return &oneTimePatchInfo; }
@@ -146,6 +147,7 @@ public:
     /* 0x90 */ GXColor l_lBigKColor2;
     /* 0x94 */ GXColor wolfDomeAttackWave1Color;
     /* 0x98 */ GXColor wolfDomeAttackWave2Color;
+    /* 0x9C */ GXColor lightSwordGlowColor;
 };
 
 class seedInfo_c {
