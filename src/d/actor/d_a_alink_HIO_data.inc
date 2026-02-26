@@ -1113,8 +1113,8 @@ const daAlinkHIO_wallFall_c1 daAlinkHIO_wallFall_c0::m = {
 };
 
 const daAlinkHIO_wallMove_c1 daAlinkHIO_wallMove_c0::m = {
-    0.8f,
-	1.1f,
+    2.0f,
+	2.0f,
 	3.0f,
 	2.0f,
 	3.0f,
@@ -2018,23 +2018,23 @@ const daAlinkHIO_ladder_c1 daAlinkHIO_ladder_c0::m = {
         2.0f,
         48.0f,
 	},
-    0.8f,
+    1.8f, // ladderClimbInitSpeed
     5.0f,
-    1.0f,
+    1.765f, // ladderReachTopClimbUpSpeed
     0.0f,
-    1.0f,
+    1.8f, // ladderTopStartClimbDownSpeed
     5.0f,
-    1.2f,
+    1.8f, // LadderBottomGetOffSpeed
     0.0f,
     0.4f,
-    0.9f,
+    1.575f, // ladderClimbSpeed
     2.0f,
     18.0f,
     40.0f,
     0.8f,
-    1.15f,
+    2.0f, // wallClimbHorizontalSpeed
     0.9f,
-    1.35f,
+    1.875f, // wallClimbVerticalSpeed
     80.0f,
 };
 
