@@ -339,9 +339,9 @@ int daNpc_Seira2_c::ctrlJointCallBack(J3DJoint* param_0, int param_1) {
 }
 
 u8 daNpc_Seira2_c::getType() {
-    if (dComIfGs_isDarkClearLV(0)) {
+    /*if (dComIfGs_isDarkClearLV(0)) {
         return 3;
-    }
+    }*/
 
     if (daNpcT_chkEvtBit(0x3D) || daNpcT_chkEvtBit(0x316)) {
         return 3;
@@ -369,9 +369,9 @@ u8 daNpc_Seira2_c::getMaxNumItem() {
 
 u8 daNpc_Seira2_c::checkBottle() {
     u8 prm = fopAcM_GetParam(this);
-    if (dComIfGs_isDarkClearLV(0)) {
+    /*if (dComIfGs_isDarkClearLV(0)) {
         return false;
-    }
+    }*/
 
     switch (prm) {
         case 0:
