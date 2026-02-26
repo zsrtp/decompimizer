@@ -1656,6 +1656,12 @@ void Z2SeqMgr::processBgmFramework() {
 }
 
 bool Z2SeqMgr::checkBgmIDPlaying(u32 bgmID) {
+    
+    // If Game Over sfx is playing, return false.
+    if (bgmID == 0x01000013)
+    {
+        return false;
+    }
     if (getMainBgmID() == bgmID) {
         return true;
     }
