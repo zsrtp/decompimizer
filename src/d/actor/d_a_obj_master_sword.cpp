@@ -9,6 +9,7 @@
 #include "d/actor/d_a_player.h"
 #include "d/d_com_inf_game.h"
 #include "d/d_meter2_info.h"
+#include "rando/rando.h"
 
 daObjMasterSword_Attr_c const daObjMasterSword_c::mAttr = {1.0f};
 
@@ -45,17 +46,12 @@ void daObjMasterSword_c::executeWait() {
     }
 
     if (fopAcM_checkCarryNow(this)) {
-        // Copypasta-ing the current rando code here to come back and clean up later.
-        /*
-        // Give the player the Master Sword replacement
-        rando::Randomizer* randoPtr = rando::gRandomizer;
-        uint32_t itemToGive = randoPtr->getEventItem(items::Master_Sword);
-        randoPtr->addItemToEventQueue(itemToGive);
 
-        // Give the player the Shadow Crystal replacement
-        itemToGive = randoPtr->getEventItem(items::Shadow_Crystal);
-        randoPtr->addItemToEventQueue(itemToGive);
-        */
+        u8 itemToGive = g_randoInfo.getEventItem(fpcNm_ITEM_MASTER_SWORD);
+        g_randoInfo.addItemToEventQueue(itemToGive);
+
+        itemToGive = g_randoInfo.getEventItem(fpcNm_ITEM_MAGIC_LV1);
+        g_randoInfo.addItemToEventQueue(itemToGive);
         // Set the necessary flags to de-spawn the MS and set the save file event flag.
         dComIfGs_onTmpBit(0x820);
         dComIfGs_onEventBit(0x2120);

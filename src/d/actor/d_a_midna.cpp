@@ -15,6 +15,7 @@
 #include "d/d_s_play.h"
 #include "d/d_debug_viewer.h"
 #include "rando/rando.h"
+#include "rando/seed/seed.h"
 
 static f32 dummy_lit_3777(int idx, u8 foo) {
     Vec dummy_vec = {0.0f, 0.0f, 0.0f};
@@ -31,23 +32,23 @@ static Vec const l_eyeOffset = { 16.0f, -10.400001f, 0.0f };
 
 static Vec const l_headCenterOffset = { 0.0f, -10.400001f, 0.0f };
 
-static GXColorS10 const l_normalColor = { 0x50, 0x00, 0x00, 0x00 }; // glowWorldInactive
+// static GXColorS10 const l_normalColor = { 0x50, 0x00, 0x00, 0x00 }; // glowWorldInactive
 
-static GXColor const l_normalKColor = { 0xB4, 0x87, 0x00, 0x00 }; // baseDarkWorldInactive
+// static GXColor const l_normalKColor = { 0xB4, 0x87, 0x00, 0x00 }; // baseDarkWorldInactive
 
-static GXColor const l_normalKColor2 = { 0x00, 0xC3, 0xC3, 0x00 }; // tipsDarkWorldAnyActive
+// static GXColor const l_normalKColor2 = { 0x00, 0xC3, 0xC3, 0x00 }; // tipsDarkWorldAnyActive
 
-static GXColorS10 const l_bigColor = { 0xFF, 0x64, 0x78, 0x00 }; // glowDarkWorldActive
+// static GXColorS10 const l_bigColor = { 0xFF, 0x64, 0x78, 0x00 }; // glowDarkWorldActive
 
-static GXColor const l_bigKColor = { 0x1E, 0x00, 0x00, 0x00 }; // baseAnyWorldActive
+// static GXColor const l_bigKColor = { 0x1E, 0x00, 0x00, 0x00 }; // baseAnyWorldActive
 
-static GXColor const l_lNormalKColor = { 0xFF, 0xDC, 0x00, 0x00 }; // baseLightWorldInactive
+// static GXColor const l_lNormalKColor = { 0xFF, 0xDC, 0x00, 0x00 }; // baseLightWorldInactive
 
-static GXColor const l_lNormalKColor2 = { 0x00, 0xC3, 0xEB, 0x00 }; // tipsLightWorldInactive 
+// static GXColor const l_lNormalKColor2 = { 0x00, 0xC3, 0xEB, 0x00 }; // tipsLightWorldInactive 
 
-static GXColorS10 const l_lBigColor = { 0xFF, 0x78, 0x00, 0x00 }; // glowLightWorldActive
+// static GXColorS10 const l_lBigColor = { 0xFF, 0x78, 0x00, 0x00 }; // glowLightWorldActive
 
-static GXColor const l_lBigKColor2 = { 0xAA, 0xFF, 0xC3, 0x00 }; // tipsLightWorldActive
+// static GXColor const l_lBigKColor2 = { 0xAA, 0xFF, 0xC3, 0x00 }; // tipsLightWorldActive
 
 static Vec const l_hairScale[5] = {
     {0.3f, 0.8f, 0.7f},
@@ -633,28 +634,28 @@ cPhs_Step daMidna_c::create() {
         mpMorf->modelCalc();
         setBodyPartMatrix();
         
-        field_0x6e0.r = l_normalColor.r;
-        field_0x6e0.g = l_normalColor.g;
-        field_0x6e0.b = l_normalColor.b;
-        field_0x6e0.a = l_normalColor.a;
+        field_0x6e0.r = g_seedInfo.getHeaderPtr()->getNormalColor().r;
+        field_0x6e0.g = g_seedInfo.getHeaderPtr()->getNormalColor().g;
+        field_0x6e0.b = g_seedInfo.getHeaderPtr()->getNormalColor().b;
+        field_0x6e0.a = g_seedInfo.getHeaderPtr()->getNormalColor().a;
         if (dKy_darkworld_check()) {
-            field_0x6e8.r = l_normalKColor.r;
-            field_0x6e8.g = l_normalKColor.g;
-            field_0x6e8.b = l_normalKColor.b;
-            field_0x6e8.a = l_normalKColor.a;
-            field_0x6ec.r = l_normalKColor2.r;
-            field_0x6ec.g = l_normalKColor2.g;
-            field_0x6ec.b = l_normalKColor2.b;
-            field_0x6ec.a = l_normalKColor2.a;
+            field_0x6e8.r = g_seedInfo.getHeaderPtr()->getNormalKColor().r;
+            field_0x6e8.g = g_seedInfo.getHeaderPtr()->getNormalKColor().g;
+            field_0x6e8.b = g_seedInfo.getHeaderPtr()->getNormalKColor().b;
+            field_0x6e8.a = g_seedInfo.getHeaderPtr()->getNormalKColor().a;
+            field_0x6ec.r = g_seedInfo.getHeaderPtr()->getNormalKColor2().r;
+            field_0x6ec.g = g_seedInfo.getHeaderPtr()->getNormalKColor2().g;
+            field_0x6ec.b = g_seedInfo.getHeaderPtr()->getNormalKColor2().b;
+            field_0x6ec.a = g_seedInfo.getHeaderPtr()->getNormalKColor2().a;
         } else {
-            field_0x6e8.r = l_lNormalKColor.r;
-            field_0x6e8.g = l_lNormalKColor.g;
-            field_0x6e8.b = l_lNormalKColor.b;
-            field_0x6e8.a = l_lNormalKColor.a;
-            field_0x6ec.r = l_lNormalKColor2.r;
-            field_0x6ec.g = l_lNormalKColor2.g;
-            field_0x6ec.b = l_lNormalKColor2.b;
-            field_0x6ec.a = l_lNormalKColor2.a;
+            field_0x6e8.r = g_seedInfo.getHeaderPtr()->getLNormalKColor().r;
+            field_0x6e8.g = g_seedInfo.getHeaderPtr()->getLNormalKColor().g;
+            field_0x6e8.b = g_seedInfo.getHeaderPtr()->getLNormalKColor().b;
+            field_0x6e8.a = g_seedInfo.getHeaderPtr()->getLNormalKColor().a;
+            field_0x6ec.r = g_seedInfo.getHeaderPtr()->getLNormalKColor2().r;
+            field_0x6ec.g = g_seedInfo.getHeaderPtr()->getLNormalKColor2().g;
+            field_0x6ec.b = g_seedInfo.getHeaderPtr()->getLNormalKColor2().b;
+            field_0x6ec.a = g_seedInfo.getHeaderPtr()->getLNormalKColor2().a;
         }
 
         model = mpShadowModel;
@@ -1015,24 +1016,24 @@ void daMidna_c::setBodyPartMatrix() {
                 modelData->getMaterialNodePointer(1)->getShape()->show();
             }
 
-            kcolor1 = &l_bigKColor;
+            kcolor1 = &g_seedInfo.getHeaderPtr()->getBigKColor();
             if (dKy_darkworld_check()) {
-                color = &l_bigColor;
-                kcolor2 = &l_normalKColor2;
+                color = &g_seedInfo.getHeaderPtr()->getBigColor();
+                kcolor2 = &g_seedInfo.getHeaderPtr()->getNormalKColor2();
             } else {
-                color = &l_lBigColor;
-                kcolor2 = &l_lBigKColor2;
+                color = &g_seedInfo.getHeaderPtr()->getLBigColor();
+                kcolor2 = &g_seedInfo.getHeaderPtr()->getLBigKColor2();
             }
         } else {
             modelData->getMaterialNodePointer(0)->getShape()->show();
 
-            color = &l_normalColor;
+            color = &g_seedInfo.getHeaderPtr()->getNormalColor();
             if (dKy_darkworld_check()) {
-                kcolor1 = &l_normalKColor;
-                kcolor2 = &l_normalKColor2;
+                kcolor1 = &g_seedInfo.getHeaderPtr()->getNormalKColor();
+                kcolor2 = &g_seedInfo.getHeaderPtr()->getNormalKColor2();
             } else {
-                kcolor1 = &l_lNormalKColor;
-                kcolor2 = &l_lNormalKColor2;
+                kcolor1 = &g_seedInfo.getHeaderPtr()->getLNormalKColor();
+                kcolor2 = &g_seedInfo.getHeaderPtr()->getLNormalKColor2();
             }
         }
 
@@ -3372,11 +3373,11 @@ int daMidna_c::draw() {
             tevStr.TevColor = link->tevStr.TevColor;
             field_0x6e0 = link->tevStr.TevColor;
             if (dKy_darkworld_check()) {
-                field_0x6e8 = l_normalKColor;
-                field_0x6ec = l_normalKColor2;
+                field_0x6e8 = g_seedInfo.getHeaderPtr()->getNormalKColor();
+                field_0x6ec = g_seedInfo.getHeaderPtr()->getNormalKColor2();
             } else {
-                field_0x6e8 = l_lNormalKColor;
-                field_0x6ec = l_lNormalKColor2;
+                field_0x6e8 = g_seedInfo.getHeaderPtr()->getLNormalKColor();
+                field_0x6ec = g_seedInfo.getHeaderPtr()->getLNormalKColor2();
             }
         }
 

@@ -295,6 +295,7 @@ public:
 
     void onEndResetStateFlg0(daMidna_ERFLG0 pFlg) { mEndResetStateFlg0 |= pFlg; }
     void onStateFlg0(daMidna_FLG0 i_flag) { mStateFlg0 |= i_flag; }
+    u32 getStateFlg0() { return mStateFlg0; }
     void offStateFlg0(daMidna_FLG0 i_flag) { mStateFlg0 &= ~i_flag; }
     void onStateFlg1(daMidna_FLG1 i_flag) { mStateFlg1 |= i_flag; }
     void offStateFlg1(daMidna_FLG1 i_flag) { mStateFlg1 &= ~i_flag; }
@@ -315,6 +316,26 @@ public:
     BOOL checkWolfNoPos() const { return checkStateFlg0(FLG0_WOLF_NO_POS); }
     int checkMetamorphoseEnable() { return (this->*mpFunc)(); }
     u32 checkShadowModelDrawDemoForce() const { return checkStateFlg1(FLG1_SHADOW_MODEL_DRAW_DEMO_FORCE); }
+    void setField_0x6e0Color(u8 r, u8 g, u8 b, u8 a) { 
+        field_0x6e0.r = r;
+        field_0x6e0.g = g;
+        field_0x6e0.b = b;
+        field_0x6e0.a = a;
+    }
+
+    void setField_0x6e8Color(u8 r, u8 g, u8 b, u8 a) { 
+        field_0x6e8.r = r;
+        field_0x6e8.g = g;
+        field_0x6e8.b = b;
+        field_0x6e8.a = a;
+    }
+
+    void setField_0x6ecColor(u8 r, u8 g, u8 b, u8 a) { 
+        field_0x6ec.r = r;
+        field_0x6ec.g = g;
+        field_0x6ec.b = b;
+        field_0x6ec.a = a;
+    }
     
     void setForceNeckAimPos(const cXyz& i_pos) {
         onStateFlg0(FLG0_FORCE_NECK_AIM);

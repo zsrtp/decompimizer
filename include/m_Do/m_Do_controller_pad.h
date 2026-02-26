@@ -18,6 +18,7 @@ public:
     static interface_of_controller_pad& getCpadInfo(u32 pad) { return m_cpadInfo[pad]; }
     static JUTGamePad* getGamePad(u32 pad) { return m_gamePad[pad]; }
     static u32 getTrig(u32 pad) { return getCpadInfo(pad).mPressedButtonFlags; }
+    static void setTrig(u32 pad, u32 value) { getCpadInfo(pad).mPressedButtonFlags = value; }
     static u32 getTrigLockL(u32 pad) { return getCpadInfo(pad).mTrigLockL; }
     static u32 getTrigLockR(u32 pad) { return getCpadInfo(pad).mTrigLockR; }
     static u32 getTrigUp(u32 pad) { return getTrig(pad) & PAD_BUTTON_UP; }

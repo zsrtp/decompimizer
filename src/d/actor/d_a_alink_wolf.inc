@@ -32,6 +32,9 @@
 #include "d/d_msg_object.h"
 #include "f_op/f_op_kankyo_mng.h"
 #include "m_Do/m_Do_controller_pad.h"
+#include "rando/tools/tools.h"
+#include "rando/seed/seed.h"
+#include "rando/rando.h"
 
 // Forward declarations (for clangd)
 int daAlink_kandelaarModelCallBack(J3DJoint* param_0, int param_1);
@@ -2663,6 +2666,7 @@ int daAlink_c::procWolfDash() {
 }
 
 int daAlink_c::procWolfDashReverseInit(int param_0) {
+    g_randoInfo.handleBonkDamage();
     commonProcInit(PROC_WOLF_DASH_REVERSE);
     setSingleAnimeWolf(WANM_ATTACK_RECOIL_GROUND, mpHIO->mWolf.mWlMove.m.mDashReboundAnm.mSpeed,
                        mpHIO->mWolf.mWlMove.m.mDashReboundAnm.mStartFrame, 5,
@@ -6798,6 +6802,9 @@ void daAlink_c::setWolfLockDomeModel() {
     } else {
         field_0x0724->setFrame(0.0f);
     }
+
+    replaceEquipItemColor(g_seedInfo.getHeaderPtr()->getWolfDomeAttackWave1Color(), g_seedInfo.getHeaderPtr()->getWolfDomeAttackWave2Color());
+    g_randoInfo.isWolfDomeDrawn = true;
 }
 
 void daAlink_c::setWolfBallModel() {
@@ -8129,6 +8136,7 @@ int daAlink_c::procWolfLockAttackTurn() {
 }
 
 int daAlink_c::procWolfAttackReverseInit() {
+    g_randoInfo.handleBonkDamage();
     commonProcInit(PROC_WOLF_ATTACK_REVERSE);
     setSingleAnimeWolfBase(WANM_ATTACK_RECOIL_START);
     setFaceBasicTexture(FTANM_WL_ATTACKREST);

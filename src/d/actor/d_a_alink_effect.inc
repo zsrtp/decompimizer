@@ -8,6 +8,8 @@
 #include "d/actor/d_a_alink.h"
 #include "d/d_com_inf_game.h"
 #include "d/d_k_wmark.h"
+#include "rando/seed/seed.h"
+#include "rando/tools/tools.h"
 
 EffParamProc daAlink_c::m_fEffParamProc[] = {
     &daAlink_c::setEffectFrontRollParam,
@@ -1174,13 +1176,24 @@ void daAlink_c::setLightningSwordEffect() {
     }
 
     int i;
-    if (mEquipItem == 0x103 && checkNoResetFlg3(FLG3_UNK_100000)) {
+    if ((mEquipItem == 0x103) && (checkNoResetFlg3(FLG3_UNK_100000) || ((dComIfGs_getSelectEquipSword() == fpcNm_ITEM_LIGHT_SWORD) && g_seedInfo.isLightSwordAlwaysOn()))) {
         seStartOnlyReverbLevel(Z2SE_AL_LIGHTNING_SW_GLOW);
 
         for (i = 0; i < 3; i++) {
             emitter = setEmitter(&field_0x327c[i], effName[i], &current.pos, &shape_angle);
             if (emitter != NULL) {
                 emitter->setGlobalRTMatrix(mSwordModel->getBaseTRMtx());
+                GXColor glowColor;
+                if (g_seedInfo.isLightSwordRainbow())
+                {
+                    glowColor = getRainbowRGB(127.5f);
+                }
+                else
+                {
+                    glowColor = g_seedInfo.getHeaderPtr()->getLightSwordGlowColor();
+                }
+                emitter->setGlobalEnvColor(glowColor.r, glowColor.g, glowColor.b);
+                emitter->setGlobalPrmColor(glowColor.r, glowColor.g, glowColor.b);
             }
         }
     } else {

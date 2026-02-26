@@ -27,6 +27,7 @@
 #include "d/actor/d_a_suspend.h"
 #include "d/actor/d_a_ykgr.h"
 #include "rando/tools/tools.h"
+#include "rando/rando.h"
 
 #if PLATFORM_WII
 #include "d/d_cursor_mng.h"
@@ -417,12 +418,7 @@ static int phase_1(dScnPly_c* i_this) {
     {
         // dComIfGs_onItemFirstBit(fpcNm_ITEM_HORSE_FLUTE);
         // dComIfGs_setItem(SLOT_21, fpcNm_ITEM_HORSE_FLUTE);
-        /*
-        Adding rando code until framework is implemented:
-        // Give the player the Horse Call replacement
-        rando::Randomizer* randoPtr = rando::gRandomizer;
-        uint32_t itemToGive = randoPtr->getEventItem(items::Horse_Call);
-        */
+        u8 itemToGive = g_randoInfo.getEventItem(fpcNm_ITEM_HORSE_FLUTE);
         execItemGet(fpcNm_ITEM_HORSE_FLUTE);
         offWarashibeItem(fpcNm_ITEM_IRIAS_PENDANT);
     }

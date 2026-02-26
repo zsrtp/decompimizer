@@ -1333,6 +1333,10 @@ inline BOOL dComIfGs_isDarkClearLV(int i_no) {
     return g_dComIfG_gameInfo.info.getPlayer().getPlayerStatusB().isDarkClearLV(i_no);
 }
 
+inline u8 dComIfGs_getDarkClearLV() {
+    return g_dComIfG_gameInfo.info.getPlayer().getPlayerStatusB().getDarkClearLV();
+}
+
 inline void dComIfGs_onTransformLV(int i_no) {
     g_dComIfG_gameInfo.info.getPlayer().getPlayerStatusB().onTransformLV(i_no);
 }

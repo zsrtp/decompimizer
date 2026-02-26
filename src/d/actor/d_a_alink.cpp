@@ -51,6 +51,7 @@
 #include "d/actor/d_a_ni.h"
 #include "d/d_s_play.h"
 #include "rando/tools/tools.h"
+#include "rando/rando.h"
 
 #include "res/Object/Alink.h"
 
@@ -11367,6 +11368,11 @@ int daAlink_c::orderTalk(int i_checkZTalk) {
 static void* daAlink_searchBouDoor(fopAc_ac_c* i_actor, void* i_data) {
     UNUSED(i_data);
 
+    // We don't want Bo preventing us from entering his house on Day 2
+    if (daAlink_c::checkStageName("F_SP103"))
+    {
+        return NULL;
+    }
     if (fopAcM_GetName(i_actor) == PROC_NPC_BOU && ((daNpc_Bou_c*)i_actor)->speakTo()) {
         return i_actor;
     }
@@ -12142,7 +12148,18 @@ BOOL daAlink_c::checkGroundSpecialMode() {
     if (mLinkAcch.ChkGroundHit() && !checkModeFlg(MODE_PLAYER_FLY) && !checkMagneBootsOn() &&
         checkEndResetFlg0(ERFLG0_FORCE_WOLF_CHANGE))
     {
-        return procCoMetamorphoseInit();
+        // If we are in Palace, we dont' want the fog to transform us unless we have the ability to transform.
+        if (checkStageName("D_MN08"))
+        {
+            if (dComIfGs_isEventBit(0xD04))
+            {
+                return procCoMetamorphoseInit();
+            }
+        }
+        else
+        {
+            return procCoMetamorphoseInit();
+        }
     }
 
     if (mLinkAcch.ChkGroundHit() && !checkModeFlg(MODE_PLAYER_FLY) && checkBoardRestart()) {
@@ -14663,6 +14680,10 @@ void daAlink_c::deleteEquipItem(BOOL i_isPlaySound, BOOL i_isDeleteKantera) {
     field_0x071c = NULL;
     field_0x0720 = NULL;
     field_0x0724 = NULL;
+    if (g_randoInfo.isWolfDomeDrawn)
+    {
+        g_randoInfo.isWolfDomeDrawn = false;
+    }
     field_0x0728 = NULL;
     field_0x072c = NULL;
     mpItemModelData = NULL;
@@ -16147,6 +16168,7 @@ int daAlink_c::procFrontRoll() {
 }
 
 int daAlink_c::procFrontRollCrashInit() {
+    g_randoInfo.handleBonkDamage();
     commonProcInit(PROC_FRONT_ROLL_CRASH);
     setSingleAnime(ANM_ROLL_CRASH, 0.0f,
                    mpHIO->mFrontRoll.m.mCrashAnm.mStartFrame,
