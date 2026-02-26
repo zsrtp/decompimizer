@@ -11368,6 +11368,11 @@ int daAlink_c::orderTalk(int i_checkZTalk) {
 static void* daAlink_searchBouDoor(fopAc_ac_c* i_actor, void* i_data) {
     UNUSED(i_data);
 
+    // We don't want Bo preventing us from entering his house on Day 2
+    if (daAlink_c::checkStageName("F_SP103"))
+    {
+        return NULL;
+    }
     if (fopAcM_GetName(i_actor) == PROC_NPC_BOU && ((daNpc_Bou_c*)i_actor)->speakTo()) {
         return i_actor;
     }
