@@ -18,6 +18,7 @@ enum SeedEnabledFlag
     RAINBOW_LIGHT_SWORD,
     LIGHT_SWORD_ALWAYS_ON,
     RAINBOW_LOCK_DOME,
+    RETURN_MONEY_TO_CHEST,
 };
 
 bool flagIsEnabled(const uint* bitfieldPtr, uint totalFlags, uint flag);
@@ -176,6 +177,7 @@ class seedInfo_c {
         bool isLightSwordRainbow() const { return flagBitfieldFlagIsEnabled(RAINBOW_LIGHT_SWORD); }
         bool isLightSwordAlwaysOn() const { return flagBitfieldFlagIsEnabled(LIGHT_SWORD_ALWAYS_ON); }
         bool isWolfDomeRainbow() const { return flagBitfieldFlagIsEnabled(RAINBOW_LOCK_DOME); }
+        bool returnRupeeToChest() const { return flagBitfieldFlagIsEnabled(RETURN_MONEY_TO_CHEST);}
 
         bool spinnerSpeedIsIncreased() const
         {

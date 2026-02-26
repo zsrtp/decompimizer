@@ -22,6 +22,7 @@
 #include "d/actor/d_a_obj_tks.h"
 #include "d/actor/d_a_npc_tkc.h"
 #include "rando/rando.h"
+#include "rando/seed/seed.h"
 
 BOOL daAlink_c::checkEventRun() const {
     return dComIfGp_event_runCheck() || checkPlayerDemoMode();
@@ -2224,6 +2225,13 @@ void daAlink_c::setGetSubBgm(int i_itemNo) {
 }
 
 BOOL daAlink_c::checkTreasureRupeeReturn(int i_itemNo) const {
+    
+    // If the setting is enabled, we want to give the player the rupee, even if we can't hold it.
+    if (!g_seedInfo.returnRupeeToChest())
+    {
+        return false;
+    }
+
     if (i_itemNo == fpcNm_ITEM_LINKS_SAVINGS) {
         i_itemNo = fpcNm_ITEM_PURPLE_RUPEE;
     }
