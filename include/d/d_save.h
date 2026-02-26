@@ -643,7 +643,7 @@ public:
     s32 isDungeonItemBossKey() const { return isDungeonItem(BOSS_KEY); }
         void onStageBossEnemy() {
         onDungeonItem(STAGE_BOSS_ENEMY);
-        onDungeonItem(OOCCOO_NOTE);
+        //onDungeonItem(OOCCOO_NOTE);
     }
     void offStageBossEnemy() { offDungeonItem(STAGE_BOSS_ENEMY); }
     s32 isStageBossEnemy() const { return isDungeonItem(STAGE_BOSS_ENEMY); }
