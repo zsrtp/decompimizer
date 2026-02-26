@@ -13,6 +13,7 @@
 #include "d/actor/d_a_myna.h"
 #include "d/actor/d_a_obj_ss_base.h"
 #include "rando/rando.h"
+#include "rando/tools/tools.h"
 #include "SSystem/SComponent/c_math.h"
 
 dMsgFlow_c::dMsgFlow_c() {
@@ -2485,10 +2486,10 @@ int dMsgFlow_c::event035(mesg_flow_node_event* i_flowNode_p, fopAc_ac_c* i_speak
 
     if (prm0 == fpcNm_ITEM_TOMATO_PUREE || prm0 == fpcNm_ITEM_TASTE) {
         dComIfGs_offItemFirstBit(prm0);
-    } else if (prm0 == fpcNm_ITEM_RAFRELS_MEMO || prm0 == fpcNm_ITEM_ASHS_SCRIBBLING) {
+    } else if (prm0 == fpcNm_ITEM_ASHS_SCRIBBLING) {
         dComIfGs_setItem(SLOT_19, fpcNm_ITEM_NONE);
     } else if (prm0 == fpcNm_ITEM_LETTER || prm0 == fpcNm_ITEM_BILL || prm0 == fpcNm_ITEM_WOOD_STATUE || prm0 == fpcNm_ITEM_IRIAS_PENDANT) {
-        dComIfGs_setWarashibeItem(fpcNm_ITEM_NONE);
+        offWarashibeItem(prm0);
     }
 
     // "Item Remove"
