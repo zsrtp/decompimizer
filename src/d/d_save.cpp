@@ -17,6 +17,7 @@
 #include "f_op/f_op_scene_mng.h"
 #include "rando/rando.h"
 #include "rando/seed/seed.h"
+#include "rando/tools/tools.h"
 #include <cstdio>
 
 #if PLATFORM_WII || PLATFORM_SHIELD
@@ -253,6 +254,40 @@ void dSv_player_field_last_stay_info_c::set(const char* i_name, const cXyz& i_po
 }
 
 void dSv_player_field_last_stay_info_c::onRegionBit(int i_region) {
+    // We want to handle special use cases for which rooms can unlock a region
+    switch(i_region)
+    {
+        case 3: // Eldin
+        {
+            // If we are in hidden village or outside hidden village, we don't want to unlock the region unless the rocks are destroyed.
+            if (daAlink_c::checkStageName("F_SP128") || playerIsInRoomStage(7, "F_SP121") || (daAlink_c::checkStageName("F_SP121") && dStage_roomControl_c::mOldStayNo == 7))
+            {
+                if (!dComIfGs_isStageSwitch(0x6, 0x11)) // Eldin Field Rocks destroyed
+                {
+                    return;
+                }
+            }
+
+            if (daAlink_c::checkStageName("F_SP121") && (int)dStage_roomControl_c::mOldStayNo == -1)
+            {
+                // Prevent setting region bit if we void in eldin field or if we are entering from East CT and the bridge is not repaired.
+                if((dComIfGp_getStartStagePoint() == -1) || ((dComIfGp_getStartStagePoint() == 7) && dComIfGs_isStageSwitch(0x6, 0x1B)))
+                {
+                    return;
+                }
+            }
+            break;
+        }
+        case 2: // Faron
+        {
+            if (playerIsInRoomStage(15, "F_SP121"))
+            {
+                // Since the Lanayru gate is in the middle of the room, prevent this room from setting the region bit.
+                return;
+            }
+            break;
+        }
+    }
     if (i_region >= 0 && i_region < 8) {
         mRegion |= (u8)(1 << i_region);
     } else {
