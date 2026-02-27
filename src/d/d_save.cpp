@@ -11,6 +11,7 @@
 #include "d/d_com_inf_game.h"
 #include "d/d_meter2_info.h"
 #include "d/d_save.h"
+#include "d/d_msg_object.h"
 #include "d/d_save_init.h"
 #include "d/actor/d_a_alink.h"
 #include "d/d_stage.h"
@@ -18,6 +19,7 @@
 #include "rando/rando.h"
 #include "rando/seed/seed.h"
 #include "rando/tools/tools.h"
+#include "rando/data/flags.h"
 #include <cstdio>
 
 #if PLATFORM_WII || PLATFORM_SHIELD
@@ -1151,6 +1153,44 @@ BOOL dSv_memBit_c::isTbox(int i_no) const {
 }
 
 void dSv_memBit_c::onSwitch(int i_no) {
+    if (this == dComIfGs_getStageBit())
+    {
+        if (daAlink_c::checkStageName("F_SP115"))
+        {
+            if ((i_no == 0xD) && dComIfGs_isEventBit(TRANSFORMING_UNLOCKED)) // Lanayru Twilight end CS trigger
+            {
+                // Set player to Human. Otherwise the CS will crash if Shadow Crystal has been obtained
+                dComIfGs_setTransformStatus(0);
+            }
+        }
+        else if (daAlink_c::checkStageName("F_SP109"))
+        {
+            if (i_no == 0x3E) // Hawkeye is for sale
+            {
+                this->offSwitch(0xB); // Remove the coming soon sign so the hawkeye can be bought
+            }
+        }
+        else if (daAlink_c::checkStageName("F_SP121"))
+        {
+            if (i_no == 0x11) // Destroyed rocks north of eldin bridge
+            {
+                // Manually unlock Eldin province on map. We do this manually since that function would see that the rocks are not yet broken.
+                dComIfGs_setRegionBit(0x8);
+            }
+        }
+        
+    }
+    if (this == dComIfGs_getSaveBit(0x6)) // Hyrule Field
+    {
+        if (daAlink_c::checkStageName("R_SP109"))
+        {
+            if (i_no == 0x1B) // Repair Castle Town Bridge
+            {
+                dMsgObject_setFundRaising(g_seedInfo.getHeaderPtr()->getMaloShopDonationAmount());
+            }
+        }
+    }
+
     JUT_ASSERT(2786, 0 <= i_no && i_no < 128);
     mSwitch[i_no >> 5] |= 1 << (i_no & 0x1F);
 }
@@ -1620,6 +1660,15 @@ u32 dSv_info_c::createZone(int i_roomNo) {
 
 void dSv_info_c::onSwitch(int i_no, int i_roomNo) {
     JUT_ASSERT(4210, (0 <= i_no && i_no < (MEMORY_SWITCH+ DAN_SWITCH+ ZONE_SWITCH+ ONEZONE_SWITCH)) || i_no == -1 || i_no == 255);
+
+    // If we are in grove and we struck the ms pedestal
+    // This may be able to be moved to wherever the function call is from, but idk where that is yet.
+    // i *think* the Sekizoa actr calls this.
+    if (daAlink_c::checkStageName("F_SP117") && i_no == 0xEE)
+    {
+        // set our custom flag to remove the statue from in front of the door.
+        i_no = 0x63;
+    }
 
     if (i_no == -1 || i_no == 255) {
         return;

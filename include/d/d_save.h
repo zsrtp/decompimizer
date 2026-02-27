@@ -265,6 +265,7 @@ public:
     bool isFieldDataExistFlag() const { return mFieldDataExistFlag ? true : false; }
     void offFieldDataExistFlag() { mFieldDataExistFlag = false; }
     void onFieldDataExistFlag() { mFieldDataExistFlag = true; }
+    void setRegionBit(u8 region) { mRegion |= region;}
 
 
 private:

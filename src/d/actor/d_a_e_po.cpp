@@ -2320,7 +2320,9 @@ static void e_po_holl_demo(e_po_class* i_this) {
             camera_player->mCamera.SetTrimSize(0);
             dComIfGp_event_reset();
             daPy_getPlayerActorClass()->cancelOriginalDemo();
-            fopAcM_onSwitch(a_this, 0x26);
+            //fopAcM_onSwitch(a_this, 0x26);
+            // Open the Poe gate
+            fopAcM_offSwitch(a_this, 0x45);
             i_this->field_0x758 = 1;
             fopAcM_delete(a_this);
         }

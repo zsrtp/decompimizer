@@ -1406,6 +1406,10 @@ inline void dComIfGs_onRegionBit(int i_region) {
     g_dComIfG_gameInfo.info.getPlayer().getPlayerFieldLastStayInfo().onRegionBit(i_region);
 }
 
+inline void dComIfGs_setRegionBit(u8 i_region) {
+    g_dComIfG_gameInfo.info.getPlayer().getPlayerFieldLastStayInfo().setRegionBit(i_region);
+}
+
 inline void dComIfGs_setPlayerFieldLastStayInfo(const char* i_stage, cXyz& i_pos, s16 i_angle,
                                                 s8 i_point, u8 i_region) {
     g_dComIfG_gameInfo.info.getPlayer().getPlayerFieldLastStayInfo().set(i_stage, i_pos, i_angle,
@@ -2021,6 +2025,14 @@ inline BOOL dComIfGs_isSaveSwitch(int i_no) {
 
 inline BOOL dComIfGs_isSaveItem(int i_no) {
     return g_dComIfG_gameInfo.info.getMemory().getBit().isItem(i_no);
+}
+
+inline dSv_memBit_c* dComIfGs_getStageBit() {
+    return &g_dComIfG_gameInfo.info.getMemory().getBit();
+}
+
+inline dSv_memBit_c* dComIfGs_getSaveBit(int i_stageNo) {
+    return &g_dComIfG_gameInfo.info.getSavedata().getSave(i_stageNo).getBit();
 }
 
 inline void dComIfGs_onSaveDunSwitch(int i_swNo) {
