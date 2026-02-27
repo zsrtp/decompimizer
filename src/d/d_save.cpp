@@ -20,6 +20,7 @@
 #include "rando/seed/seed.h"
 #include "rando/tools/tools.h"
 #include "rando/data/flags.h"
+#include "rando/data/stages.h"
 #include <cstdio>
 
 #if PLATFORM_WII || PLATFORM_SHIELD
@@ -1201,6 +1202,22 @@ void dSv_memBit_c::offSwitch(int i_no) {
 }
 
 BOOL dSv_memBit_c::isSwitch(int i_no) const {
+    if (daAlink_c::checkStageName(allStages[Kakariko_Graveyard]))
+    {
+        // If water bombs/graveyard rock flag is checked and we haven't got ZA check, return false.
+        if ((i_no == 0x66) && !dComIfGs_isEventBit(GOT_ZORA_ARMOR_FROM_RUTELA))
+        {
+            return false;
+        }
+    }
+    else if (daAlink_c::checkStageName(allStages[Ordon_Village]))
+    {
+        // If Midna jumps to shield house are active and it is daytime, return false.
+        if (i_no == 0x21 && !dKy_daynight_check())
+        {
+            return false;
+        }
+    }
     JUT_ASSERT(2814, 0 <= i_no && i_no < 128);
     return (mSwitch[i_no >> 5] & 1 << (i_no & 0x1F)) ? TRUE : FALSE;
 }
