@@ -1341,6 +1341,10 @@ inline void dComIfGs_onTransformLV(int i_no) {
     g_dComIfG_gameInfo.info.getPlayer().getPlayerStatusB().onTransformLV(i_no);
 }
 
+inline void dComIfGs_setTransformLV(u8 i_no) {
+    g_dComIfG_gameInfo.info.getPlayer().getPlayerStatusB().setTransformLV(i_no);
+}
+
 inline void dComIfGs_offTransformLV(int i_no) {
     g_dComIfG_gameInfo.info.getPlayer().getPlayerStatusB().offTransformLV(i_no);
 }

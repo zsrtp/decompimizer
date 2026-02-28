@@ -201,6 +201,7 @@ public:
     u16 getDate() const { return mDate; }
     void setDate(u16 i_date) { mDate = i_date; }
     u8 getDarkClearLV() { return mDarkClearLevelFlag; }
+    void setTransformLV(u8 i_no) { mTransformLevelFlag = i_no; }
 
 private:
     /* 0x00 */ OSTime mDateIpl;
