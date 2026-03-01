@@ -1,6 +1,7 @@
 #include "rando/rando.h"
 #include "rando/seed/seed.h"
 #include "rando/tools/tools.h"
+#include "rando/data/flags.h"
 #include "rando/tools/verifyItemFunctions.h"
 #include "rando/itemWheelMenu.h"
 #include "d/d_com_inf_game.h"
@@ -264,4 +265,30 @@ void randoInfo_c::handleBonkDamage()
         newHealth = 0;
     }
     dComIfGs_setLife(newHealth);
+}
+
+void checkSetHCBarrierFlag(u8 req, u8 currentCount)
+{
+    if (req != g_seedInfo.getHeaderPtr()->getCastleRequirements())
+    {
+        return;
+    }
+    
+    if (currentCount >= g_seedInfo.getHeaderPtr()->getBarrierReqCount())
+    {
+        dComIfGs_onEventBit(BARRIER_GONE);
+    }
+}
+
+void checkSetHCBkFlag(u8 req, u8 currentCount)
+{
+    if (req != g_seedInfo.getHeaderPtr()->getHcBkRequirement())
+    {
+        return;
+    }
+    
+    if (currentCount >= g_seedInfo.getHeaderPtr()->getHcBkReqCount())
+    {
+        dComIfGs_onStageSwitch(0x18, 0x4B);
+    }
 }

@@ -1261,14 +1261,11 @@ void dSv_memBit_c::onDungeonItem(int i_no) {
                 }
             }
 
-            /*
-            Pasting rando code for the time being until the framework is built:
             // Check if we have completed enough dungeons to break the barrier.
-                    randoPtr->checkSetHCBarrierFlag(rando::HC_Dungeons, numDungeons);
+            checkSetHCBarrierFlag(HC_Dungeons, numCompletedDungeons);
 
-                    // Check if we have completed enough dungeons to unlock the BK check.
-                    randoPtr->checkSetHCBkFlag(rando::HC_BK_Dungeons, numDungeons);
-            */
+            // Check if we have completed enough dungeons to unlock the BK check.
+            checkSetHCBkFlag(HC_BK_Dungeons, numCompletedDungeons);
             break;
         }
     }
