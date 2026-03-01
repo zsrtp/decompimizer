@@ -1161,6 +1161,11 @@ inline int daDemo00_c::execute() {
                                     }
                                     break;
                                 }
+                                case 0x108: // Watched start of game cutscene
+                                {
+                                    g_seedInfo.initSeed();
+                                    break;
+                                }
                             }
                             break;
                         }

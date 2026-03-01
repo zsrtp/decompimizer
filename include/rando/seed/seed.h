@@ -155,6 +155,7 @@ class seedInfo_c {
     
         int _create();
         int _delete();
+        void initSeed();
     
         const seedHeaderInfo_c* getHeaderPtr() const { return m_Header; }
         bool seedIsLoaded() const { return m_GCIData; }

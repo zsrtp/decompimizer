@@ -10458,7 +10458,7 @@ void daAlink_c::decideDoStatus() {
                                (actor_name == PROC_TAG_KMSG &&
                                 static_cast<daTag_KMsg_c*>(field_0x27f4)->getType() == 3))
                     {
-                        if (!checkEquipAnime() && checkMasterSwordEquip()) {
+                        if (!checkEquipAnime() && checkToTSwordReqEquip()) {
                             setDoStatus(BUTTON_STATUS_STRIKE);
                         }
                     }

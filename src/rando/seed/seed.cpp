@@ -40,6 +40,31 @@ int seedInfo_c::_create() {
     return 1;
 }
 
+void seedInfo_c::initSeed()
+{
+    /* Copypasta rando code until I get to actually moving it over.
+    // (Re)set counters & status
+    this->m_AreaFlagsModified = 0;
+    this->m_EventFlagsModified = 0;
+    this->m_PatchesApplied = 0;
+
+    // getConsole() << "Setting Event Flags... \n";
+    this->applyEventFlags();
+
+    // getConsole() << "Setting Region Flags... \n";
+    this->applyRegionFlags();
+
+    this->giveStartingItems();
+    getConsole() << "Seed Applied Successfully.\n";
+            // Auto fill the first wallet if the setting is enabled
+            if (seedPtr->walletsAreAutoFilled())
+            {
+                savePtr->save_file.player.player_status_a.currentRupees =
+                    mod::user_patch::walletValues[seedPtr->getHeaderPtr()->getWalletSize()][0];
+            }
+    */
+}
+
 bool flagIsEnabled(const uint* bitfieldPtr, uint totalFlags, uint flag)
 {
     // Make sure the flag is valid
