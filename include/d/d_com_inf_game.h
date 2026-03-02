@@ -1694,6 +1694,14 @@ inline void dComIfGs_onLetterGetFlag(int i_no) {
     g_dComIfG_gameInfo.info.getPlayer().getLetterInfo().onLetterGetFlag(i_no);
 }
 
+inline void dComIfGs_setAllLetterGet() {
+    g_dComIfG_gameInfo.info.getPlayer().getLetterInfo().setAllLetterGet();
+}
+
+inline void dComIfGs_setAllLetterRead() {
+    g_dComIfG_gameInfo.info.getPlayer().getLetterInfo().setAllLetterRead();
+}
+
 inline BOOL dComIfGs_isLetterGetFlag(int i_no) {
     return g_dComIfG_gameInfo.info.getPlayer().getLetterInfo().isLetterGetFlag(i_no);
 }

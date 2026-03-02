@@ -19,6 +19,8 @@ enum SeedEnabledFlag
     LIGHT_SWORD_ALWAYS_ON,
     RAINBOW_LOCK_DOME,
     RETURN_MONEY_TO_CHEST,
+    SKIP_MINOR_CUTSCENES,
+    OPEN_MAP,
 };
 
 bool flagIsEnabled(const uint* bitfieldPtr, uint totalFlags, uint flag);
@@ -181,6 +183,8 @@ class seedInfo_c {
         bool isLightSwordAlwaysOn() const { return flagBitfieldFlagIsEnabled(LIGHT_SWORD_ALWAYS_ON); }
         bool isWolfDomeRainbow() const { return flagBitfieldFlagIsEnabled(RAINBOW_LOCK_DOME); }
         bool returnRupeeToChest() const { return flagBitfieldFlagIsEnabled(RETURN_MONEY_TO_CHEST);}
+        bool skipMinorCutscenes() const { return flagBitfieldFlagIsEnabled(SKIP_MINOR_CUTSCENES);}
+        bool isMapOpen() const { return flagBitfieldFlagIsEnabled(OPEN_MAP);}
 
         bool spinnerSpeedIsIncreased() const
         {
@@ -194,6 +198,7 @@ class seedInfo_c {
         void applyEventFlags();
         void applyRegionFlags();
         void giveStartingItems();
+        void applySeedPatches();
 
         const seedHeaderInfo_c* m_Header;
         const u8* m_GCIData;

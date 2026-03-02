@@ -1115,14 +1115,14 @@ inline int daDemo00_c::execute() {
                                 }
                                 case 0x1f4: // MDH Completed
                                 {
-                                    dComIfGs_onDarkClearLV(8); // Set mdh completed flag
+                                    dComIfGs_onDarkClearLV(3); // Set mdh completed flag
                                 }
                                 case 0x68: // Cleared Faron Twilight
                                 {
                                     if (dComIfGs_isEventBit(MIDNAS_DESPERATE_HOUR_COMPLETED) && (dComIfGs_getDarkClearLV() == 6))
                                     {
-                                        dComIfGs_setTransformLV(8);
-                                        dComIfGs_onDarkClearLV(8);
+                                        dComIfGs_setTransformLV(3);
+                                        dComIfGs_onDarkClearLV(3);
                                     }
                                     break;
                                 }
@@ -1131,8 +1131,8 @@ inline int daDemo00_c::execute() {
                                     dComIfGs_onEventBit(MAP_WARPING_UNLOCKED);
                                     if (dComIfGs_isEventBit(MIDNAS_DESPERATE_HOUR_COMPLETED) && (dComIfGs_getDarkClearLV() == 7))
                                     {
-                                        dComIfGs_setTransformLV(8);
-                                        dComIfGs_onDarkClearLV(8);
+                                        dComIfGs_setTransformLV(3);
+                                        dComIfGs_onDarkClearLV(3);
                                     }
                                     break;
                                 }
@@ -1140,8 +1140,8 @@ inline int daDemo00_c::execute() {
                                 {
                                     if (dComIfGs_isEventBit(MIDNAS_DESPERATE_HOUR_COMPLETED) && (dComIfGs_getDarkClearLV() == 7))
                                     {
-                                        dComIfGs_setTransformLV(8);
-                                        dComIfGs_onDarkClearLV(8);
+                                        dComIfGs_setTransformLV(3);
+                                        dComIfGs_onDarkClearLV(3);
                                     }
                                     break;
                                 }

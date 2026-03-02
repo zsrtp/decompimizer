@@ -1,6 +1,9 @@
 #include "rando/seed/seed.h"
+#include "rando/data/flags.h"
+#include "rando/tools/verifyItemFunctions.h"
 #include "rando/tools/tools.h"
 #include "d/d_item.h"
+#include "d/d_save.h"
 #include "d/d_com_inf_game.h"
 
 seedInfo_c g_seedInfo;
@@ -63,6 +66,8 @@ void seedInfo_c::initSeed()
         dComIfGs_setRupee(m_Header->getSmallWalletMax());
     }
     giveStartingItems();
+
+    applySeedPatches();
 }
 
 bool flagIsEnabled(const uint* bitfieldPtr, uint totalFlags, uint flag)
@@ -104,5 +109,61 @@ void seedInfo_c::giveStartingItems()
     for (int i = 0; i < num_startingItems; i++)
     {
         execItemGet(startingItems[i]);
+    }
+}
+
+void seedInfo_c::applySeedPatches()
+{
+    if (dComIfGs_isEventBit(CLEARED_FARON_TWILIGHT))
+    {
+        dComIfGs_onDarkClearLV(0);
+        dComIfGs_setLightDropNum(0, 0x10);
+        execItemGet(fpcNm_ITEM_DROP_CONTAINER);
+        if (haveItem(fpcNm_ITEM_WEAR_KOKIRI))
+        {
+            execItemGet(fpcNm_ITEM_WEAR_KOKIRI);
+        }
+    }
+
+    if (dComIfGs_isEventBit(CLEARED_ELDIN_TWILIGHT))
+    {
+        dComIfGs_onDarkClearLV(1);
+        dComIfGs_setLightDropNum(1, 0x10);
+        execItemGet(fpcNm_ITEM_DROP_CONTAINER02);
+    }
+
+    if (dComIfGs_isEventBit(CLEARED_ELDIN_TWILIGHT))
+    {
+        dComIfGs_onDarkClearLV(2);
+        dComIfGs_setLightDropNum(2, 0x10);
+        execItemGet(fpcNm_ITEM_DROP_CONTAINER03);
+    }
+
+    if (skipMinorCutscenes())
+    {
+        dComIfGs_onItemFirstBit(fpcNm_ITEM_GREEN_RUPEE);
+        dComIfGs_onItemFirstBit(fpcNm_ITEM_BLUE_RUPEE);
+        dComIfGs_onItemFirstBit(fpcNm_ITEM_YELLOW_RUPEE);
+        dComIfGs_onItemFirstBit(fpcNm_ITEM_RED_RUPEE);
+        dComIfGs_onItemFirstBit(fpcNm_ITEM_PURPLE_RUPEE);
+        dComIfGs_onItemFirstBit(fpcNm_ITEM_ORANGE_RUPEE);
+        dComIfGs_onItemFirstBit(fpcNm_ITEM_SILVER_RUPEE);
+
+        dComIfGs_setAllLetterGet();
+        dComIfGs_setAllLetterRead();
+    }
+
+    if (dComIfGs_isEventBit(MIDNAS_DESPERATE_HOUR_COMPLETED))
+    {
+        if (dComIfGs_getDarkClearLV() == 0x7)
+        {
+            dComIfGs_onDarkClearLV(3);
+            dComIfGs_onTransformLV(3);
+        }
+    }
+
+    if (isMapOpen())
+    {
+        dComIfGs_setRegionBit(m_Header->getMapClearBits());
     }
 }
