@@ -1,5 +1,7 @@
 #include "rando/seed/seed.h"
 #include "rando/tools/tools.h"
+#include "d/d_item.h"
+#include "d/d_com_inf_game.h"
 
 seedInfo_c g_seedInfo;
 
@@ -53,16 +55,14 @@ void seedInfo_c::initSeed()
 
     // getConsole() << "Setting Region Flags... \n";
     this->applyRegionFlags();
-
-    this->giveStartingItems();
-    getConsole() << "Seed Applied Successfully.\n";
-            // Auto fill the first wallet if the setting is enabled
-            if (seedPtr->walletsAreAutoFilled())
-            {
-                savePtr->save_file.player.player_status_a.currentRupees =
-                    mod::user_patch::walletValues[seedPtr->getHeaderPtr()->getWalletSize()][0];
-            }
     */
+    // Fill small wallet if needed before giving starting items because if the player doesn't start with any wallets,
+    // we want to fill the wallet. However if they do then it will be filled anyways.
+    if (walletsAreAutoFilled())
+    {
+        dComIfGs_setRupee(m_Header->getSmallWalletMax());
+    }
+    giveStartingItems();
 }
 
 bool flagIsEnabled(const uint* bitfieldPtr, uint totalFlags, uint flag)
@@ -85,4 +85,24 @@ bool seedInfo_c::flagBitfieldFlagIsEnabled(uint flag) const
 
     const uint* bitfieldPtr = reinterpret_cast<const uint*>(&m_GCIData[gci_offset]);
     return flagIsEnabled(bitfieldPtr, num_bytes, flag);
+}
+
+void seedInfo_c::giveStartingItems()
+{
+    const EntryInfo* startingItemInfoPtr = m_Header->getStartingItemCheckInfoPtr();
+    const uint num_startingItems = startingItemInfoPtr->getNumEntries();
+    const uint gci_offset = startingItemInfoPtr->getDataOffset();
+
+    if (num_startingItems == 0)
+    {
+        return;
+    }
+
+    // Set the pointer as offset into our buffer
+    const u8* startingItems = &m_GCIData[gci_offset];
+
+    for (int i = 0; i < num_startingItems; i++)
+    {
+        execItemGet(startingItems[i]);
+    }
 }

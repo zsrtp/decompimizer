@@ -13461,7 +13461,7 @@ int daAlink_c::startRestartRoom(u32 i_mode, int param_1, int i_dmgAmount, BOOL i
             }
 
             if (!dComIfGs_isEventBit(dSv_event_flag_c::F_0266) && (checkBoardRide() || checkBoardRestart())) {
-                i_mode = 11;
+                i_mode = 5; // If we void, we don't want to restart on the board.
             } else if (checkBoarSingleBattle() ||
                        (start_mode == 2 && !checkFinalBattle() && i_mode == 5))
             {
