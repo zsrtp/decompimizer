@@ -17,6 +17,8 @@
 #include "m_Do/m_Do_controller_pad.h"
 #include "m_Do/m_Do_lib.h"
 #include "d/actor/d_a_tag_shop_item.h"
+#include "rando/tools/tools.h"
+#include "rando/data/stages.h"
 
 
 static daTag_ShopItem_c* dShopSystem_itemActor[7] = {
@@ -1185,6 +1187,12 @@ int dShopSystem_c::seq_choose(fopAc_ac_c* actor, dMsgFlow_c* i_flow) {
 }
 
 int dShopSystem_c::seq_decide_yes(fopAc_ac_c* actor, dMsgFlow_c* i_flow) {
+    // As shopsanity becomes more fleshed out, most likely this conditional will go away.
+    if (playerIsInRoomStage(3, allStages[Kakariko_Village_Interiors]))
+    {
+        // We want the shop item to have its flag updated no matter what in kak malo mart
+        setSoldOutFlag();
+    }
     if (dMsgObject_getMessageID() == 0x1B82) {
         mShopCamAction.SetSelectIdx(0);
         field_0xf76 = 1;
