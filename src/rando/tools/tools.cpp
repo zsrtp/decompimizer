@@ -426,3 +426,19 @@ int getStageID(const char* stage)
     // Didn't find the current stage for some reason
     return -1;
 }
+
+int getCurrentStageId()
+{
+    int loopCount = sizeof(allStages) / sizeof(allStages[0]);
+
+    for (int i = 0; i < loopCount; i++)
+    {
+        if (daAlink_c::checkStageName(allStages[i]))
+        {
+            return i;
+        }
+    }
+
+    // Didn't find the current stage for some reason
+    return -1;
+}
