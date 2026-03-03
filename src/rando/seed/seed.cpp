@@ -194,6 +194,5 @@ void seedInfo_c::setStaticGameValues()
     if (removeIBLimit())
     {
         *heavyStateSpeedPtr = 1.f;
-        clear_DC_IC_Cache(heavyStateSpeedPtr, sizeof(float));
     }
 }
