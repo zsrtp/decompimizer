@@ -10,6 +10,7 @@
 #include "d/actor/d_a_tag_mhint.h"
 #include "d/actor/d_a_tag_mstop.h"
 #include "d/d_event_debug.h"
+#include "rando/seed/seed.h"
 #include "SSystem/SComponent/c_counter.h"
 
 namespace {
@@ -877,7 +878,7 @@ bool dEvt_control_c::skipper() {
         }
 
         bool is_trig_skipbtn = mDoCPd_c::getTrigStart(PAD_1);
-        if (is_trig_skipbtn) {
+        if (is_trig_skipbtn || (g_seedInfo.skipMajorCutscenes() && canSkip)) {
             if (mSkipTimer > 0) {
                 mSkipTimer = -1;
 
