@@ -30,7 +30,6 @@ enum SeedEnabledFlag
 };
 
 bool flagIsEnabled(const uint* bitfieldPtr, uint totalFlags, uint flag);
-void setStaticGameValues();
 
 class EntryInfo
 {
@@ -168,6 +167,7 @@ class seedInfo_c {
         int _create();
         int _delete();
         void initSeed();
+        void setStaticGameValues();
     
         const seedHeaderInfo_c* getHeaderPtr() const { return m_Header; }
         bool seedIsLoaded() const { return m_GCIData; }

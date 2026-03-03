@@ -35,6 +35,10 @@ bool daAlink_c::commonMagneLineCheck(cXyz* i_start, cXyz* i_end) {
 }
 
 BOOL daAlink_c::checkBootsMoveAnime(int param_0) {
+    if (mpHIO->mItem.mIronBoots.m.mInputFactor == 1.f)
+    {
+        return false;
+    }
     return (checkHeavyStateOn(param_0, 1) && !checkNoResetFlg0(FLG0_WATER_IN_MOVE)) ||
            checkDkCaught2Anime();
 }

@@ -2,6 +2,7 @@
 #include "rando/data/flags.h"
 #include "rando/tools/verifyItemFunctions.h"
 #include "rando/tools/tools.h"
+#include "rando/tools/memory.h"
 #include "d/d_item.h"
 #include "d/d_save.h"
 #include "d/d_com_inf_game.h"
@@ -172,12 +173,14 @@ void seedInfo_c::applySeedPatches()
     }
 }
 
-void setStaticGameValues()
+void seedInfo_c::setStaticGameValues()
 {
     // Update lantern vars
     daAlinkHIO_kandelaar_c1* lv = (daAlinkHIO_kandelaar_c1*)&daAlink_getAlinkActorClass()->mpHIO->mItem.mLantern.m;
     daAlinkHIO_huLight_c1* hlv = (daAlinkHIO_huLight_c1*)&daAlink_getAlinkActorClass()->mpHIO->mItem.mLanternPL.m;
-    u8* lanternColorPtr = g_seedInfo.getHeaderPtr()->getLanternColorPtr();
+    float* heavyStateSpeedPtr = (float*)&daAlink_getAlinkActorClass()->mpHIO->mItem.mIronBoots.m.mInputFactor;
+    u8* lanternColorPtr = m_Header->getLanternColorPtr();
+
     lv->mColorReg1R = lanternColorPtr[0];
     lv->mColorReg1G = lanternColorPtr[1];
     lv->mColorReg1B = lanternColorPtr[2];
@@ -187,4 +190,10 @@ void setStaticGameValues()
     hlv->mColorR = lanternColorPtr[0];
     hlv->mColorG = lanternColorPtr[1];
     hlv->mColorB = lanternColorPtr[2];
+
+    if (removeIBLimit())
+    {
+        *heavyStateSpeedPtr = 1.f;
+        clear_DC_IC_Cache(heavyStateSpeedPtr, sizeof(float));
+    }
 }
