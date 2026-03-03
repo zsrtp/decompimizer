@@ -1469,6 +1469,25 @@ stage_arrow_class* dComIfGp_getRoomArrow(int i_roomNo) {
 void dComIfGp_setNextStage(char const* i_stage, s16 i_point, s8 i_roomNo, s8 i_layer,
                            f32 i_lastSpeed, u32 i_lastMode, int i_setPoint, s8 i_wipe,
                            s16 i_lastAngle, int param_9, int i_wipeSpeedT) {
+    
+    u8 stageIDX = getStageID(i_stage);
+    uint entranceParams = stageIDX << 24 | i_roomNo << 16 | i_point << 8 | i_layer;
+    switch (entranceParams)
+    {
+        case 0x350301FF: // Telma's Bar -> SCT
+        {
+            // If we are trying to spawn via the door from Telma's bar during twilight, change the spawn so we don't softlock.
+            if (!dComIfGs_isEventBit(CLEARED_LANAYRU_TWILIGHT))
+            {
+                i_point = 30;
+            }
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
     if (i_layer >= 15) {
         i_layer = -1;
     }
