@@ -24,6 +24,7 @@ enum SeedEnabledFlag
 };
 
 bool flagIsEnabled(const uint* bitfieldPtr, uint totalFlags, uint flag);
+void setStaticGameValues();
 
 class EntryInfo
 {
@@ -82,6 +83,8 @@ public:
     const u8* getWolfDomeAttackWave1ColorPtr() const { return (u8*)&wolfDomeAttackWave1Color; }
     const u8* getWolfDomeAttackWave2ColorPtr() const { return (u8*)&wolfDomeAttackWave2Color; }
     GXColor getLightSwordGlowColor() const { return lightSwordGlowColor; }
+    uint getLanternColor() const { return lanternColor; }
+    u8* getLanternColorPtr() const { return (u8*)&lanternColor; }
 
     //const EntryInfo* getVolatilePatchInfoPtr() const { return &volatilePatchInfo; }
     //const EntryInfo* getOneTimePatchInfoPtr() const { return &oneTimePatchInfo; }
@@ -150,6 +153,7 @@ public:
     /* 0x94 */ GXColor wolfDomeAttackWave1Color;
     /* 0x98 */ GXColor wolfDomeAttackWave2Color;
     /* 0x9C */ GXColor lightSwordGlowColor;
+    /* 0x100 */ uint lanternColor;
 };
 
 class seedInfo_c {

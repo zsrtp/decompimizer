@@ -5,6 +5,7 @@
 #include "d/d_item.h"
 #include "d/d_save.h"
 #include "d/d_com_inf_game.h"
+#include "d/actor/d_a_alink.h"
 
 seedInfo_c g_seedInfo;
 
@@ -41,6 +42,9 @@ int seedInfo_c::_create() {
     memcpy((u8*)gciDataPtr, &data[headerPtr->getHeaderSize()], dataSize);
 
     delete[] data;
+
+    // Now that the seed is loaded, set any static values needed.
+    setStaticGameValues();
 
     return 1;
 }
@@ -166,4 +170,21 @@ void seedInfo_c::applySeedPatches()
     {
         dComIfGs_setRegionBit(m_Header->getMapClearBits());
     }
+}
+
+void setStaticGameValues()
+{
+    // Update lantern vars
+    daAlinkHIO_kandelaar_c1* lv = (daAlinkHIO_kandelaar_c1*)&daAlink_getAlinkActorClass()->mpHIO->mItem.mLantern.m;
+    daAlinkHIO_huLight_c1* hlv = (daAlinkHIO_huLight_c1*)&daAlink_getAlinkActorClass()->mpHIO->mItem.mLanternPL.m;
+    u8* lanternColorPtr = g_seedInfo.getHeaderPtr()->getLanternColorPtr();
+    lv->mColorReg1R = lanternColorPtr[0];
+    lv->mColorReg1G = lanternColorPtr[1];
+    lv->mColorReg1B = lanternColorPtr[2];
+    lv->mColorReg2R = lanternColorPtr[0];
+    lv->mColorReg2G = lanternColorPtr[1];
+    lv->mColorReg2B = lanternColorPtr[2];
+    hlv->mColorR = lanternColorPtr[0];
+    hlv->mColorG = lanternColorPtr[1];
+    hlv->mColorB = lanternColorPtr[2];
 }
