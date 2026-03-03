@@ -1777,6 +1777,10 @@ int dMsgFlow_c::event000(mesg_flow_node_event* i_flowNode_p, fopAc_ac_c* i_speak
 
     if (prm0 != 0) {
         dComIfGs_onEventBit(dSv_event_flag_c::saveBitLabels[prm0]);
+        if (prm0 == 0x21c)
+        {
+            offWarashibeItem(fpcNm_ITEM_LETTER);
+        }
     }
 
     if (prm1 != 0) {

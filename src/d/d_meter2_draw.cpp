@@ -20,6 +20,8 @@
 #include "d/d_msg_class.h"
 #include "d/d_msg_object.h"
 #include "d/d_pane_class.h"
+#include "rando/seed/seed.h"
+#include "rando/tools/tools.h"
 #include <string>
 
 dMeter2Draw_c::dMeter2Draw_c(JKRExpHeap* mp_heap) {
@@ -1553,8 +1555,39 @@ void dMeter2Draw_c::drawKanteraScreen(u8 i_meterType) {
         mpMagicMeter->setBlackWhite(black, mpMagicMeter->getInitWhite());
         setAlphaMagicChange(true);
     } else if (i_meterType == 1) {
-        mpMagicMeter->setBlackWhite(JUtility::TColor(255, 255, 140, 255),
+        uint customLanternColor = g_seedInfo.getHeaderPtr()->getLanternColor();
+        if (customLanternColor != 0x502814ff)
+        {
+            if (!g_seedInfo.isLanternRainbow())
+            {
+                u8* lanternColorPtr = g_seedInfo.getHeaderPtr()->getLanternColorPtr();
+                mpMagicMeter->setBlackWhite(JUtility::TColor(lanternColorPtr[0], lanternColorPtr[1], lanternColorPtr[2], 255),
+                                    JUtility::TColor(lanternColorPtr[0], lanternColorPtr[1], lanternColorPtr[2], 255));
+            }
+            else
+            {
+                GXColor rgbColor = getRainbowRGB(127.5f);
+                daAlinkHIO_kandelaar_c1* lv = (daAlinkHIO_kandelaar_c1*)&daAlink_getAlinkActorClass()->mpHIO->mItem.mLantern.m;
+                daAlinkHIO_huLight_c1* hlv = (daAlinkHIO_huLight_c1*)&daAlink_getAlinkActorClass()->mpHIO->mItem.mLanternPL.m;
+                lv->mColorReg1R = rgbColor.r / 2;
+                lv->mColorReg1G = rgbColor.g / 2;
+                lv->mColorReg1B = rgbColor.b / 2;
+                lv->mColorReg2R = rgbColor.r / 2;
+                lv->mColorReg2G = rgbColor.g / 2;
+                lv->mColorReg2B = rgbColor.b / 2;
+                hlv->mColorR = rgbColor.r / 2;
+                hlv->mColorG = rgbColor.g / 2;
+                hlv->mColorB = rgbColor.b / 2;
+
+                mpMagicMeter->setBlackWhite(JUtility::TColor(rgbColor.r/2, rgbColor.g/2, rgbColor.b/2, 255),
+                                    JUtility::TColor(rgbColor.r/2, rgbColor.g/2, rgbColor.b/2, 255));
+            }
+        }
+        else
+        {
+            mpMagicMeter->setBlackWhite(JUtility::TColor(255, 255, 140, 255),
                                     JUtility::TColor(230, 170, 0, 255));
+        }
         setAlphaKanteraChange(true);
     } else if (i_meterType == 2) {
         f32 oxygen_percent = (f32)dComIfGp_getOxygen() / (f32)dComIfGp_getMaxOxygen();

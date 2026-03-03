@@ -225,7 +225,8 @@ void dGameover_c::dispFadeOut_proc() {
 }
 
 void dGameover_c::dispWait_init() {
-    mTimer = 90;
+    // Set timer to 0 so there is no delay in diplaying the message
+    mTimer = 0;
     mDoGph_gInf_c::startFadeIn(30);
 }
 

@@ -9,6 +9,9 @@
 #include "d/d_com_inf_game.h"
 #include "d/d_meter2_info.h"
 #include "rando/tools/verifyItemFunctions.h"
+#include "rando/rando.h"
+#include "rando/seed/seed.h"
+#include "rando/data/flags.h"
 
 static void (*item_func_ptr[256])() = {
     item_func_HEART,
@@ -691,16 +694,14 @@ void item_func_SMALL_KEY() {
 
 void item_func_KAKERA_HEART() {
     dComIfGp_setItemMaxLifeCount(1);
-    /*
-    Pasting rando code until the framework has been updated
-    uint8_t maxLife = libtp::tp::d_com_inf_game::dComIfG_gameInfo.save.save_file.player.player_status_a.maxHealth + 1;
 
-        // Check if we have enough hearts to break the barrier.
-        randoPtr->checkSetHCBarrierFlag(rando::HC_Hearts, maxLife);
+    u8 maxLife = dComIfGs_getMaxLife() + 1;
+    
+    // Check if we have enough hearts to break the barrier.
+    checkSetHCBarrierFlag(HC_Hearts, maxLife);
 
-        // Check if we have enough hearts to unlock the BK check.
-        randoPtr->checkSetHCBkFlag(rando::HC_BK_Hearts, maxLife);
-    */
+    // Check if we have enough hearts to unlock the BK check.
+    checkSetHCBkFlag(HC_BK_Hearts, maxLife);
 }
 
 void item_func_UTUWA_HEART() {
@@ -713,16 +714,13 @@ void item_func_UTUWA_HEART() {
     int tmp = dStage_stagInfo_GetSaveTbl(stag_info);
     // dComIfGs_onStageLife();
 
-    /*
-    Pasting Rando code until the framework gets updated
-    uint8_t maxLife = libtp::tp::d_com_inf_game::dComIfG_gameInfo.save.save_file.player.player_status_a.maxHealth + 5;
+    u8 maxLife = dComIfGs_getMaxLife() + 5;
+    
+    // Check if we have enough hearts to break the barrier.
+    checkSetHCBarrierFlag(HC_Hearts, maxLife);
 
-        // Check if we have enough hearts to break the barrier.
-        randoPtr->checkSetHCBarrierFlag(rando::HC_Hearts, maxLife);
-
-        // Check if we have enough hearts to unlock the BK check.
-        randoPtr->checkSetHCBkFlag(rando::HC_BK_Hearts, maxLife);
-    */
+    // Check if we have enough hearts to unlock the BK check.
+    checkSetHCBkFlag(HC_BK_Hearts, maxLife);
 }
 
 void item_func_MAP() {
@@ -1322,44 +1320,40 @@ void item_func_FILLED_CONTAINER() {}
 
 void item_func_MIRROR_PIECE_2() {
     dComIfGs_onCollectMirror(1);
-    /*
-    Adding rando code until framework is implemented
+    
     // Check if the requirement for the HC barrier is set to shards, and if so, set the flag
-    rando::gRandomizer->checkSetHCBarrierFlag(rando::HC_Mirror_Shards, 2);
+    checkSetHCBarrierFlag(HC_Mirror_Shards, 2);
 
     // Check if the requirement for the HC BK is set to shards, and if so, set the flag
-    rando::gRandomizer->checkSetHCBkFlag(rando::HC_BK_Mirror_Shards, 2);
-    */
+    checkSetHCBkFlag(HC_BK_Mirror_Shards, 2);
 }
 
 void item_func_MIRROR_PIECE_3() {
     dComIfGs_onCollectMirror(2);
-    /*
-    Adding rando code until framework is implemented
+    
     // Check if the requirement for the HC barrier is set to shards, and if so, set the flag
-    rando::gRandomizer->checkSetHCBarrierFlag(rando::HC_Mirror_Shards, 3);
+    checkSetHCBarrierFlag(HC_Mirror_Shards, 3);
 
     // Check if the requirement for the HC BK is set to shards, and if so, set the flag
-    rando::gRandomizer->checkSetHCBkFlag(rando::HC_BK_Mirror_Shards, 3);
-    */
+    checkSetHCBkFlag(HC_BK_Mirror_Shards, 3);
+    
 }
 
 void item_func_MIRROR_PIECE_4() {
     dComIfGs_onCollectMirror(3);
-    /*
-    Adding rando code until framework is implemented
+    
     // If the player has the palace requirement set to Mirror Shards.
-    if (headerPtr->getPalaceRequirements() == rando::PalaceEntryRequirements::PoT_Mirror_Shards)
+    if (g_seedInfo.getHeaderPtr()->getPalaceRequirements() == PoT_Mirror_Shards)
     {
-        events::setSaveFileEventFlag(libtp::data::flags::FIXED_THE_MIRROR_OF_TWILIGHT);
+        dComIfGs_onEventBit(FIXED_THE_MIRROR_OF_TWILIGHT);
     }
 
     // Check if the requirement for the HC barrier is set to shards, and if so, set the flag
-    rando::gRandomizer->checkSetHCBarrierFlag(rando::HC_Mirror_Shards, 4);
+    checkSetHCBarrierFlag(HC_Mirror_Shards, 4);
 
     // Check if the requirement for the HC BK is set to shards, and if so, set the flag
-    rando::gRandomizer->checkSetHCBkFlag(rando::HC_BK_Mirror_Shards, 4);
-    */
+    checkSetHCBkFlag(HC_BK_Mirror_Shards, 4);
+    
 }
 
 void item_func_ARBITERS_COMPASS() {
@@ -1496,68 +1490,58 @@ void item_func_F_MAYFLY() {}
 
 void item_func_FUSED_SHADOW_1() {
     dComIfGs_onCollectCrystal(0);
-    /*
-    Adding rando code until framework is implemented
+    
     // Check if the requirement for the HC barrier is set to shadows, and if so, set the flag
-    rando::gRandomizer->checkSetHCBarrierFlag(rando::HC_Fused_Shadows, 1);
+    checkSetHCBarrierFlag(HC_Fused_Shadows, 1);
 
     // Check if the requirement for the HC BK is set to shadows, and if so, set the flag
-    rando::gRandomizer->checkSetHCBkFlag(rando::HC_BK_Fused_Shadows, 1);
-    */
+    checkSetHCBkFlag(HC_BK_Fused_Shadows, 1);
 }
 
 void item_func_FUSED_SHADOW_2() {
     dComIfGs_onCollectCrystal(1);
-    /*
-    Adding rando code until framework is implemented
+    
     // Check if the requirement for the HC barrier is set to shadows, and if so, set the flag
-    rando::gRandomizer->checkSetHCBarrierFlag(rando::HC_Fused_Shadows, 2);
+    checkSetHCBarrierFlag(HC_Fused_Shadows, 2);
 
     // Check if the requirement for the HC BK is set to shadows, and if so, set the flag
-    rando::gRandomizer->checkSetHCBkFlag(rando::HC_BK_Fused_Shadows, 2);
-    */
+    checkSetHCBkFlag(HC_BK_Fused_Shadows, 2);
 }
 
 void item_func_FUSED_SHADOW_3() {
     dComIfGs_onCollectCrystal(2);
-    /*
-    Adding rando code until framework is implemented
+    
     // If the player has the palace requirement set to Fused Shadows.
-    if (headerPtr->getPalaceRequirements() == rando::PalaceEntryRequirements::PoT_Fused_Shadows)
+    if (g_seedInfo.getHeaderPtr()->getPalaceRequirements() == PoT_Fused_Shadows)
     {
-        events::setSaveFileEventFlag(libtp::data::flags::FIXED_THE_MIRROR_OF_TWILIGHT);
+        dComIfGs_onEventBit(FIXED_THE_MIRROR_OF_TWILIGHT);
     }
 
     // Check if the requirement for the HC barrier is set to shadows, and if so, set the flag
-    rando::gRandomizer->checkSetHCBarrierFlag(rando::HC_Fused_Shadows, 3);
+    checkSetHCBarrierFlag(HC_Fused_Shadows, 3);
 
     // Check if the requirement for the HC BK is set to shadows, and if so, set the flag
-    rando::gRandomizer->checkSetHCBkFlag(rando::HC_BK_Fused_Shadows, 3);
-    */
+    checkSetHCBkFlag(HC_BK_Fused_Shadows, 3);
 }
 
 void item_func_MIRROR_PIECE_1() {
     dComIfGs_onCollectMirror(0);
-    /*
-    Adding rando code until framework is implemented
+    
     // Check if the requirement for the HC barrier is set to shards, and if so, set the flag
-    rando::gRandomizer->checkSetHCBarrierFlag(rando::HC_Mirror_Shards, 1);
+    checkSetHCBarrierFlag(HC_Mirror_Shards, 1);
 
     // Check if the requirement for the HC BK is set to shards, and if so, set the flag
-    rando::gRandomizer->checkSetHCBkFlag(rando::HC_BK_Mirror_Shards, 1);
-    */
+    checkSetHCBkFlag(HC_BK_Mirror_Shards, 1);
 }
 
 void item_func_POU_SPIRIT() {
     dComIfGs_addPohSpiritNum();
-    /* 
-    Adding rando code until framework is implemented
+    
     // Check if the HC barrier requires poes and if we have enough poe souls to set the flag.
-    randoPtr->checkSetHCBarrierFlag(rando::HC_Poe_Souls, *poeCountPtr);
+    checkSetHCBarrierFlag(HC_Poe_Souls, dComIfGs_getPohSpiritNum());
 
     // Check if the HC bk check requires poes and if we have enough poe souls to unlock the check.
-    randoPtr->checkSetHCBkFlag(rando::HC_BK_Poe_Souls, *poeCountPtr);
-    */
+    checkSetHCBkFlag(HC_BK_Poe_Souls, dComIfGs_getPohSpiritNum());
 }
 
 void item_func_ENDING_BLOW() {

@@ -1341,6 +1341,10 @@ inline void dComIfGs_onTransformLV(int i_no) {
     g_dComIfG_gameInfo.info.getPlayer().getPlayerStatusB().onTransformLV(i_no);
 }
 
+inline void dComIfGs_setTransformLV(u8 i_no) {
+    g_dComIfG_gameInfo.info.getPlayer().getPlayerStatusB().setTransformLV(i_no);
+}
+
 inline void dComIfGs_offTransformLV(int i_no) {
     g_dComIfG_gameInfo.info.getPlayer().getPlayerStatusB().offTransformLV(i_no);
 }
@@ -1404,6 +1408,10 @@ inline BOOL dComIfGs_isRegionBit(int i_region) {
 
 inline void dComIfGs_onRegionBit(int i_region) {
     g_dComIfG_gameInfo.info.getPlayer().getPlayerFieldLastStayInfo().onRegionBit(i_region);
+}
+
+inline void dComIfGs_setRegionBit(u8 i_region) {
+    g_dComIfG_gameInfo.info.getPlayer().getPlayerFieldLastStayInfo().setRegionBit(i_region);
 }
 
 inline void dComIfGs_setPlayerFieldLastStayInfo(const char* i_stage, cXyz& i_pos, s16 i_angle,
@@ -1684,6 +1692,14 @@ inline BOOL dComIfGs_isLightDropGetFlag(u8 i_nowLevel) {
 
 inline void dComIfGs_onLetterGetFlag(int i_no) {
     g_dComIfG_gameInfo.info.getPlayer().getLetterInfo().onLetterGetFlag(i_no);
+}
+
+inline void dComIfGs_setAllLetterGet() {
+    g_dComIfG_gameInfo.info.getPlayer().getLetterInfo().setAllLetterGet();
+}
+
+inline void dComIfGs_setAllLetterRead() {
+    g_dComIfG_gameInfo.info.getPlayer().getLetterInfo().setAllLetterRead();
 }
 
 inline BOOL dComIfGs_isLetterGetFlag(int i_no) {
@@ -2021,6 +2037,14 @@ inline BOOL dComIfGs_isSaveSwitch(int i_no) {
 
 inline BOOL dComIfGs_isSaveItem(int i_no) {
     return g_dComIfG_gameInfo.info.getMemory().getBit().isItem(i_no);
+}
+
+inline dSv_memBit_c* dComIfGs_getStageBit() {
+    return &g_dComIfG_gameInfo.info.getMemory().getBit();
+}
+
+inline dSv_memBit_c* dComIfGs_getSaveBit(int i_stageNo) {
+    return &g_dComIfG_gameInfo.info.getSavedata().getSave(i_stageNo).getBit();
 }
 
 inline void dComIfGs_onSaveDunSwitch(int i_swNo) {

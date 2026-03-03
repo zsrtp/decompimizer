@@ -260,6 +260,35 @@ void handleQuickTransform()
     daAlink_getAlinkActorClass()->procCoMetamorphoseInit();
 }
 
+bool checkToTSwordReqEquip()
+{
+    if ((dStage_roomControl_c::mStayNo == 1) && dComIfGs_isSaveSwitch(0x63))
+    {
+        return false;
+    }
+
+    // Make sure we at least have a sword in our hand
+    u8 equippedSword = dComIfGs_getSelectEquipSword();
+    if (equippedSword != 0xFF)
+    {
+        u8 neededSword = g_seedInfo.getHeaderPtr()->getToTSwordRequirement();
+        if (neededSword != fpcNm_ITEM_WOOD_STICK)
+        {
+            // If the sword we have equipped is better or equal to the sword we need, allow it to be used.
+            if ((equippedSword >= neededSword) && (equippedSword != fpcNm_ITEM_WOOD_STICK))
+            {
+                return true;
+            }
+        }
+        else
+        {
+            return true; // if we only need wood sword, then any sword is good enough to satisfy the condition.
+        }
+    }
+
+    return false;
+}
+
 int readFile(const char* file, bool allocFromHead, u8** dataOut)
 {
 

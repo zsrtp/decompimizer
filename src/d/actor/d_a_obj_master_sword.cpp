@@ -58,6 +58,8 @@ void daObjMasterSword_c::executeWait() {
 
         //dMeter2Info_setCloth(fpcNm_ITEM_WEAR_KOKIRI, false);
         fopAcM_orderMapToolEvent(this, getEventID(), 0xFF, 0xFFFF, 1, 0);
+
+        actor_status = 0;
     }
 }
 

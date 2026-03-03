@@ -45,6 +45,9 @@ public:
     u8 eventItemQueue[EVENT_ITEM_QUEUE_SIZE];
 };
 
+void checkSetHCBkFlag(u8 req, u8 currentCount);
+void checkSetHCBarrierFlag(u8 req, u8 currentCount);
+
 extern randoInfo_c g_randoInfo;
 
 #endif  // RANDO_H

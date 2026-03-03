@@ -10458,7 +10458,7 @@ void daAlink_c::decideDoStatus() {
                                (actor_name == PROC_TAG_KMSG &&
                                 static_cast<daTag_KMsg_c*>(field_0x27f4)->getType() == 3))
                     {
-                        if (!checkEquipAnime() && checkMasterSwordEquip()) {
+                        if (!checkEquipAnime() && checkToTSwordReqEquip()) {
                             setDoStatus(BUTTON_STATUS_STRIKE);
                         }
                     }
@@ -13461,7 +13461,7 @@ int daAlink_c::startRestartRoom(u32 i_mode, int param_1, int i_dmgAmount, BOOL i
             }
 
             if (!dComIfGs_isEventBit(dSv_event_flag_c::F_0266) && (checkBoardRide() || checkBoardRestart())) {
-                i_mode = 11;
+                i_mode = 5; // If we void, we don't want to restart on the board.
             } else if (checkBoarSingleBattle() ||
                        (start_mode == 2 && !checkFinalBattle() && i_mode == 5))
             {

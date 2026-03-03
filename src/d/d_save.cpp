@@ -11,12 +11,16 @@
 #include "d/d_com_inf_game.h"
 #include "d/d_meter2_info.h"
 #include "d/d_save.h"
+#include "d/d_msg_object.h"
 #include "d/d_save_init.h"
 #include "d/actor/d_a_alink.h"
 #include "d/d_stage.h"
 #include "f_op/f_op_scene_mng.h"
 #include "rando/rando.h"
 #include "rando/seed/seed.h"
+#include "rando/tools/tools.h"
+#include "rando/data/flags.h"
+#include "rando/data/stages.h"
 #include <cstdio>
 
 #if PLATFORM_WII || PLATFORM_SHIELD
@@ -253,6 +257,40 @@ void dSv_player_field_last_stay_info_c::set(const char* i_name, const cXyz& i_po
 }
 
 void dSv_player_field_last_stay_info_c::onRegionBit(int i_region) {
+    // We want to handle special use cases for which rooms can unlock a region
+    switch(i_region)
+    {
+        case 3: // Eldin
+        {
+            // If we are in hidden village or outside hidden village, we don't want to unlock the region unless the rocks are destroyed.
+            if (daAlink_c::checkStageName("F_SP128") || playerIsInRoomStage(7, "F_SP121") || (daAlink_c::checkStageName("F_SP121") && dStage_roomControl_c::mOldStayNo == 7))
+            {
+                if (!dComIfGs_isStageSwitch(0x6, 0x11)) // Eldin Field Rocks destroyed
+                {
+                    return;
+                }
+            }
+
+            if (daAlink_c::checkStageName("F_SP121") && (int)dStage_roomControl_c::mOldStayNo == -1)
+            {
+                // Prevent setting region bit if we void in eldin field or if we are entering from East CT and the bridge is not repaired.
+                if((dComIfGp_getStartStagePoint() == -1) || ((dComIfGp_getStartStagePoint() == 7) && dComIfGs_isStageSwitch(0x6, 0x1B)))
+                {
+                    return;
+                }
+            }
+            break;
+        }
+        case 2: // Faron
+        {
+            if (playerIsInRoomStage(15, "F_SP121"))
+            {
+                // Since the Lanayru gate is in the middle of the room, prevent this room from setting the region bit.
+                return;
+            }
+            break;
+        }
+    }
     if (i_region >= 0 && i_region < 8) {
         mRegion |= (u8)(1 << i_region);
     } else {
@@ -1116,6 +1154,44 @@ BOOL dSv_memBit_c::isTbox(int i_no) const {
 }
 
 void dSv_memBit_c::onSwitch(int i_no) {
+    if (this == dComIfGs_getStageBit())
+    {
+        if (daAlink_c::checkStageName("F_SP115"))
+        {
+            if ((i_no == 0xD) && dComIfGs_isEventBit(TRANSFORMING_UNLOCKED)) // Lanayru Twilight end CS trigger
+            {
+                // Set player to Human. Otherwise the CS will crash if Shadow Crystal has been obtained
+                dComIfGs_setTransformStatus(0);
+            }
+        }
+        else if (daAlink_c::checkStageName("F_SP109"))
+        {
+            if (i_no == 0x3E) // Hawkeye is for sale
+            {
+                this->offSwitch(0xB); // Remove the coming soon sign so the hawkeye can be bought
+            }
+        }
+        else if (daAlink_c::checkStageName("F_SP121"))
+        {
+            if (i_no == 0x11) // Destroyed rocks north of eldin bridge
+            {
+                // Manually unlock Eldin province on map. We do this manually since that function would see that the rocks are not yet broken.
+                dComIfGs_setRegionBit(0x8);
+            }
+        }
+        
+    }
+    if (this == dComIfGs_getSaveBit(0x6)) // Hyrule Field
+    {
+        if (daAlink_c::checkStageName("R_SP109"))
+        {
+            if (i_no == 0x1B) // Repair Castle Town Bridge
+            {
+                dMsgObject_setFundRaising(g_seedInfo.getHeaderPtr()->getMaloShopDonationAmount());
+            }
+        }
+    }
+
     JUT_ASSERT(2786, 0 <= i_no && i_no < 128);
     mSwitch[i_no >> 5] |= 1 << (i_no & 0x1F);
 }
@@ -1126,6 +1202,22 @@ void dSv_memBit_c::offSwitch(int i_no) {
 }
 
 BOOL dSv_memBit_c::isSwitch(int i_no) const {
+    if (daAlink_c::checkStageName(allStages[Kakariko_Graveyard]))
+    {
+        // If water bombs/graveyard rock flag is checked and we haven't got ZA check, return false.
+        if ((i_no == 0x66) && !dComIfGs_isEventBit(GOT_ZORA_ARMOR_FROM_RUTELA))
+        {
+            return false;
+        }
+    }
+    else if (daAlink_c::checkStageName(allStages[Ordon_Village]))
+    {
+        // If Midna jumps to shield house are active and it is daytime, return false.
+        if (i_no == 0x21 && !dKy_daynight_check())
+        {
+            return false;
+        }
+    }
     JUT_ASSERT(2814, 0 <= i_no && i_no < 128);
     return (mSwitch[i_no >> 5] & 1 << (i_no & 0x1F)) ? TRUE : FALSE;
 }
@@ -1169,14 +1261,11 @@ void dSv_memBit_c::onDungeonItem(int i_no) {
                 }
             }
 
-            /*
-            Pasting rando code for the time being until the framework is built:
             // Check if we have completed enough dungeons to break the barrier.
-                    randoPtr->checkSetHCBarrierFlag(rando::HC_Dungeons, numDungeons);
+            checkSetHCBarrierFlag(HC_Dungeons, numCompletedDungeons);
 
-                    // Check if we have completed enough dungeons to unlock the BK check.
-                    randoPtr->checkSetHCBkFlag(rando::HC_BK_Dungeons, numDungeons);
-            */
+            // Check if we have completed enough dungeons to unlock the BK check.
+            checkSetHCBkFlag(HC_BK_Dungeons, numCompletedDungeons);
             break;
         }
     }
@@ -1263,6 +1352,91 @@ void dSv_event_c::offEventBit(u16 i_no) {
 }
 
 BOOL dSv_event_c::isEventBit(const u16 i_no) const {
+    switch (i_no)
+    {
+        case BO_TALKED_TO_YOU_AFTER_OPENING_IRON_BOOTS_CHEST:
+        {
+            if (daAlink_c::checkStageName(allStages[Ordon_Village_Interiors]))
+            {
+                if (dComIfGs_isEventBit(HEARD_BO_TEXT_AFTER_SUMO_FIGHT))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+
+            }
+            break;
+        }
+        case GORON_MINES_CLEARED:
+        {
+            if (daAlink_c::checkStageName(allStages[Goron_Mines]) || daAlink_c::checkStageName(allStages[Death_Mountain_Interiors]))
+            {
+                return false; // The gorons will not act properly if the flag is set.
+            }
+            break;
+        }
+        case ZORA_ESCORT_CLEARED:
+        {
+            if (daAlink_c::checkStageName(allStages[Castle_Town]))
+            {
+                return true; // If the flag isn't set the player will be thrown into escort when they open the door
+            }
+            else if (playerIsInRoomStage(0, allStages[Kakariko_Village_Interiors]))
+            {
+                return true; // Return true to prevent Renado/Ilia crash after ToT
+            }
+            break;
+        }
+        case CITY_IN_THE_SKY_CLEARED: // Would like to find where this is checked and patch it there.
+        {
+            if (!dComIfGs_isEventBit(FIXED_THE_MIRROR_OF_TWILIGHT))
+            {
+                if (g_seedInfo.getHeaderPtr()->getPalaceRequirements() != PoT_Vanilla)
+                {
+                    return false;
+                }
+            }
+            break;
+        }
+        case HOWLED_AT_SNOWPEAK_STONE:
+        {
+            if (daAlink_c::checkStageName(allStages[Snowpeak]))
+            {
+                return false; // return false so the player can howl at the stone multiple times to remove map glitch
+            }
+            break;
+        }
+        case WATCHED_CUTSCENE_AFTER_GOATS_2:
+        {
+            if (playerIsInRoomStage(1, allStages[Ordon_Village_Interiors]))
+            {
+                if (dComIfGs_isEventBit(SERAS_CAT_RETURNED_TO_SHOP))
+                {
+                    return false; // Return false so sera will give the milk item once they help the cat.
+                }
+                else
+                {
+                    return true; // Return true so the player can always use the shop, even if the cat is not returned.
+                }
+            }
+            break;
+        }
+        case FIXED_THE_MIRROR_OF_TWILIGHT:
+        {
+            if (daAlink_c::checkStageName(allStages[Palace_of_Twilight]))
+            {
+                return true; // If the flag is not set, the player cannot leave PoT from the inside.
+            }
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
     return mEvent[i_no >> 8] & (i_no & 0xFF) ? TRUE : FALSE;
 }
 
@@ -1585,6 +1759,15 @@ u32 dSv_info_c::createZone(int i_roomNo) {
 
 void dSv_info_c::onSwitch(int i_no, int i_roomNo) {
     JUT_ASSERT(4210, (0 <= i_no && i_no < (MEMORY_SWITCH+ DAN_SWITCH+ ZONE_SWITCH+ ONEZONE_SWITCH)) || i_no == -1 || i_no == 255);
+
+    // If we are in grove and we struck the ms pedestal
+    // This may be able to be moved to wherever the function call is from, but idk where that is yet.
+    // i *think* the Sekizoa actr calls this.
+    if (daAlink_c::checkStageName("F_SP117") && i_no == 0xEE)
+    {
+        // set our custom flag to remove the statue from in front of the door.
+        i_no = 0x63;
+    }
 
     if (i_no == -1 || i_no == 255) {
         return;

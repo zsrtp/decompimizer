@@ -18,6 +18,8 @@
 #include "Z2AudioLib/Z2Instances.h"
 #include "m_Do/m_Do_lib.h"
 #include "d/actor/d_a_movie_player.h"
+#include "rando/data/flags.h"
+#include "rando/seed/seed.h"
 #if DEBUG
 #include "d/d_debug_viewer.h"
 #endif
@@ -1089,9 +1091,84 @@ inline int daDemo00_c::execute() {
                             break;
                         }
                         case 1:
+                        {
                             dComIfGs_onEventBit(dSv_event_flag_c::saveBitLabels[sp0E]);
+                            switch(sp0E)
+                            {
+                                case 0x52: // Entered Spring Ordon day 3
+                                {
+                                    if (dComIfGs_isEventBit(TRANSFORMING_UNLOCKED))
+                                    {
+                                        // If we can transform, set player to be Link to avoid a crash
+                                        dComIfGs_setTransformStatus(0);
+                                    }
+                                    break;
+                                }
+                                case 0x4ec: // Watched Faron Shadow Beast CS
+                                {
+                                    if (dComIfGs_isEventBit(TRANSFORMING_UNLOCKED))
+                                    {
+                                        // If we can transform, set player to be Wolf so sewers cs isnt weird
+                                        dComIfGs_setTransformStatus(1);
+                                    }
+                                    break;
+                                }
+                                case 0x1f4: // MDH Completed
+                                {
+                                    dComIfGs_onDarkClearLV(3); // Set mdh completed flag
+                                }
+                                case 0x68: // Cleared Faron Twilight
+                                {
+                                    if (dComIfGs_isEventBit(MIDNAS_DESPERATE_HOUR_COMPLETED) && (dComIfGs_getDarkClearLV() == 6))
+                                    {
+                                        dComIfGs_setTransformLV(3);
+                                        dComIfGs_onDarkClearLV(3);
+                                    }
+                                    break;
+                                }
+                                case 0x7a: // Cleared Eldin Twilight
+                                {
+                                    dComIfGs_onEventBit(MAP_WARPING_UNLOCKED);
+                                    if (dComIfGs_isEventBit(MIDNAS_DESPERATE_HOUR_COMPLETED) && (dComIfGs_getDarkClearLV() == 7))
+                                    {
+                                        dComIfGs_setTransformLV(3);
+                                        dComIfGs_onDarkClearLV(3);
+                                    }
+                                    break;
+                                }
+                                case 0xce: // Cleared Lanayru Twilight
+                                {
+                                    if (dComIfGs_isEventBit(MIDNAS_DESPERATE_HOUR_COMPLETED) && (dComIfGs_getDarkClearLV() == 7))
+                                    {
+                                        dComIfGs_setTransformLV(3);
+                                        dComIfGs_onDarkClearLV(3);
+                                    }
+                                    break;
+                                }
+                                case 0x55c: // Zant defeated.
+                                {
+                                    if (g_seedInfo.getHeaderPtr()->getCastleRequirements() == HC_Vanilla)
+                                    {
+                                        dComIfGs_onEventBit(BARRIER_GONE);
+                                    }
+                                    break;
+                                }
+                                case 0xca: // Remove Sword and shield from back
+                                {
+                                    if (!dComIfGs_isEventBit(CLEARED_FARON_TWILIGHT))
+                                    {
+                                        dComIfGs_onTransformLV(0x1); // Set the last transformed twilight to include Faron
+                                    }
+                                    break;
+                                }
+                                case 0x108: // Watched start of game cutscene
+                                {
+                                    g_seedInfo.initSeed();
+                                    break;
+                                }
+                            }
                             break;
-
+                        }
                         case 2: {
                             u16 sp0A = sp0E & 0x3FFF;
                             if ((sp0E & 0xC000) == 0) {

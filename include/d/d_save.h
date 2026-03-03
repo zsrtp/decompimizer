@@ -201,6 +201,7 @@ public:
     u16 getDate() const { return mDate; }
     void setDate(u16 i_date) { mDate = i_date; }
     u8 getDarkClearLV() { return mDarkClearLevelFlag; }
+    void setTransformLV(u8 i_no) { mTransformLevelFlag = i_no; }
 
 private:
     /* 0x00 */ OSTime mDateIpl;
@@ -265,6 +266,7 @@ public:
     bool isFieldDataExistFlag() const { return mFieldDataExistFlag ? true : false; }
     void offFieldDataExistFlag() { mFieldDataExistFlag = false; }
     void onFieldDataExistFlag() { mFieldDataExistFlag = true; }
+    void setRegionBit(u8 region) { mRegion |= region;}
 
 
 private:
@@ -450,6 +452,8 @@ public:
     int isLetterReadFlag(int i_no) const;
     u8 getGetNumber(int i_no) { return mGetNumber[i_no]; }
     void setGetNumber(int i_no, u8 i_value) { mGetNumber[i_no] = i_value; }
+    void setAllLetterGet() { mLetterGetFlags[0] |= 0xFFFF;}
+    void setAllLetterRead() { mLetterReadFlags[0] |= 0xFFFF;}
 
 private:
     /* 0x00 */ u32 mLetterGetFlags[2];

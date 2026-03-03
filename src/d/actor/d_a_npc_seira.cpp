@@ -365,9 +365,9 @@ u8 daNpc_Seira_c::getType() {
         return 5;
     }
 
-    if (dComIfGs_isDarkClearLV(0)) {
+    /*if (dComIfGs_isDarkClearLV(0)) {
         return 3;
-    }
+    }*/
 
     if (daNpcT_chkEvtBit(0x3D) || daNpcT_chkEvtBit(0x208)) {
         return 3;
@@ -407,9 +407,9 @@ int daNpc_Seira_c::getFlowNodeNo() {
 
 u8 daNpc_Seira_c::checkBottle() {
     u8 prm = fopAcM_GetParam(this);
-    if (dComIfGs_isDarkClearLV(0)) {
+    /*if (dComIfGs_isDarkClearLV(0)) {
         return false;
-    }
+    }*/
 
     switch (prm) {
         case 0:

@@ -11,6 +11,8 @@
 #include "f_op/f_op_kankyo_mng.h"
 #include "m_Do/m_Do_graphic.h"
 #include "m_Do/m_Do_lib.h"
+#include "d/actor/d_a_alink.h"
+#include "rando/data/flags.h"
 
 static void vectle_calc(DOUBLE_POS* i_pos, cXyz* o_out) {
     double s = sqrt(i_pos->x * i_pos->x + i_pos->y * i_pos->y + i_pos->z * i_pos->z);
@@ -5316,7 +5318,18 @@ void dKyr_odour_draw(Mtx drawMtx, u8** tex) {
     GXColor color_reg0;
     GXColor color_reg1;
 
-    switch (dComIfGs_getCollectSmell()) {
+    u8 smell;
+    if (daAlink_c::checkStageName("F_SP114") && dComIfGs_isEventBit(GOT_REEKFISH_SCENT))
+    {
+        // If we are in snowpeak and have smelled a reekfish, we want to show the scent path, even if it's not equipped
+        smell = fpcNm_ITEM_SMELL_FISH;
+    }
+    else
+    {
+        smell = dComIfGs_getCollectSmell();
+    }
+
+    switch (smell) {
     case fpcNm_ITEM_SMELL_YELIA_POUCH:
         color_reg0.r = 0xFF;
         color_reg0.g = 0xFF;
