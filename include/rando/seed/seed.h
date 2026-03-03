@@ -21,6 +21,12 @@ enum SeedEnabledFlag
     RETURN_MONEY_TO_CHEST,
     SKIP_MINOR_CUTSCENES,
     OPEN_MAP,
+    REMOVE_IB_LIMIT,
+    DISABLE_BATTLE_MUSIC,
+    SET_INSTANT_TEXT,
+    SKIP_MAJOR_CUTSCENES,
+    INVERT_CAMERA_AXIS,
+    MAKE_LIGHT_SWORD_GLOW,
 };
 
 bool flagIsEnabled(const uint* bitfieldPtr, uint totalFlags, uint flag);
@@ -189,6 +195,12 @@ class seedInfo_c {
         bool returnRupeeToChest() const { return flagBitfieldFlagIsEnabled(RETURN_MONEY_TO_CHEST);}
         bool skipMinorCutscenes() const { return flagBitfieldFlagIsEnabled(SKIP_MINOR_CUTSCENES);}
         bool isMapOpen() const { return flagBitfieldFlagIsEnabled(OPEN_MAP);}
+        bool removeIBLimit() const { return flagBitfieldFlagIsEnabled(REMOVE_IB_LIMIT);}
+        bool isDisableBattleMusic() const { return flagBitfieldFlagIsEnabled(DISABLE_BATTLE_MUSIC);}
+        bool isInstantText() const { return flagBitfieldFlagIsEnabled(SET_INSTANT_TEXT);}
+        bool skipMajorCutscenes() const { return flagBitfieldFlagIsEnabled(SKIP_MAJOR_CUTSCENES);}
+        bool invertCameraAxis() const { return flagBitfieldFlagIsEnabled(INVERT_CAMERA_AXIS);}
+        bool isLightSwordGlow() const { return flagBitfieldFlagIsEnabled(MAKE_LIGHT_SWORD_GLOW);}
 
         bool spinnerSpeedIsIncreased() const
         {

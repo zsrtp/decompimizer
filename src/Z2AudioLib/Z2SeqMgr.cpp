@@ -8,6 +8,7 @@
 #include "Z2AudioLib/Z2Calc.h"
 #include "JSystem/JAudio2/JAISoundChild.h"
 #include "JSystem/JAudio2/JAISeq.h"
+#include "rando/seed/seed.h"
 
 static const char* sSpotName[] = {
     "F_SP00",
@@ -1980,6 +1981,10 @@ void Z2SeqMgr::battleBgmFramework() {
 }
 
 void Z2SeqMgr::startBattleBgm(bool isFadeIn) {
+    if (g_seedInfo.isDisableBattleMusic())
+    {
+        return;
+    }
     if (mFlags.mBattleBgmOff) {
         return;
     }
