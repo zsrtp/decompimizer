@@ -274,7 +274,7 @@ void dSv_player_field_last_stay_info_c::onRegionBit(int i_region) {
             if (daAlink_c::checkStageName("F_SP121") && (int)dStage_roomControl_c::mOldStayNo == -1)
             {
                 // Prevent setting region bit if we void in eldin field or if we are entering from East CT and the bridge is not repaired.
-                if((dComIfGp_getStartStagePoint() == -1) || ((dComIfGp_getStartStagePoint() == 7) && dComIfGs_isStageSwitch(0x6, 0x1B)))
+                if((dComIfGp_getStartStagePoint() == -1) || ((dComIfGp_getStartStagePoint() == 7) && !dComIfGs_isStageSwitch(0x6, 0x1B)))
                 {
                     return;
                 }
