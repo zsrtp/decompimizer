@@ -26,6 +26,7 @@
 #include "m_Do/m_Do_controller_pad.h"
 #include "m_Do/m_Do_lib.h"
 #include "JSystem/JKernel/JKRExpHeap.h"
+#include "rando/seed/seed.h"
 
 static void dMsgObject_addFundRaising(s16 param_0);
 static void dMsgObject_addTotalPayment(s16 param_0);
@@ -1553,7 +1554,7 @@ u8 dMsgObject_c::isSend() {
         if (pRef->getSendFlag() == 5) {
             if (getStatusLocal() == 21) {
                 setButtonStatusLocal();
-                if (mDoCPd_c::getTrigA(0) != 0 || mDoCPd_c::getTrigB(0) != 0) {
+                if ((g_seedInfo.isInstantText() && mDoCPd_c::getHoldB(0)) || (mDoCPd_c::getTrigA(0) != 0 || mDoCPd_c::getTrigB(0) != 0)) {
                     return 2;
                 }
                 return 0;
@@ -1572,7 +1573,7 @@ u8 dMsgObject_c::isSend() {
         }
         if (pRef->getSendFlag() == 2) {
             setButtonStatusLocal();
-            if (mDoCPd_c::getTrigA(0) != 0 || mDoCPd_c::getTrigB(0) != 0) {
+            if ((g_seedInfo.isInstantText() && mDoCPd_c::getHoldB(0)) || (mDoCPd_c::getTrigA(0) != 0 || mDoCPd_c::getTrigB(0) != 0)) {
                 return 2;
             }
         }
@@ -1585,7 +1586,7 @@ u8 dMsgObject_c::isSend() {
                 return 2;
             }
         } else {
-            if (mDoCPd_c::getTrigA(0) != 0 || mDoCPd_c::getTrigB(0) != 0) {
+            if ((g_seedInfo.isInstantText() && mDoCPd_c::getHoldB(0)) || (mDoCPd_c::getTrigA(0) != 0 || mDoCPd_c::getTrigB(0) != 0)) {
                 return 2;
             }
             if (mesgCancelButton) {
