@@ -617,15 +617,15 @@ BOOL daNpc_Bans_c::isDelete() {
                 Delete if TYPE_MAKING_BOMBS and:
                 Horseback Battle Not Cleared or Goron Mines Cleared
             */
-            return !daNpcT_chkEvtBit(85) || // dSv_event_flag_c::M_052 - Main Event - Horseback battle clear
-                    daNpcT_chkEvtBit(64); // dSv_event_flag_c::M_031 - Goron Mines - Goron Mines clear
+            return true; /*!daNpcT_chkEvtBit(85)  || // dSv_event_flag_c::M_052 - Main Event - Horseback battle clear
+                    daNpcT_chkEvtBit(64)*/; // dSv_event_flag_c::M_031 - Goron Mines - Goron Mines clear
 
         case TYPE_SHOP:
             /*
                 Delete if TYPE_SHOP and:
                 Goron Mines Cleared
             */
-            return !daNpcT_chkEvtBit(64); // dSv_event_flag_c::M_031 - Goron Mines - Goron Mines clear
+            return false;/*!daNpcT_chkEvtBit(64);*/ // dSv_event_flag_c::M_031 - Goron Mines - Goron Mines clear
 
         default:
             return FALSE;
