@@ -22,6 +22,7 @@
 #include "m_Do/m_Do_controller_pad.h"
 #include "m_Do/m_Do_graphic.h"
 #include "rando/rando.h"
+#include "rando/tools/memory.h"
 
 static s32 SelStartFrameTbl[3] = {
     59,
@@ -267,6 +268,7 @@ void dFile_select_c::_create() {
     screenSetDetail();
     displayInit();
     g_randoInfo.setGiveItemToPlayerStatus(QUEUE_EMPTY);
+    clearMemory(&g_randoInfo.eventItemQueue, EVENT_ITEM_QUEUE_SIZE);
 }
 
 typedef void (dFile_select_c::*DataSelProcFunc)(void);
