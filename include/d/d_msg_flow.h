@@ -128,6 +128,9 @@ public:
     u16 query051(mesg_flow_node_branch*, fopAc_ac_c*, int);
     u16 query052(mesg_flow_node_branch*, fopAc_ac_c*, int);
     u16 query053(mesg_flow_node_branch*, fopAc_ac_c*, int);
+    u16 query054(mesg_flow_node_branch*, fopAc_ac_c*, int);
+    u16 query055(mesg_flow_node_branch*, fopAc_ac_c*, int);
+    u16 query056(mesg_flow_node_branch*, fopAc_ac_c*, int);
     int event000(mesg_flow_node_event*, fopAc_ac_c*);
     int event001(mesg_flow_node_event*, fopAc_ac_c*);
     int event002(mesg_flow_node_event*, fopAc_ac_c*);
@@ -171,6 +174,9 @@ public:
     int event040(mesg_flow_node_event*, fopAc_ac_c*);
     int event041(mesg_flow_node_event*, fopAc_ac_c*);
     int event042(mesg_flow_node_event*, fopAc_ac_c*);
+    int event043(mesg_flow_node_event*, fopAc_ac_c*);
+    int event044(mesg_flow_node_event*, fopAc_ac_c*);
+    int event045(mesg_flow_node_event*, fopAc_ac_c*);
 
     void initWord(fopAc_ac_c*, const char*, u8, int, fopAc_ac_c**);
 
@@ -185,8 +191,8 @@ public:
     void setMsg(u32 msg) { mMsg = msg; }
     bool checkEndFlow() { return (u32)field_0x26 == 1; }
 
-    static queryFunc mQueryList[53];
-    static eventFunc mEventList[43];
+    static queryFunc mQueryList[56];
+    static eventFunc mEventList[46];
 
 private:
     /* 0x04 */ u8* mFlow_p;

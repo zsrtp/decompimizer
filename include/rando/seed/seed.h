@@ -90,6 +90,7 @@ public:
     GXColor getLightSwordGlowColor() const { return lightSwordGlowColor; }
     uint getLanternColor() const { return lanternColor; }
     u8* getLanternColorPtr() const { return (u8*)&lanternColor; }
+    EntranceInfo getSpawnInfo() const { return spawnInfo; }
 
     //const EntryInfo* getVolatilePatchInfoPtr() const { return &volatilePatchInfo; }
     //const EntryInfo* getOneTimePatchInfoPtr() const { return &oneTimePatchInfo; }
@@ -159,6 +160,7 @@ public:
     /* 0x98 */ GXColor wolfDomeAttackWave2Color;
     /* 0x9C */ GXColor lightSwordGlowColor;
     /* 0x100 */ uint lanternColor;
+    /* 0x104 */ EntranceInfo spawnInfo;
 };
 
 class seedInfo_c {
@@ -209,6 +211,7 @@ class seedInfo_c {
 
         void loadShopModels();
         void loadShuffledEntrances();
+        void handleReturnToLocation(bool isReturnToDungeonEntrance);
         
        private:
         void applyEventFlags();

@@ -4,6 +4,13 @@
 
 #include "dolphin/types.h"
 
+enum TimeChange
+{
+    NO_CHANGE = 0,
+    CHANGE_TO_NIGHT,
+    CHANGE_TO_DAY,
+};
+
 enum EventItemStatus
 {
     QUEUE_EMPTY,
@@ -27,13 +34,19 @@ public:
     void addItemToEventQueue(u8 item);
     void initGiveItemToPlayer();
     void handleBonkDamage();
+    void handleTimeOfDayChange();
+    void handleTimeSpeed();
 
     u8 getGiveItemToPlayerStatus() { return eventItemStatus;}
-    void setGiveItemToPlayerStatus(u8 status) { eventItemStatus = status;}
     u16 getLastButtonInput() { return m_LastButtonInput;}
-    void setLastButtonInput(u16 buttonInput) { m_LastButtonInput = buttonInput;}
     float getPrevFrameAnalogR() { return prevFrameAnalogR;}
+    u8 getTimeChange() { return mTimeChange; }
+    
+    void setGiveItemToPlayerStatus(u8 status) { eventItemStatus = status;}
+    void setLastButtonInput(u16 buttonInput) { m_LastButtonInput = buttonInput;}
     void setPrevFrameAnalogR(float value) { prevFrameAnalogR = value;}
+    void setHasPendingToDChange(bool hasPending) { hasPendingToDChange = hasPending; }
+    void setTimeChange(u8 newTimeChange) { mTimeChange = newTimeChange; }
 
     bool mInitialized;
     u8 eventItemStatus;
@@ -42,6 +55,8 @@ public:
     float prevFrameAnalogR;
     f32 rainbowPhaseAngle;
     bool isWolfDomeDrawn;
+    bool hasPendingToDChange;
+    u8 mTimeChange;
     u8 eventItemQueue[EVENT_ITEM_QUEUE_SIZE];
 };
 

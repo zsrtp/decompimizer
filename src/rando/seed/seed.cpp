@@ -1,5 +1,6 @@
 #include "rando/seed/seed.h"
 #include "rando/data/flags.h"
+#include "rando/data/stages.h"
 #include "rando/tools/verifyItemFunctions.h"
 #include "rando/tools/tools.h"
 #include "rando/tools/memory.h"
@@ -195,4 +196,81 @@ void seedInfo_c::setStaticGameValues()
     {
         *heavyStateSpeedPtr = 1.f;
     }
+}
+
+void seedInfo_c::handleReturnToLocation(bool isReturnToDungeonEntrance)
+{
+    u8 newStageIdx;
+    s8 newRoomNo;
+    s16 newPoint;
+    s8 newLayer;
+
+    if (!isReturnToDungeonEntrance)
+    {
+        // Return to spawn
+        EntranceInfo spawnPoint = m_Header->getSpawnInfo();
+
+        newStageIdx = spawnPoint.getStageIDX();
+        newRoomNo = spawnPoint.getRoomIDX();
+        // Get point as u16 so we overwrite both bytes in struct's point when it was previously negative.
+        newPoint = (u16)spawnPoint.getSpawn();
+        newLayer = spawnPoint.getState();
+
+        // If returning to spawn, then do some additional steps:
+
+        // If a player hasn't completed a twilight/MDH, we want to unset the transform flag so they aren't forced to be wolf
+        // un-necessarily.
+        for (int32_t i = 0; i < 4; i++)
+        {
+            if (!dComIfGs_isDarkClearLV(i))
+            {
+                dComIfGs_offTransformLV(i);
+            }
+        }
+
+        if (!dComIfGs_isEventBit(MIDNAS_DESPERATE_HOUR_COMPLETED)) // MDH
+        {
+            // Unset the flag that starts MDH
+            dComIfGs_offSaveSwitch(4, 0xE);
+            dComIfGs_offEventBit(MIDNAS_DESPERATE_HOUR_STARTED);
+        }
+
+        // Turn the player back into Link if they are currently wolf
+        dComIfGs_setTransformStatus(0);
+    }
+    /*else  // Commenting out until we figure out how we want to do this in the future. 
+    {
+        // Return to dungeon entrance
+        uint8_t stageIdx = rando::gRandomizer->getSeedPtr()->getStageIDX();
+        const rando::ReturnPlace* returnPlace =
+            rando::gRandomizer->getSeedPtr()->getReturnPlaceSectionPtr()->getReturnPlace(stageIdx, -1, -1, -1);
+        if (returnPlace == nullptr || returnPlace->getStageIDX() == 0xFF)
+        {
+            // If failed to find valid mapping for some reason, return without doing anything.
+            return;
+        }
+
+        newStageIdx = returnPlace->getStageIDX();
+        newRoomNo = returnPlace->getRoomNo();
+        newLayer = returnPlace->getLayer();
+        // Get point as u16 so we overwrite both bytes in struct's point when it was previously negative.
+        newPoint = static_cast<uint16_t>(returnPlace->getPoint());
+
+        // If return is LBT entrance, then put us on land if transforming is unlocked like vanilla.
+        if (newStageIdx == libtp::data::stage::StageIDs::Lakebed_Temple && newRoomNo == 0 &&
+            libtp::tp::d_com_inf_game::dComIfGs_isEventBit(libtp::data::flags::TRANSFORMING_UNLOCKED))
+            newPoint = 2;
+    }
+    */
+
+    // Clear the lastMode value in case the player was previously riding Epona or swimming.
+    dComIfGs_setLastSceneMode(0);
+    dComIfGs_setStartPoint(newPoint);
+
+    dStage_nextStage_c* nextStagePtr = dComIfGp_getNextStagePtr();
+    strncpy(nextStagePtr->getName(), allStages[newStageIdx], sizeof(nextStagePtr->getName()) - 1);
+    nextStagePtr->setRoomNo(newRoomNo);
+    nextStagePtr->setPoint(newPoint);
+    nextStagePtr->setLayer(newLayer);
+    dComIfGp_setEnableNextStage();
 }

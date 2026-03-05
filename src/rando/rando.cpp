@@ -17,6 +17,7 @@ int randoInfo_c::_create() {
     isWolfDomeDrawn = false;
     rainbowPhaseAngle = 0.f;
     eventItemStatus = QUEUE_EMPTY;
+    hasPendingToDChange = false;
     g_customMenuRing._initialize();
     g_seedInfo._create();
     return 1;
@@ -50,6 +51,12 @@ int randoInfo_c::execute() {
         mFrameCounter = 0;
         u16 randomRupees = (u16)cM_rndF(1000.0f);
         dComIfGs_setRupee(randomRupees);
+    }
+
+    // Always check for and handle time of day changes
+    if (getTimeChange() != NO_CHANGE)
+    {
+        handleTimeSpeed();
     }
 
     // Any custom functionality that relies on Link's actor being on a stage
@@ -265,6 +272,56 @@ void randoInfo_c::handleBonkDamage()
         newHealth = 0;
     }
     dComIfGs_setLife(newHealth);
+}
+
+void randoInfo_c::handleTimeOfDayChange()
+{
+    if (dComIfGp_roomControl_getTimePass())
+    {
+        // No point in changing values if we are already changing the time.
+        if (getTimeChange() == NO_CHANGE)
+        {
+            if (!dKy_daynight_check()) // Day time
+            {
+                setTimeChange(CHANGE_TO_NIGHT);
+            }
+            else
+            {
+                setTimeChange(CHANGE_TO_DAY);
+            }
+            g_env_light.time_change_rate = 1.f; // Increase time speed
+        }
+    }
+    else
+    {
+        if (!dKy_daynight_check()) // Day time
+        {
+            dComIfGs_setTime(285.f);
+        }
+        else
+        {
+            dComIfGs_setTime(105.f);
+        }
+        dComIfGp_setEnableNextStage();
+    }
+}
+
+void randoInfo_c::handleTimeSpeed()
+{
+
+    if (!dKy_daynight_check()) // Day time
+    {
+        if (getTimeChange() == CHANGE_TO_DAY)
+        {
+            g_env_light.time_change_rate = 0.012f; // Set time speed to normal
+            setTimeChange(NO_CHANGE);
+        }
+    }
+    else if (getTimeChange() == CHANGE_TO_NIGHT)
+    {
+        g_env_light.time_change_rate = 0.012f; // Set time speed to normal
+        setTimeChange(NO_CHANGE);
+    }
 }
 
 void checkSetHCBarrierFlag(u8 req, u8 currentCount)
