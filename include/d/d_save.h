@@ -246,7 +246,7 @@ private:
     /* 0x00 */ char mName[8];
     /* 0x08 */ u8 mPlayerStatus;
     /* 0x09 */ s8 mRoomNo;
-    /* 0x0A */ u8 unk10;
+    /* 0x0A */ u8 mLayer; // Unused in vanilla. used for layer in rando
     /* 0x0B */ u8 unk11;
 };  // Size: 0xC
 
