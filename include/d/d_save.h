@@ -246,7 +246,7 @@ private:
     /* 0x00 */ char mName[8];
     /* 0x08 */ u8 mPlayerStatus;
     /* 0x09 */ s8 mRoomNo;
-    /* 0x0A */ u8 unk10;
+    /* 0x0A */ u8 unk10; // Unused in vanilla. used for layer in rando
     /* 0x0B */ u8 unk11;
 };  // Size: 0xC
 
@@ -831,6 +831,7 @@ public:
     void setRoomParam(u32 param) { mRoomParam = param; }
     f32 getLastSpeedF() const { return mLastSpeedF; }
     u32 getLastMode() const { return mLastMode; }
+    void setLastMode(u32 newMode) { mLastMode = newMode; }
     s16 getLastAngleY() const { return mLastAngleY; }
     void setLastSceneInfo(f32 speed, u32 mode, s16 angle) {
         mLastSpeedF = speed;

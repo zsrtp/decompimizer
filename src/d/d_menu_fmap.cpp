@@ -872,7 +872,7 @@ void dMenu_Fmap_c::region_map_proc() {
             Z2GetAudioMgr()->seStart(Z2SE_SYS_ERROR, NULL, 0, 0, 1.0f, 1.0f, -1.0f, -1.0f, 0);
             mErrorSound = true;
         }
-    } else if (dMw_Z_TRIGGER() && mpDraw2DTop->isWarpAccept()) {
+    } else if (dMw_Z_TRIGGER() && mpDraw2DTop->isWarpAccept() && dComIfGs_isRegionBit(mpDraw2DBack->mRegionCursor + 1)) {
             /* dSv_event_flag_c::F_0265 - Arbiter's Grounds - Arbiter's Grounds clear */
         if (dComIfGs_isEventBit(dSv_event_flag_c::saveBitLabels[0x109])
                 /* dSv_event_flag_c::F_0361 - Arbiter's Grounds - Spun the spinning pillars */
@@ -1190,7 +1190,7 @@ void dMenu_Fmap_c::spot_map_proc() {
         && dMeter2Info_getMeterClass()->getMeterDrawPtr()->getInsideObjCheck() != 1)
     {
         mpDraw2DBack->stageMapMove(mpStick, 1, true);
-    } else if (dMw_Z_TRIGGER() && mpDraw2DTop->isWarpAccept()) {
+    } else if (dMw_Z_TRIGGER() && mpDraw2DTop->isWarpAccept() && dComIfGs_isRegionBit(mpDraw2DBack->mRegionCursor + 1)) {
 #if VERSION >= VERSION_GCN_JPN
         //! JPN version added a check to make sure if Arbiter's Grounds is cleared that
         //! the Mirror Chamber Statue has been spun before allowing portal warping from the map screen.

@@ -1250,9 +1250,11 @@ private:
 class dStage_startStage_c {
 public:
     void set(const char*, s8, s16, s8);
-    const char* getName() const { return mName; }
+    char* getName() { return mName; }
     s16 getPoint() const { return mPoint; }
+    void setPoint(s16 newPoint) { mPoint = newPoint; }
     s8 getRoomNo() const { return mRoomNo; }
+    void setRoomNo(s8 newRoom) { mRoomNo = newRoom; }
     s8 getLayer() const { return mLayer; }
     void setLayer(s8 layer) { mLayer = layer; }
     s8 getDarkArea() const { return mDarkArea; }
@@ -1274,6 +1276,7 @@ public:
     void set(const char*, s8, s16, s8, s8, u8);
     void offEnable() { enabled = 0; }
     BOOL isEnable() const { return enabled; }
+    void setEnable() { enabled |= 0x1; }
     s8 getWipe() const { return wipe; }
     u8 getWipeSpeed() const { return wipe_speed; }
     dStage_startStage_c* getStartStage() { return this; }

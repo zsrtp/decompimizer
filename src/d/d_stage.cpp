@@ -19,6 +19,9 @@
 #include "f_op/f_op_scene_mng.h"
 #include "global.h"
 #include "m_Do/m_Do_Reset.h"
+#include "rando/tools/tools.h"
+#include "rando/data/flags.h"
+#include "rando/data/stages.h"
 #include <cstdio>
 
 void dStage_nextStage_c::set(const char* i_stage, s8 i_roomId, s16 i_point, s8 i_layer, s8 i_wipe,
@@ -1624,6 +1627,39 @@ static int dStage_playerInit(dStage_dt_c* i_stage, void* i_data, int num, void* 
     UNUSED(param_3);
     stage_actor_class* player = (stage_actor_class*)((int*)i_data + 1);
     stage_actor_data_class* player_data = player->m_entries;
+
+    for (int i = 0; i < num; i++)
+    {
+        u8* mParameter = (u8*)(&player_data[i].base.parameters);
+        u8* entranceType = &mParameter[2];
+        switch (*entranceType)
+        {
+            // Only change entrance type if its a door.
+            case 0x80:
+            case 0xA0:
+            case 0xB0:
+            {
+                if (dComIfGs_getTransformStatus())
+                {
+                    // Change the entrance type to play the animation of walking out of the loading zone instead of entering through the door.
+                    *entranceType = 0x50;
+                }
+                break;
+            }
+
+            case 0xD0:
+            {
+                // If we are entering lake hylia from the Kak graveyard entrance and the twilight hasn't been cleared yet.
+                if (daAlink_c::checkStageName(allStages[Lake_Hylia]) && !dComIfGs_isEventBit(CLEARED_LANAYRU_TWILIGHT))
+                {
+                    *entranceType = 0x50;
+                }
+                break;
+            }
+            default:
+                break;
+        }
+    }
     i_stage->setPlayer(player);
     i_stage->setPlayerNum(num);
 

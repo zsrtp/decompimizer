@@ -10,6 +10,7 @@
 #include "m_Do/m_Do_graphic.h"
 #include "d/d_lib.h"
 #include "JSystem/JUtility/JUTFont.h"
+#include "rando/seed/seed.h"
 
 #if REGION_JPN
 #define CHAR_CODE_MALE_ICON 0x8189
@@ -1921,6 +1922,7 @@ void jmessage_tSequenceProcessor::do_begin(void const* pEntry, char const* pszTe
 
     pReference->resetReference();
     field_0xb5 = 0;
+    field_0xb2 = 1;
 }
 
 void jmessage_tSequenceProcessor::do_end() {
@@ -2157,70 +2159,88 @@ void jmessage_tSequenceProcessor::do_character(int iCharacter) {
 bool jmessage_tSequenceProcessor::do_tag(u32 i_tag, void const* i_data, u32 i_size) {
     jmessage_tReference* pReference = (jmessage_tReference*)getReference();
 
+    bool ret = false;
+
     switch (i_tag & 0xFF0000) {
     case MSGTAG_GROUP(1): {
         cXyz pos = pReference->getActorPos();
         messageSePlay(field_0xb4, (i_tag & 0xFFFF) & 0xFF, &pos);
-        return true;
+        ret = true;
+        break;
     }
     case MSGTAG_GROUP(2):
         dComIfGp_setMesgCameraTagInfo((i_tag & 0xFFFF) & 0xFF);
-        return true;
+        ret = true;
+        break;
     case MSGTAG_GROUP(255):
         switch (i_tag) {
         case MSGTAG_COLOR:
             pReference->setNowColorType(*(u8*)i_data & 0xFF);
-            return true;
+            ret = true;
+        break;
         case MSGTAG_SCALE:
             pReference->setNowTagScale(*(u16*)i_data & 0xFFFF);
-            return true;
+            ret = true;
+        break;
         case MSGTAG_RUBY:
         case 0xFFFF02:
             do_rubyset(i_data, i_size);
-            return true;
+            ret = true;
+        break;
         }
     case MSGTAG_GROUP(0):
         switch (i_tag) {
         case MSGTAG_PLAYER_NAME:
         case MSGTAG_HORSE_NAME:
             push_word();
-            return true;
+            ret = true;
+        break;
         case MSGTAG_UNK_53:
             JMessage::TSequenceProcessor::stack_pushCurrent(dMsgObject_getWord());
-            return true;
+            ret = true;
+        break;
         case MSGTAG_SCENT_NAME: {
             JMessage::TSequenceProcessor::stack_pushCurrent(pReference->getObjectPtr()->getSmellName());
-            return true;
+            ret = true;
+        break;
         }
         case MSGTAG_PORTAL_NAME: {
             JMessage::TSequenceProcessor::stack_pushCurrent(pReference->getObjectPtr()->getPortalName());
-            return true;
+            ret = true;
+        break;
         }
         case MSGTAG_BOMB_NAME: {
             JMessage::TSequenceProcessor::stack_pushCurrent(pReference->getObjectPtr()->getBombName());
-            return true;
+            ret = true;
+        break;
         }
         case MSGTAG_INSECT_NAME: {
             JMessage::TSequenceProcessor::stack_pushCurrent(pReference->getObjectPtr()->getInsectName());
-            return true;
+            ret = true;
+        break;
         }
         case MSGTAG_LETTER_NAME: {
             JMessage::TSequenceProcessor::stack_pushCurrent(pReference->getObjectPtr()->getLetterName());
-            return true;
+            ret = true;
+        break;
         }
         case MSGTAG_LINE_DOWN:
-            return true;
+            ret = true;
+        break;
         case MSGTAG_CURRENT_LETTER_PAGE:
         case MSGTAG_MAX_LETTER_PAGE:
             push_word();
-            return true;
+            ret = true;
+        break;
         case MSGTAG_INSTANT:
             field_0xb2 = 1;
             pReference->setBatchColorFlag(1);
-            return true;
+            ret = true;
+        break;
         case MSGTAG_TYPE:
             field_0xb2 = 0;
-            return true;
+            ret = true;
+        break;
         case MSGTAG_UNK_3:
         case MSGTAG_AUTOBOX:
             pReference->setSendTimer(*(u16*)i_data);
@@ -2229,28 +2249,34 @@ bool jmessage_tSequenceProcessor::do_tag(u32 i_tag, void const* i_data, u32 i_si
             } else {
                 pReference->setSendFlag(1);
             }
-            return true;
+            ret = true;
+        break;
         case MSGTAG_BOXATMOST:
             pReference->setSendTimer(*(u16*)i_data);
             pReference->setSendFlag(2);
-            return true;
+            ret = true;
+        break;
         case MSGTAG_BOXATLEAST:
             dMeter2Info_setMsgKeyWaitTimer(*(u16*)i_data);
             pReference->setSendTimer(*(u16*)i_data);
             pReference->setSendFlag(6);
-            return true;
+            ret = true;
+        break;
         case MSGTAG_DEMOBOX:
             pReference->setDemoFrame(*(u32*)i_data);
             pReference->setSendFlag(4);
-            return true;
+            ret = true;
+        break;
         case MSGTAG_UNK_6:
             field_0xa8 = *(u16*)i_data;
             field_0xa4 = field_0xa8;
-            return true;
+            ret = true;
+        break;
         case MSGTAG_PAUSE:
             field_0xa4 = *(u16*)i_data;
             mMouthCheck = 0;
-            return true;
+            ret = true;
+        break;
         case MSGTAG_SELECT_2WAY:
             if (pReference->getSelectNum() == 0) {
                 pReference->setSelectNum(2);
@@ -2264,7 +2290,8 @@ bool jmessage_tSequenceProcessor::do_tag(u32 i_tag, void const* i_data, u32 i_si
 
             field_0xad++;
             field_0xac = 1;
-            return true;
+            ret = true;
+        break;
         case MSGTAG_SELECT_3WAY:
             if (pReference->getSelectNum() == 0) {
                 pReference->setSelectNum(3);
@@ -2278,7 +2305,8 @@ bool jmessage_tSequenceProcessor::do_tag(u32 i_tag, void const* i_data, u32 i_si
 
             field_0xad++;
             field_0xac = 1;
-            return true;
+            ret = true;
+        break;
         case MSGTAG_INLINE_2_NEXT:
             if (pReference->getSelectNum() != 2 || pReference->getSelectType() != 1) {
                 pReference->setSelectNum(2);
@@ -2286,7 +2314,8 @@ bool jmessage_tSequenceProcessor::do_tag(u32 i_tag, void const* i_data, u32 i_si
             }
 
             field_0xb2 = 1;
-            return true;
+            ret = true;
+        break;
         case MSGTAG_INLINE_2_FIRST:
             if (pReference->getSelectNum() != 2 || pReference->getSelectType() != 1) {
                 pReference->setSelectNum(2);
@@ -2297,7 +2326,8 @@ bool jmessage_tSequenceProcessor::do_tag(u32 i_tag, void const* i_data, u32 i_si
             }
 
             field_0xb2 = 1;
-            return true;
+            ret = true;
+        break;
         case MSGTAG_INLINE_3_NEXT:
             if (pReference->getSelectNum() != 3 || pReference->getSelectType() != 1) {
                 pReference->setSelectNum(3);
@@ -2306,7 +2336,8 @@ bool jmessage_tSequenceProcessor::do_tag(u32 i_tag, void const* i_data, u32 i_si
 
             field_0xad++;
             field_0xb2 = 1;
-            return true;
+            ret = true;
+        break;
         case MSGTAG_INLINE_3_FIRST:
             if (pReference->getSelectNum() != 3 || pReference->getSelectType() != 1) {
                 pReference->setSelectNum(3);
@@ -2315,14 +2346,17 @@ bool jmessage_tSequenceProcessor::do_tag(u32 i_tag, void const* i_data, u32 i_si
 
             pReference->setSelectPos(field_0xad);
             field_0xb2 = 1;
-            return true;
+            ret = true;
+        break;
         case MSGTAG_AWAIT_CHOICE:
             do_character('\n');
             JMessage::TSequenceProcessor::stack_pushCurrent(pReference->getSelMsgPtr());
-            return true;
+            ret = true;
+        break;
         case MSGTAG_UNK_33:
             do_name1();
-            return true;
+            ret = true;
+        break;
         case MSGTAG_ABTN:
         case MSGTAG_BBTN:
         case MSGTAG_CSTICK:
@@ -2354,7 +2388,8 @@ bool jmessage_tSequenceProcessor::do_tag(u32 i_tag, void const* i_data, u32 i_si
         case MSGTAG_HEART:
         case MSGTAG_QUAVER:
             do_space(i_tag);
-            return true;
+            ret = true;
+        break;
         case MSGTAG_INPUT_VALUE: {
             pReference->decideOutFontRupeeColor(0);
             dMsgObject_c* object_p = pReference->getObjectPtr();
@@ -2367,11 +2402,13 @@ bool jmessage_tSequenceProcessor::do_tag(u32 i_tag, void const* i_data, u32 i_si
             if (*(u32*)i_data == 1) {
                 dComIfGs_onTmpBit(dSv_event_tmp_flag_c::tempBitLabels[80]);
             }
-            return true;
+            ret = true;
+        break;
         }
         case MSGTAG_ACKNOWLEDGE:
             pReference->onButtonTagStopFlag();
-            return true;
+            ret = true;
+        break;
         case MSGTAG_BOMB_NUM: {
             char buffer[40];
             dMsgObject_c* objectPtr = pReference->getObjectPtr();
@@ -2380,7 +2417,8 @@ bool jmessage_tSequenceProcessor::do_tag(u32 i_tag, void const* i_data, u32 i_si
             dMsgUnit_setTag(7, sel_bomb_num, buffer);
             strcpy((char*)pReference->getWord(field_0xb5), buffer);
             push_word();
-            return true;
+            ret = true;
+        break;
         }
         case MSGTAG_BOMB_PRICE: {
             char buffer[40];
@@ -2390,12 +2428,14 @@ bool jmessage_tSequenceProcessor::do_tag(u32 i_tag, void const* i_data, u32 i_si
             dMsgUnit_setTag(1, sel_bomb_price, buffer);
             strcpy((char*)pReference->getWord(field_0xb5), buffer);
             push_word();
-            return true;
+            ret = true;
+        break;
         }
         case MSGTAG_BOMB_MAX:
         case MSGTAG_ARROW_MAX:
             push_word();
-            return true;
+            ret = true;
+        break;
         }
     case MSGTAG_GROUP(4):
         switch (i_tag & 0xFF00FFFF) {
@@ -2414,7 +2454,8 @@ bool jmessage_tSequenceProcessor::do_tag(u32 i_tag, void const* i_data, u32 i_si
         case MSGTAG_GLYPH_DOLLAR:
         case MSGTAG_GLYPH_CENT:
             push_word();
-            return true;
+            ret = true;
+        break;
         }
     case MSGTAG_GROUP(5):
         switch (i_tag & 0xFF00FFFF) {
@@ -2434,7 +2475,8 @@ bool jmessage_tSequenceProcessor::do_tag(u32 i_tag, void const* i_data, u32 i_si
         case MSGTAG_FISH_COUNT:
         case MSGTAG_ROLLGOAL_LV:
             push_word();
-            return true;
+            ret = true;
+        break;
         }
     case MSGTAG_GROUP(6):
         switch (i_tag & 0xFF00FFFF) {
@@ -2449,11 +2491,13 @@ bool jmessage_tSequenceProcessor::do_tag(u32 i_tag, void const* i_data, u32 i_si
         case MSGTAG_THIN_UP_ARROW:
         case MSGTAG_THIN_DOWN_ARROW:
             push_word();
-            return true;
+            ret = true;
+        break;
         case MSGTAG_BULLET:
         case MSGTAG_BULLET_SPACE:
             do_space(i_tag);
-            return true;
+            ret = true;
+        break;
         }
     case MSGTAG_GROUP(3):
         switch (i_tag & 0xFF00FFFF) {
@@ -2478,13 +2522,21 @@ bool jmessage_tSequenceProcessor::do_tag(u32 i_tag, void const* i_data, u32 i_si
         case MSGTAG_WII_CBTN:
         case MSGTAG_WII_ZBTN:
             do_space(i_tag);
-            return true;
+            ret = true;
+        break;
         case MSGTAG_WII_MSGID_OVERRIDE:
-            return true;
+            ret = true;
+        break;
         }
     }
 
-    return false;
+    if (g_seedInfo.isInstantText())
+    {
+        field_0xb2 = 1;
+        pReference->setSendTimer(0);
+    }
+
+    return ret;
 }
 
 bool jmessage_tSequenceProcessor::do_jump_isReady() {

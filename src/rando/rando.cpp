@@ -2,11 +2,15 @@
 #include "rando/seed/seed.h"
 #include "rando/tools/tools.h"
 #include "rando/data/flags.h"
+#include "rando/data/stages.h"
 #include "rando/tools/verifyItemFunctions.h"
 #include "rando/itemWheelMenu.h"
 #include "d/d_com_inf_game.h"
 #include "SSystem/SComponent/c_math.h"
 #include "d/actor/d_a_alink.h"
+#include "d/d_meter2.h"
+#include "d/d_meter2_info.h"
+#include "d/d_meter2_draw.h"
 #include "m_Do/m_Do_controller_pad.h"
 
 randoInfo_c g_randoInfo;
@@ -17,6 +21,7 @@ int randoInfo_c::_create() {
     isWolfDomeDrawn = false;
     rainbowPhaseAngle = 0.f;
     eventItemStatus = QUEUE_EMPTY;
+    hasPendingToDChange = false;
     g_customMenuRing._initialize();
     g_seedInfo._create();
     return 1;
@@ -43,6 +48,20 @@ int randoInfo_c::execute() {
     {
         handleQuickTransform();
     }
+    else if (daAlink_getAlinkActorClass() && checkButtonsHeld(PAD_TRIGGER_R) && g_seedInfo.spinnerSpeedIsIncreased())
+    {
+        fopAc_ac_c* spinnerActor = (fopAc_ac_c*)daAlink_getAlinkActorClass()->getSpinnerActor();
+
+        if (spinnerActor)
+        {
+            float spinnerSpeed = spinnerActor->speedF;
+            if (spinnerSpeed < 60.f)
+            {
+                spinnerSpeed += 2.f;
+                spinnerActor->speedF = spinnerSpeed;
+            }
+        }
+    }
 
     // Every 300 frames, set rupees to a random value
     mFrameCounter++;
@@ -52,6 +71,13 @@ int randoInfo_c::execute() {
         dComIfGs_setRupee(randomRupees);
     }
 
+    // Always check for and handle time of day changes
+    if (getTimeChange() != NO_CHANGE)
+    {
+        handleTimeSpeed();
+    }
+
+    bool currentReloadingState;
     // Any custom functionality that relies on Link's actor being on a stage
     if (daAlink_getAlinkActorClass())
     {
@@ -63,7 +89,30 @@ int randoInfo_c::execute() {
         {
             replaceEquipItemColor();
         }
+        currentReloadingState = daAlink_getAlinkActorClass()->checkRestartRoom();
+        // Handle giving item to the player at any time.
+        initGiveItemToPlayer();
     }
+    else
+    {
+        currentReloadingState = true;
+    }
+
+    bool prevReloadingState = getRoomReloadingState();
+    if (!currentReloadingState)
+    {
+        if (prevReloadingState)
+        {
+            offLoad();
+        }
+    }
+    setRoomReloadingState(currentReloadingState);
+
+    // COpypasta old rando code until I build the framework out.
+    /*if (!libtp::tp::d_a_alink::checkStageName(libtp::data::stage::allStages[libtp::data::stage::StageIDs::Title_Screen]))
+    {
+        handleFoolishItem(randoPtr);
+    }*/
 
     // Main code as ran, so update any previous frame variables.
     setPrevFrameAnalogR(mDoCPd_c::getAnalogR(PAD_1));
@@ -106,10 +155,21 @@ bool randoInfo_c::checkValidTransformAnywhere()
 
 int randoInfo_c::getBugReward(u8 bugId)
 {
-    /*
-    Once the infrastructure is built the code will look like the following:
-    int item = replaceBugReward(bugId); we will probably build the functionality out instead of calling another func though.
-    */
+    const EntryInfo* bugRewardCheckInfoPtr = g_seedInfo.getHeaderPtr()->getBugRewardCheckInfoPtr();
+    const u32 numBugRewardChecks = bugRewardCheckInfoPtr->getNumEntries();
+    const BugReward* bugRewardChecks = g_seedInfo.getBugRewardChecksPtr();
+
+    for (int i = 0; i < numBugRewardChecks; i++)
+    {
+        const BugReward* currentBugRewardCheck = &bugRewardChecks[i];
+        if (bugId == currentBugRewardCheck->getBugId())
+        {
+            // Return new item
+            return (u8)currentBugRewardCheck->getItemId();
+        }
+    }
+
+    // Default
     return bugId;
 }
 
@@ -267,6 +327,83 @@ void randoInfo_c::handleBonkDamage()
     dComIfGs_setLife(newHealth);
 }
 
+void randoInfo_c::handleTimeOfDayChange()
+{
+    if (dComIfGp_roomControl_getTimePass())
+    {
+        // No point in changing values if we are already changing the time.
+        if (getTimeChange() == NO_CHANGE)
+        {
+            if (!dKy_daynight_check()) // Day time
+            {
+                setTimeChange(CHANGE_TO_NIGHT);
+            }
+            else
+            {
+                setTimeChange(CHANGE_TO_DAY);
+            }
+            g_env_light.time_change_rate = 1.f; // Increase time speed
+        }
+    }
+    else
+    {
+        if (!dKy_daynight_check()) // Day time
+        {
+            dComIfGs_setTime(285.f);
+        }
+        else
+        {
+            dComIfGs_setTime(105.f);
+        }
+        dComIfGp_setEnableNextStage();
+    }
+}
+
+void randoInfo_c::handleTimeSpeed()
+{
+
+    if (!dKy_daynight_check()) // Day time
+    {
+        if (getTimeChange() == CHANGE_TO_DAY)
+        {
+            g_env_light.time_change_rate = 0.012f; // Set time speed to normal
+            setTimeChange(NO_CHANGE);
+        }
+    }
+    else if (getTimeChange() == CHANGE_TO_NIGHT)
+    {
+        g_env_light.time_change_rate = 0.012f; // Set time speed to normal
+        setTimeChange(NO_CHANGE);
+    }
+}
+
+void randoInfo_c::offLoad()
+{
+    if ((getCurrentStageID() == City_in_the_Sky) && (dStage_roomControl_c::mStayNo == 0) && (dComIfGp_getStartStagePoint() == 3))
+    {
+        // Fan in the main room active
+        dComIfGs_offSaveSwitch(0xA);
+
+        // Main Room 1F explored
+        dComIfGs_offSaveSwitch(0xF);
+    }
+
+    if (playerIsInRoomStage(1, allStages[Sacred_Grove]))
+    {
+        // If the portal in SG isn't active then we want to spawn the shadow beasts.
+        if (!dComIfGs_isSaveSwitch(0x64))
+        {
+            dComIfGs_onSvOneZoneSwitch(0, 0xE);
+        }
+    }
+
+    if ((getCurrentStageID() == Ordon_Ranch) && (dComIfGp_getStartStagePoint() == 1))
+    {
+        // Clear the danBit that starts a conversation when entering the ranch so the player can do goats as needed.
+        dComIfGs_offSaveDunSwitch(0x1);
+    }
+}
+
 void checkSetHCBarrierFlag(u8 req, u8 currentCount)
 {
     if (req != g_seedInfo.getHeaderPtr()->getCastleRequirements())
@@ -291,4 +428,61 @@ void checkSetHCBkFlag(u8 req, u8 currentCount)
     {
         dComIfGs_onStageSwitch(0x18, 0x4B);
     }
+}
+
+bool checkFoolishItemEffectReady()
+{
+    // Verify Link is loaded on the map.
+    if (!daAlink_getAlinkActorClass())
+    {
+        return false;
+    }
+
+    // Ensure Link is not in a cutscene
+    if (daAlink_getAlinkActorClass()->checkEventRun())
+    {
+        return false;
+    }
+
+    // Make sure Link isn't riding anything
+    if (daAlink_getAlinkActorClass()->checkRide())
+    {
+        return false;
+    }
+
+    // Ensure there are pointers to the mMeterClass and mpMeterDraw structs
+    if (!dMeter2Info_getMeterClass())
+    {
+        return false;
+    }
+
+    if (!dMeter2Info_getMeterClass()->getMeterDrawPtr())
+    {
+        return false;
+    }
+
+    // Make sure Z button isn't dimmed
+    if (dMeter2Info_getMeterClass()->getMeterDrawPtr()->getZButtonAlpha() != 1.f)
+    {
+        return false;
+    }
+
+    switch (daAlink_getAlinkActorClass()->mProcID)
+    {
+        case daAlink_c::PROC_TALK:
+        case daAlink_c::PROC_WOLF_SWIM_MOVE:
+        case daAlink_c::PROC_SWIM_MOVE:
+        case daAlink_c::PROC_SWIM_WAIT:
+        case daAlink_c::PROC_WOLF_SWIM_WAIT:
+        case daAlink_c::PROC_SWIM_UP:
+        case daAlink_c::PROC_SWIM_DIVE:
+        {
+            return false;
+        }
+        default:
+        {
+            break;
+        }
+    }
+    return true;
 }

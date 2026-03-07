@@ -14,6 +14,8 @@
 #include "d/actor/d_a_obj_ss_base.h"
 #include "rando/rando.h"
 #include "rando/tools/tools.h"
+#include "rando/data/stages.h"
+#include "rando/seed/seed.h"
 #include "SSystem/SComponent/c_math.h"
 
 dMsgFlow_c::dMsgFlow_c() {
@@ -751,7 +753,7 @@ int dMsgFlow_c::getParam(u8* params) {
     return *(int*)params;
 }
 
-queryFunc dMsgFlow_c::mQueryList[53] = {
+queryFunc dMsgFlow_c::mQueryList[56] = {
     &dMsgFlow_c::query005, &dMsgFlow_c::query001, &dMsgFlow_c::query002, &dMsgFlow_c::query003,
     &dMsgFlow_c::query006, &dMsgFlow_c::query007, &dMsgFlow_c::query004, &dMsgFlow_c::query008,
     &dMsgFlow_c::query009, &dMsgFlow_c::query010, &dMsgFlow_c::query011, &dMsgFlow_c::query012,
@@ -765,7 +767,7 @@ queryFunc dMsgFlow_c::mQueryList[53] = {
     &dMsgFlow_c::query041, &dMsgFlow_c::query042, &dMsgFlow_c::query043, &dMsgFlow_c::query044,
     &dMsgFlow_c::query045, &dMsgFlow_c::query046, &dMsgFlow_c::query047, &dMsgFlow_c::query048,
     &dMsgFlow_c::query049, &dMsgFlow_c::query050, &dMsgFlow_c::query051, &dMsgFlow_c::query052,
-    &dMsgFlow_c::query053,
+    &dMsgFlow_c::query053, &dMsgFlow_c::query054, &dMsgFlow_c::query055, &dMsgFlow_c::query056
 };
 
 #if DEBUG
@@ -1752,7 +1754,45 @@ u16 dMsgFlow_c::query053(mesg_flow_node_branch* i_flowNode_p, fopAc_ac_c* i_spea
     return ret;
 }
 
-eventFunc dMsgFlow_c::mEventList[43] = {
+// Convenience query fn for returning static value
+u16 dMsgFlow_c::query054(mesg_flow_node_branch* i_flowNode_p, fopAc_ac_c* i_speaker_p, int param_2) {
+
+    return i_flowNode_p->param;
+}
+
+u16 dMsgFlow_c::query055(mesg_flow_node_branch*, fopAc_ac_c*, int) {
+    // This function is based on query044 which is used to determine whether to show the Midna menu which includes
+    // "Warp" or not. We also add a check to ensure the current environment is not twilight. "R_SP161" is STAR tent.
+    if (!dKy_darkworld_check() && !daAlink_c::checkForestOldCentury() &&
+        (daAlink_c::checkField() || daAlink_c::checkCastleTown()) &&
+        !daAlink_c::checkStageName(allStages[Star_Game]))
+    {
+        return 0;
+    }
+    return 1;
+}
+
+// Return 0 if can return to dungeon entrance, 1 if in dungeon but can only return to spawn, or 2 if not in dungeon.
+u16 dMsgFlow_c::query056(mesg_flow_node_branch*, fopAc_ac_c*, int) {
+    uint8_t stageIDX = getCurrentStageID();
+    if (stageIDX <= 29)
+    {
+        /* // Commenting out until re figure out the return to spawn stuff
+        // In a Dungeon or (mini)boss room.
+        const rando::ReturnPlace* returnPlace =
+            rando::gRandomizer->getSeedPtr()->getReturnPlaceSectionPtr()->getReturnPlace(stageIDX, -1, -1, -1);
+        if (returnPlace != nullptr && returnPlace->getStageIDX() != 0xFF)
+            return 0;
+        else
+            return 1;
+        */
+    }
+    return 2;
+}
+
+
+
+eventFunc dMsgFlow_c::mEventList[46] = {
     &dMsgFlow_c::event000, &dMsgFlow_c::event001, &dMsgFlow_c::event002, &dMsgFlow_c::event003,
     &dMsgFlow_c::event004, &dMsgFlow_c::event005, &dMsgFlow_c::event006, &dMsgFlow_c::event007,
     &dMsgFlow_c::event008, &dMsgFlow_c::event009, &dMsgFlow_c::event010, &dMsgFlow_c::event011,
@@ -1763,7 +1803,8 @@ eventFunc dMsgFlow_c::mEventList[43] = {
     &dMsgFlow_c::event028, &dMsgFlow_c::event029, &dMsgFlow_c::event030, &dMsgFlow_c::event031,
     &dMsgFlow_c::event032, &dMsgFlow_c::event033, &dMsgFlow_c::event034, &dMsgFlow_c::event035,
     &dMsgFlow_c::event036, &dMsgFlow_c::event037, &dMsgFlow_c::event038, &dMsgFlow_c::event039,
-    &dMsgFlow_c::event040, &dMsgFlow_c::event041, &dMsgFlow_c::event042,
+    &dMsgFlow_c::event040, &dMsgFlow_c::event041, &dMsgFlow_c::event042, &dMsgFlow_c::event043,
+    &dMsgFlow_c::event044, &dMsgFlow_c::event045,
 };
 
 int dMsgFlow_c::event000(mesg_flow_node_event* i_flowNode_p, fopAc_ac_c* i_speaker_p) {
@@ -2600,5 +2641,31 @@ int dMsgFlow_c::event041(mesg_flow_node_event* i_flowNode_p, fopAc_ac_c* i_speak
 }
 
 int dMsgFlow_c::event042(mesg_flow_node_event* i_flowNode_p, fopAc_ac_c* i_speaker_p) {
+    return 1;
+}
+
+int dMsgFlow_c::event043(mesg_flow_node_event* i_flowNode_p, fopAc_ac_c* i_speaker_p) {
+    return 1;
+}
+
+int dMsgFlow_c::event044(mesg_flow_node_event* i_flowNode_p, fopAc_ac_c* i_speaker_p) {
+    if (daPy_py_c::checkNowWolf())
+    {
+        g_randoInfo.setHasPendingToDChange(true);
+    }
+    else
+    {
+        g_randoInfo.handleTimeOfDayChange();
+    }
+    return 1;
+}
+
+int dMsgFlow_c::event045(mesg_flow_node_event* i_flowNode_p, fopAc_ac_c* i_speaker_p) {
+    u16 prm1;
+    u16 prm0;
+    getParam(&prm0, &prm1, i_flowNode_p->params);
+
+    bool isReturnToDungeonEntrance = prm1 !=0;
+    g_seedInfo.handleReturnToLocation(isReturnToDungeonEntrance);
     return 1;
 }

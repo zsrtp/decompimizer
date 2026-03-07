@@ -457,11 +457,13 @@ public:
     void setStartStageDarkArea(s8 darkArea) { mStartStage.setDarkArea(darkArea); }
 
     dStage_startStage_c* getNextStartStage() { return mNextStage.getStartStage(); }
+    dStage_nextStage_c* getNextStagePtr() { return &mNextStage; }
     const char* getNextStageName() { return mNextStage.getName(); }
     s16 getNextStagePoint() { return mNextStage.getPoint(); }
     s8 getNextStageRoomNo() { return mNextStage.getRoomNo(); }
     s8 getNextStageLayer() { return mNextStage.getLayer(); }
     BOOL isEnableNextStage() { return mNextStage.isEnable(); }
+    void setEnableNextStage() { return mNextStage.setEnable(); }
     void offEnableNextStage() { mNextStage.offEnable(); }
     s8 getNextStageWipe() { return mNextStage.getWipe(); }
     u8 getNextStageWipeSpeed() { return mNextStage.getWipeSpeed(); }
@@ -2167,6 +2169,10 @@ inline u32 dComIfGs_getLastSceneMode() {
     return g_dComIfG_gameInfo.info.getRestart().getLastMode();
 }
 
+inline void dComIfGs_setLastSceneMode(u32 newMode) {
+    return g_dComIfG_gameInfo.info.getRestart().setLastMode(newMode);
+}
+
 inline s16 dComIfGs_getLastSceneAngleY() {
     return g_dComIfG_gameInfo.info.getRestart().getLastAngleY();
 }
@@ -2375,6 +2381,10 @@ inline dStage_startStage_c* dComIfGp_getNextStartStage() {
     return g_dComIfG_gameInfo.play.getNextStartStage();
 }
 
+inline dStage_nextStage_c* dComIfGp_getNextStagePtr() {
+    return g_dComIfG_gameInfo.play.getNextStagePtr();
+}
+
 inline const char* dComIfGp_getNextStageName() {
     return g_dComIfG_gameInfo.play.getNextStageName();
 }
@@ -2397,6 +2407,10 @@ inline BOOL dComIfGp_isEnableNextStage() {
 
 inline void dComIfGp_offEnableNextStage() {
     g_dComIfG_gameInfo.play.offEnableNextStage();
+}
+
+inline void dComIfGp_setEnableNextStage() {
+    g_dComIfG_gameInfo.play.setEnableNextStage();
 }
 
 inline s8 dComIfGp_getNextStageWipe() {

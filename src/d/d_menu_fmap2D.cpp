@@ -1124,9 +1124,11 @@ int dMenu_Fmap2DBack_c::isShowRegion(int param_0) {
         if (isShowRegionFlag(param_0) && dComIfGs_isRegionBit(param_0 + 1)) {
             return 1;
         }
-        if (param_0 + 1 == dComIfGp_getNowLevel()) {
+
+        // Don't automatically show the region you are currently in
+        /*if (param_0 + 1 == dComIfGp_getNowLevel()) {
             return 1;
-        }
+        }*/
     }
 
     return 0;

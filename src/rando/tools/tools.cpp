@@ -141,6 +141,11 @@ bool checkButtonComboAnalog(uint combo)
     return buttonsPressedThisFrame & combo;
 }
 
+bool checkButtonsHeld(u32 buttons)
+{
+    return (mDoCPd_c::getHold(PAD_1) & buttons) == buttons;
+}
+
 void handleQuickTransform()
 {
     // If the setting isn't enabled, return immediately
@@ -423,6 +428,22 @@ int getStageID(const char* stage)
             return i;
         }
     }
+    // Didn't find the current stage for some reason
+    return -1;
+}
+
+int getCurrentStageID()
+{
+    int loopCount = sizeof(allStages) / sizeof(allStages[0]);
+
+    for (int i = 0; i < loopCount; i++)
+    {
+        if (daAlink_c::checkStageName(allStages[i]))
+        {
+            return i;
+        }
+    }
+
     // Didn't find the current stage for some reason
     return -1;
 }

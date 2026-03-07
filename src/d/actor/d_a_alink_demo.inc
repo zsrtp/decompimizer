@@ -4388,9 +4388,8 @@ void daAlink_c::checkWarpStart() {
         if (dMeter2Info_getWarpStatus() == WARP_STATUS_DECIDED_e ||
             dComIfGp_event_compulsory(this, 0, 0xFFFF))
         {
-            #if VERSION != VERSION_GCN_JPN && VERSION != VERSION_SHIELD_DEBUG
+            // Unpatch Map glitch for JP
             onNoResetFlg0(FLG0_UNK_4000);
-            #endif
 
             if (dMeter2Info_getWarpStatus() == WARP_STATUS_DECIDED_e) {
                 const char* portal;
@@ -4417,9 +4416,10 @@ void daAlink_c::checkWarpStart() {
                 fopAcM_orderOtherEvent(this, portal, 0xFFFF, 1, 1);
             } else {
                 mDemo.setSpecialDemoType();
-                #if VERSION == VERSION_GCN_JPN || VERSION == VERSION_SHIELD_DEBUG
+                // Unpatch Map glitch for JP
+                /*#if VERSION == VERSION_GCN_JPN || VERSION == VERSION_SHIELD_DEBUG
                 onNoResetFlg0(FLG0_UNK_4000);
-                #endif
+                #endif*/
 
                 if (dMeter2Info_getWarpStatus() == 1) {
                     dStage_changeScene(

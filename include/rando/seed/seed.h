@@ -21,10 +21,15 @@ enum SeedEnabledFlag
     RETURN_MONEY_TO_CHEST,
     SKIP_MINOR_CUTSCENES,
     OPEN_MAP,
+    REMOVE_IB_LIMIT,
+    DISABLE_BATTLE_MUSIC,
+    SET_INSTANT_TEXT,
+    SKIP_MAJOR_CUTSCENES,
+    INVERT_CAMERA_AXIS,
+    MAKE_LIGHT_SWORD_GLOW,
 };
 
 bool flagIsEnabled(const uint* bitfieldPtr, uint totalFlags, uint flag);
-void setStaticGameValues();
 
 class EntryInfo
 {
@@ -85,6 +90,7 @@ public:
     GXColor getLightSwordGlowColor() const { return lightSwordGlowColor; }
     uint getLanternColor() const { return lanternColor; }
     u8* getLanternColorPtr() const { return (u8*)&lanternColor; }
+    EntranceInfo getSpawnInfo() const { return spawnInfo; }
 
     //const EntryInfo* getVolatilePatchInfoPtr() const { return &volatilePatchInfo; }
     //const EntryInfo* getOneTimePatchInfoPtr() const { return &oneTimePatchInfo; }
@@ -154,6 +160,7 @@ public:
     /* 0x98 */ GXColor wolfDomeAttackWave2Color;
     /* 0x9C */ GXColor lightSwordGlowColor;
     /* 0x100 */ uint lanternColor;
+    /* 0x104 */ EntranceInfo spawnInfo;
 };
 
 class seedInfo_c {
@@ -162,6 +169,7 @@ class seedInfo_c {
         int _create();
         int _delete();
         void initSeed();
+        void setStaticGameValues();
     
         const seedHeaderInfo_c* getHeaderPtr() const { return m_Header; }
         bool seedIsLoaded() const { return m_GCIData; }
@@ -189,6 +197,12 @@ class seedInfo_c {
         bool returnRupeeToChest() const { return flagBitfieldFlagIsEnabled(RETURN_MONEY_TO_CHEST);}
         bool skipMinorCutscenes() const { return flagBitfieldFlagIsEnabled(SKIP_MINOR_CUTSCENES);}
         bool isMapOpen() const { return flagBitfieldFlagIsEnabled(OPEN_MAP);}
+        bool removeIBLimit() const { return flagBitfieldFlagIsEnabled(REMOVE_IB_LIMIT);}
+        bool isDisableBattleMusic() const { return flagBitfieldFlagIsEnabled(DISABLE_BATTLE_MUSIC);}
+        bool isInstantText() const { return flagBitfieldFlagIsEnabled(SET_INSTANT_TEXT);}
+        bool skipMajorCutscenes() const { return flagBitfieldFlagIsEnabled(SKIP_MAJOR_CUTSCENES);}
+        bool invertCameraAxis() const { return flagBitfieldFlagIsEnabled(INVERT_CAMERA_AXIS);}
+        bool isLightSwordGlow() const { return flagBitfieldFlagIsEnabled(MAKE_LIGHT_SWORD_GLOW);}
 
         bool spinnerSpeedIsIncreased() const
         {
@@ -197,6 +211,8 @@ class seedInfo_c {
 
         void loadShopModels();
         void loadShuffledEntrances();
+        void handleReturnToLocation(bool isReturnToDungeonEntrance);
+        void loadBugRewards();
         
        private:
         void applyEventFlags();

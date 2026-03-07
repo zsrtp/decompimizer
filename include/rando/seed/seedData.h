@@ -222,3 +222,21 @@ class GoldenWolfItemReplacement
     s16 flag;        // Flag associated with the current golden wolf
     u8 markerFlag;  // Flag associated with the current golden wolf's marker on the map
 };
+
+class EntranceInfo
+{
+    public:
+    EntranceInfo() {}
+    ~EntranceInfo() {}
+
+    u8 getStageIDX() { return mStageIDX; }
+    u8 getRoomIDX() { return mRoomIDX; }
+    u8 getSpawn() { return mSpawn; }
+    u8 getState() { return mState; }
+
+    private:
+    u8 mStageIDX;
+    u8 mRoomIDX;
+    u8 mSpawn;
+    u8 mState;
+};

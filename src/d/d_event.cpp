@@ -10,6 +10,8 @@
 #include "d/actor/d_a_tag_mhint.h"
 #include "d/actor/d_a_tag_mstop.h"
 #include "d/d_event_debug.h"
+#include "rando/seed/seed.h"
+#include "rando/rando.h"
 #include "SSystem/SComponent/c_counter.h"
 
 namespace {
@@ -382,6 +384,12 @@ int dEvt_control_c::talkEnd() {
     daItemBase_c* item = (daItemBase_c*)fopAcM_getItemEventPartner(NULL);
     if (item != NULL && fopAcM_GetName(item) == PROC_ITEM) {
         item->dead();
+    }
+
+    if (g_randoInfo.getHasPendingToDChange())
+    {
+        g_randoInfo.setHasPendingToDChange(false);
+        g_randoInfo.handleTimeOfDayChange();
     }
 
     return 1;
@@ -877,7 +885,7 @@ bool dEvt_control_c::skipper() {
         }
 
         bool is_trig_skipbtn = mDoCPd_c::getTrigStart(PAD_1);
-        if (is_trig_skipbtn) {
+        if (is_trig_skipbtn || (g_seedInfo.skipMajorCutscenes() && canSkip)) {
             if (mSkipTimer > 0) {
                 mSkipTimer = -1;
 

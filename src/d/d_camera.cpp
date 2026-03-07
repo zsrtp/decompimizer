@@ -20,6 +20,7 @@
 #include "m_Do/m_Do_controller_pad.h"
 #include "m_Do/m_Do_graphic.h"
 #include "m_Do/m_Do_lib.h"
+#include "rando/seed/seed.h"
 #include <cmath>
 
 #if DEBUG
@@ -768,7 +769,14 @@ void dCamera_c::updatePad() {
     mPadInfo.mCStick.mPosXDelta = var_f31 - mPadInfo.mCStick.mLastPosX;
     mPadInfo.mCStick.mPosYDelta = var_f30 - mPadInfo.mCStick.mLastPosY;
     mPadInfo.mCStick.mValueDelta = var_f29 - mPadInfo.mCStick.mLastValue;
-    mPadInfo.mCStick.mLastPosX = var_f31;
+    if (g_seedInfo.invertCameraAxis())
+    {
+        mPadInfo.mCStick.mLastPosX = -var_f31;
+    }
+    else
+    {
+        mPadInfo.mCStick.mLastPosX = var_f31;
+    }
     mPadInfo.mCStick.mLastPosY = var_f30;
     mPadInfo.mCStick.mLastValue = var_f29;
     mPadInfo.mCStick.mAngle.Val(mDoCPd_c::getSubStickAngle(mPadID));
