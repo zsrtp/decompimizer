@@ -427,7 +427,7 @@ int getStageID(const char* stage)
     return -1;
 }
 
-int getCurrentStageId()
+int getCurrentStageID()
 {
     int loopCount = sizeof(allStages) / sizeof(allStages[0]);
 

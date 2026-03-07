@@ -1774,7 +1774,7 @@ u16 dMsgFlow_c::query055(mesg_flow_node_branch*, fopAc_ac_c*, int) {
 
 // Return 0 if can return to dungeon entrance, 1 if in dungeon but can only return to spawn, or 2 if not in dungeon.
 u16 dMsgFlow_c::query056(mesg_flow_node_branch*, fopAc_ac_c*, int) {
-    uint8_t stageIDX = getCurrentStageId();
+    uint8_t stageIDX = getCurrentStageID();
     if (stageIDX <= 29)
     {
         /* // Commenting out until re figure out the return to spawn stuff

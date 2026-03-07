@@ -20,6 +20,6 @@ int getStageID(const char* stage);
 void replaceEquipItemColor(GXColor wave1RGBA, GXColor wave2RGBA);
 void replaceEquipItemColor();
 bool checkToTSwordReqEquip();
-int getCurrentStageId();
+int getCurrentStageID();
 
 #endif  // TOOLS_H

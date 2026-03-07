@@ -36,17 +36,20 @@ public:
     void handleBonkDamage();
     void handleTimeOfDayChange();
     void handleTimeSpeed();
+    void offLoad();
 
     u8 getGiveItemToPlayerStatus() { return eventItemStatus;}
     u16 getLastButtonInput() { return m_LastButtonInput;}
     float getPrevFrameAnalogR() { return prevFrameAnalogR;}
     u8 getTimeChange() { return mTimeChange; }
+    bool getRoomReloadingState() { return roomReloadingState; }
     
     void setGiveItemToPlayerStatus(u8 status) { eventItemStatus = status;}
     void setLastButtonInput(u16 buttonInput) { m_LastButtonInput = buttonInput;}
     void setPrevFrameAnalogR(float value) { prevFrameAnalogR = value;}
     void setHasPendingToDChange(bool hasPending) { hasPendingToDChange = hasPending; }
     void setTimeChange(u8 newTimeChange) { mTimeChange = newTimeChange; }
+    void setRoomReloadingState(bool newState) { roomReloadingState = newState; }
 
     bool mInitialized;
     u8 eventItemStatus;
@@ -58,6 +61,7 @@ public:
     bool hasPendingToDChange;
     u8 mTimeChange;
     u8 eventItemQueue[EVENT_ITEM_QUEUE_SIZE];
+    bool roomReloadingState;
 };
 
 void checkSetHCBkFlag(u8 req, u8 currentCount);

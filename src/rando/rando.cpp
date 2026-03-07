@@ -2,6 +2,7 @@
 #include "rando/seed/seed.h"
 #include "rando/tools/tools.h"
 #include "rando/data/flags.h"
+#include "rando/data/stages.h"
 #include "rando/tools/verifyItemFunctions.h"
 #include "rando/itemWheelMenu.h"
 #include "d/d_com_inf_game.h"
@@ -59,6 +60,7 @@ int randoInfo_c::execute() {
         handleTimeSpeed();
     }
 
+    bool currentReloadingState;
     // Any custom functionality that relies on Link's actor being on a stage
     if (daAlink_getAlinkActorClass())
     {
@@ -70,7 +72,22 @@ int randoInfo_c::execute() {
         {
             replaceEquipItemColor();
         }
+        currentReloadingState = daAlink_getAlinkActorClass()->checkRestartRoom();
     }
+    else
+    {
+        currentReloadingState = true;
+    }
+
+    bool prevReloadingState = getRoomReloadingState();
+    if (!currentReloadingState)
+    {
+        if (prevReloadingState)
+        {
+            offLoad();
+        }
+    }
+    setRoomReloadingState(currentReloadingState);
 
     // Main code as ran, so update any previous frame variables.
     setPrevFrameAnalogR(mDoCPd_c::getAnalogR(PAD_1));
@@ -321,6 +338,33 @@ void randoInfo_c::handleTimeSpeed()
     {
         g_env_light.time_change_rate = 0.012f; // Set time speed to normal
         setTimeChange(NO_CHANGE);
+    }
+}
+
+void randoInfo_c::offLoad()
+{
+    if ((getCurrentStageID() == City_in_the_Sky) && (dStage_roomControl_c::mStayNo == 0) && (dComIfGp_getStartStagePoint() == 3))
+    {
+        // Fan in the main room active
+        dComIfGs_offSaveSwitch(0xA);
+
+        // Main Room 1F explored
+        dComIfGs_offSaveSwitch(0xF);
+    }
+
+    if (playerIsInRoomStage(1, allStages[Sacred_Grove]))
+    {
+        // If the portal in SG isn't active then we want to spawn the shadow beasts.
+        if (!dComIfGs_isSaveSwitch(0x64))
+        {
+            dComIfGs_onSvOneZoneSwitch(0, 0xE);
+        }
+    }
+
+    if ((getCurrentStageID() == Ordon_Ranch) && (dComIfGp_getStartStagePoint() == 1))
+    {
+        // Clear the danBit that starts a conversation when entering the ranch so the player can do goats as needed.
+        dComIfGs_offSaveDunSwitch(0x1);
     }
 }
 
