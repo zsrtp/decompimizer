@@ -45,7 +45,9 @@ int seedInfo_c::_create() {
 
     delete[] data;
 
-    // Now that the seed is loaded, set any static values needed.
+    // Now that the seed is loaded, populate any arrays/pointers that need set:
+    loadBugRewards();
+    // Next, set any static values needed.
     setStaticGameValues();
 
     return 1;
@@ -273,4 +275,31 @@ void seedInfo_c::handleReturnToLocation(bool isReturnToDungeonEntrance)
     nextStagePtr->setPoint(newPoint);
     nextStagePtr->setLayer(newLayer);
     dComIfGp_setEnableNextStage();
+}
+
+void seedInfo_c::loadBugRewards()
+{
+    const EntryInfo* bugRewardCheckInfoPtr = m_Header->getBugRewardCheckInfoPtr();
+    const u32 num_bugRewards = bugRewardCheckInfoPtr->getNumEntries();
+    const u32 gci_offset = bugRewardCheckInfoPtr->getDataOffset();
+
+    // Set the pointer as offset into our buffer
+    const BugReward* allBUG = (const BugReward*)(&m_GCIData[gci_offset]);
+
+    // Allocate memory to the actual Bug Checks
+    // Do NOT need to clear the previous buffer as that's taken care of by LoadChecks()
+    BugReward* bugRewardChecksPtr = new BugReward[num_bugRewards];
+    m_BugRewardChecks = bugRewardChecksPtr;
+
+    // offset into m_BugRewardChecks
+    u32 j = 0;
+
+    for (int i = 0; i < num_bugRewards; i++)
+    {
+        const BugReward* currentBugCheck = &allBUG[i];
+        BugReward* globalBugCheck = &bugRewardChecksPtr[j];
+
+        memcpy(globalBugCheck, currentBugCheck, sizeof(BugReward));
+        j++;
+    }
 }

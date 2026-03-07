@@ -37,6 +37,7 @@ public:
     void handleTimeOfDayChange();
     void handleTimeSpeed();
     void offLoad();
+    bool checkFoolishItemEffectReady();
 
     u8 getGiveItemToPlayerStatus() { return eventItemStatus;}
     u16 getLastButtonInput() { return m_LastButtonInput;}

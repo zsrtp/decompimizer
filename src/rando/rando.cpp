@@ -8,6 +8,9 @@
 #include "d/d_com_inf_game.h"
 #include "SSystem/SComponent/c_math.h"
 #include "d/actor/d_a_alink.h"
+#include "d/d_meter2.h"
+#include "d/d_meter2_info.h"
+#include "d/d_meter2_draw.h"
 #include "m_Do/m_Do_controller_pad.h"
 
 randoInfo_c g_randoInfo;
@@ -130,10 +133,21 @@ bool randoInfo_c::checkValidTransformAnywhere()
 
 int randoInfo_c::getBugReward(u8 bugId)
 {
-    /*
-    Once the infrastructure is built the code will look like the following:
-    int item = replaceBugReward(bugId); we will probably build the functionality out instead of calling another func though.
-    */
+    const EntryInfo* bugRewardCheckInfoPtr = g_seedInfo.getHeaderPtr()->getBugRewardCheckInfoPtr();
+    const u32 numBugRewardChecks = bugRewardCheckInfoPtr->getNumEntries();
+    const BugReward* bugRewardChecks = g_seedInfo.getBugRewardChecksPtr();
+
+    for (int i = 0; i < numBugRewardChecks; i++)
+    {
+        const BugReward* currentBugRewardCheck = &bugRewardChecks[i];
+        if (bugId == currentBugRewardCheck->getBugId())
+        {
+            // Return new item
+            return (u8)currentBugRewardCheck->getItemId();
+        }
+    }
+
+    // Default
     return bugId;
 }
 
@@ -392,4 +406,61 @@ void checkSetHCBkFlag(u8 req, u8 currentCount)
     {
         dComIfGs_onStageSwitch(0x18, 0x4B);
     }
+}
+
+bool checkFoolishItemEffectReady()
+{
+    // Verify Link is loaded on the map.
+    if (!daAlink_getAlinkActorClass())
+    {
+        return false;
+    }
+
+    // Ensure Link is not in a cutscene
+    if (daAlink_getAlinkActorClass()->checkEventRun())
+    {
+        return false;
+    }
+
+    // Make sure Link isn't riding anything
+    if (daAlink_getAlinkActorClass()->checkRide())
+    {
+        return false;
+    }
+
+    // Ensure there are pointers to the mMeterClass and mpMeterDraw structs
+    if (!dMeter2Info_getMeterClass())
+    {
+        return false;
+    }
+
+    if (!dMeter2Info_getMeterClass()->getMeterDrawPtr())
+    {
+        return false;
+    }
+
+    // Make sure Z button isn't dimmed
+    if (dMeter2Info_getMeterClass()->getMeterDrawPtr()->getZButtonAlpha() != 1.f)
+    {
+        return false;
+    }
+
+    switch (daAlink_getAlinkActorClass()->mProcID)
+    {
+        case daAlink_c::PROC_TALK:
+        case daAlink_c::PROC_WOLF_SWIM_MOVE:
+        case daAlink_c::PROC_SWIM_MOVE:
+        case daAlink_c::PROC_SWIM_WAIT:
+        case daAlink_c::PROC_WOLF_SWIM_WAIT:
+        case daAlink_c::PROC_SWIM_UP:
+        case daAlink_c::PROC_SWIM_DIVE:
+        {
+            return false;
+        }
+        default:
+        {
+            break;
+        }
+    }
+    return true;
 }

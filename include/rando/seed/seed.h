@@ -212,6 +212,7 @@ class seedInfo_c {
         void loadShopModels();
         void loadShuffledEntrances();
         void handleReturnToLocation(bool isReturnToDungeonEntrance);
+        void loadBugRewards();
         
        private:
         void applyEventFlags();
