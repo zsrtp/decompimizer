@@ -44,6 +44,7 @@ public:
     float getPrevFrameAnalogR() { return prevFrameAnalogR;}
     u8 getTimeChange() { return mTimeChange; }
     bool getRoomReloadingState() { return roomReloadingState; }
+    bool getHasPendingToDChange() { return hasPendingToDChange; }
     
     void setGiveItemToPlayerStatus(u8 status) { eventItemStatus = status;}
     void setLastButtonInput(u16 buttonInput) { m_LastButtonInput = buttonInput;}
