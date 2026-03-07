@@ -11,6 +11,7 @@
 #include "JSystem/J2DGraph/J2DPrint.h"
 #include "JSystem/J2DGraph/J2DTextBox.h"
 #include "JSystem/J2DGraph/J2DOrthoGraph.h"
+#include "JSystem/JKernel/JKRHeap.h"
 #include "m_Do/m_Do_ext.h"
 
 randoInfo_c g_randoInfo;
@@ -23,10 +24,18 @@ int randoInfo_c::_create() {
     eventItemStatus = QUEUE_EMPTY;
     g_customMenuRing._initialize();
     g_seedInfo._create();
+
+    mpExampleText = new (JKRGetCurrentHeap(), 4) J2DTextBox();
+    mpExampleText->setFont(mDoExt_getMesgFont());
+    mpExampleText->setFontSize(24.0f, 24.0f);
+    mpExampleText->setString("Example Text");
+
     return 1;
 }
 
 int randoInfo_c::_delete() {
+    delete mpExampleText;
+    mpExampleText = NULL;
     mInitialized = false;
     return 1;
 }
@@ -191,6 +200,10 @@ int randoInfo_c::draw() {
     pulsing.setCharColor(JUtility::TColor(255, 150, 255, pulseAlpha));
     pulsing.setGradColor(JUtility::TColor(255, 150, 255, pulseAlpha));
     pulsing.draw(0.0f, 400.0f, 608.0f, HBIND_LEFT);
+
+    if (mpExampleText != NULL) {
+        mpExampleText->draw(0.0f, 430.0f, 608.0f, HBIND_LEFT);
+    }
 
     return 1;
 }

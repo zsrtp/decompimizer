@@ -4,6 +4,8 @@
 
 #include "dolphin/types.h"
 
+class J2DTextBox;
+
 enum EventItemStatus
 {
     QUEUE_EMPTY,
@@ -35,6 +37,7 @@ public:
     float getPrevFrameAnalogR() { return prevFrameAnalogR;}
     void setPrevFrameAnalogR(float value) { prevFrameAnalogR = value;}
 
+    J2DTextBox* mpExampleText;
     bool mInitialized;
     u8 eventItemStatus;
     u16 mFrameCounter;
