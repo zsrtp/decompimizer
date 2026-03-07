@@ -141,6 +141,11 @@ bool checkButtonComboAnalog(uint combo)
     return buttonsPressedThisFrame & combo;
 }
 
+bool checkButtonsHeld(u32 buttons)
+{
+    return (mDoCPd_c::getHold(PAD_1) & buttons) == buttons;
+}
+
 void handleQuickTransform()
 {
     // If the setting isn't enabled, return immediately

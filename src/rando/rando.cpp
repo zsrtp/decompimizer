@@ -48,6 +48,20 @@ int randoInfo_c::execute() {
     {
         handleQuickTransform();
     }
+    else if (daAlink_getAlinkActorClass() && checkButtonsHeld(PAD_TRIGGER_R) && g_seedInfo.spinnerSpeedIsIncreased())
+    {
+        fopAc_ac_c* spinnerActor = (fopAc_ac_c*)daAlink_getAlinkActorClass()->getSpinnerActor();
+
+        if (spinnerActor)
+        {
+            float spinnerSpeed = spinnerActor->speedF;
+            if (spinnerSpeed < 60.f)
+            {
+                spinnerSpeed += 2.f;
+                spinnerActor->speedF = spinnerSpeed;
+            }
+        }
+    }
 
     // Every 300 frames, set rupees to a random value
     mFrameCounter++;
@@ -76,6 +90,8 @@ int randoInfo_c::execute() {
             replaceEquipItemColor();
         }
         currentReloadingState = daAlink_getAlinkActorClass()->checkRestartRoom();
+        // Handle giving item to the player at any time.
+        initGiveItemToPlayer();
     }
     else
     {
@@ -91,6 +107,12 @@ int randoInfo_c::execute() {
         }
     }
     setRoomReloadingState(currentReloadingState);
+
+    // COpypasta old rando code until I build the framework out.
+    /*if (!libtp::tp::d_a_alink::checkStageName(libtp::data::stage::allStages[libtp::data::stage::StageIDs::Title_Screen]))
+    {
+        handleFoolishItem(randoPtr);
+    }*/
 
     // Main code as ran, so update any previous frame variables.
     setPrevFrameAnalogR(mDoCPd_c::getAnalogR(PAD_1));
